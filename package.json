@@ -1,0 +1,46 @@
+{
+  "name": "vk-phishing",
+  "version": "1.2.0",
+  "description": "Detailed adaptive phishing for VK.com",
+  "author": "AlexXanderGrib <pockomhadzzop@gmail.com>",
+  "private": true,
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development nodemon server/index.js --watch server",
+    "build": "nuxt build",
+    "serve": "cross-env NODE_ENV=production node server/index.js",
+    "generate": "nuxt generate",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
+    "start": "npm run build; npm run serve",
+    "test": "echo \"I don't like tests ¯\\_(ツ)_/¯\" && exit 0"
+  },
+  "dependencies": {
+    "@nuxtjs/pwa": "^3.0.0-beta.19",
+    "axios": "^0.19.0",
+    "body-parser": "^1.19.0",
+    "bootstrap": "^4.3.1",
+    "bootstrap-vue": "^2.0.4",
+    "cheerio": "^1.0.0-rc.3",
+    "consola": "^2.10.1",
+    "cookie-universal-nuxt": "^2.0.18",
+    "cross-env": "^5.2.0",
+    "express": "^4.16.4",
+    "ngrok": "^3.2.5",
+    "nuxt": "^2.0.0",
+    "request-promise-native": "^1.0.7",
+    "vue-class-component": "^7.1.0",
+    "yaml": "^1.7.2"
+  },
+  "devDependencies": {
+    "@nuxtjs/eslint-config": "^1.0.1",
+    "@nuxtjs/eslint-module": "^1.0.0",
+    "@types/consola": "^2.2.5",
+    "@types/yaml": "^1.2.0",
+    "babel-eslint": "^10.0.1",
+    "eslint": "^6.6.0",
+    "eslint-config-prettier": "^4.1.0",
+    "eslint-plugin-nuxt": ">=0.4.2",
+    "eslint-plugin-prettier": "^3.0.1",
+    "nodemon": "^1.18.9",
+    "prettier": "^1.16.4"
+  }
+}

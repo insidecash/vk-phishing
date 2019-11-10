@@ -1,0 +1,149 @@
+@charset 'utf-8';
+@import "~/assets/theme.css";
+
+:root {
+  --current-font-size: var(--font-size-md);
+  --current-text-accent: var(--primary-text-darker-color);
+  --current-font-family: var(--desktop-font);
+  --current-input-border-color: var(--pc-input-border-color);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  font-weight: 400;
+  font-display: swap;
+  src: url(/fonts/Roboto-VK-Normal.woff) format("woff"),
+    url(/fonts/Roboto-VK-Normal.woff2) format("woff2")
+}
+@font-face {
+  font-family: 'Roboto';
+  font-weight: 500;
+  font-display: swap;
+  src: url(/fonts/Roboto-VK-Medium.woff) format("woff"),
+    url(/fonts/Roboto-VK-Medium.woff) format("woff2")
+}
+@font-face {
+  font-family: 'Roboto';
+  font-weight: 700;
+  font-display: swap;
+  src: url(/fonts/Roboto-VK-Bold.woff) format("woff"),
+    url(/fonts/Roboto-VK-Bold.woff) format("woff2")
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  background-color: var(--bg-color);
+  width: 100%;
+  height: 100%;
+  font-size: var(--current-font-size);
+  font-family: var(--desktop-font);
+  font-weight: 400;
+  -webkit-font-smoothing: subpixel-antialiased;
+}
+
+a {
+  color: var(--current-text-accent);
+}
+
+input[type=text],
+input[type=phone],
+input[type=email],
+input[type=number] {
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--current-input-border-color);
+}
+
+.clearfix::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+@media screen and (min-width: 751px) {
+  body {
+    line-height: 1.154;
+  }
+  .hide-pc {
+    display: none !important;
+  }
+
+	.form-input {
+    margin-bottom: 13px;
+    border: 1px solid #d3d9de;
+    padding: 5px 9px 7px;
+    border-radius: 3px;
+    box-sizing: border-box;
+    background: #fff;
+    -webkit-appearance: none;
+    height: 30px;
+    outline: none;
+    box-shadow: none;
+    font-size: var(--font-size-md);
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 750px) {
+  :root {
+    --current-font-size: var(--font-size-xs);
+    --current-text-accent: var(--primary-text-lighter-color);
+    --current-font-family: var(--mobile-font);
+    --current-input-border-color: var(--m-input-border-color);
+  }
+
+  .hide-m {
+    display: none !important;
+  }
+
+	
+	.form-input {
+    font-size: 1 .17em;
+    padding: 4px;
+    vertical-align: top;
+    width: 100%;
+    min-width: 30px;
+    border: 1px solid #b9c4d1;
+    margin: 0;
+    -webkit-appearance: none;
+    background: #fff;
+    border-radius: 4px;
+    outline: none;
+  }
+}
+
+.form-input:disabled {
+  background-color: var(--bg-color);
+}
+
+.btn-primary {
+  color: #fff !important;
+  background-color: var(--primary-lighter-color) !important;
+}
+
+.btn-secondary {
+  color: var(--primary-button-text-color) !important;
+  background-color: var(--bg-color) !important;
+}
+
+.link {
+  color: var(--current-text-accent);
+  text-decoration: none;
+  cursor: pointer;
+  font-size: var(--font-size-md);
+}
+
+.link:hover,
+.link:focus,
+.link:active {
+  text-decoration: underline;
+}
