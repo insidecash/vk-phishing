@@ -42,5 +42,15 @@
     "eslint-plugin-prettier": "^3.0.1",
     "nodemon": "^1.18.9",
     "prettier": "^1.16.4"
-  }
+  },
+  "main": "server/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlexXanderGrib/vk-phishing.git"
+  },
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/AlexXanderGrib/vk-phishing/issues"
+  },
+  "homepage": "https://github.com/AlexXanderGrib/vk-phishing#readme"
 }
