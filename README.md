@@ -49,21 +49,7 @@ Read more at [ngrok docs](https://ngrok.com/docs#config)
 
 ### Aye Kosmonavt
 
-  
-
-This is util for hide links (Not url shortener). Undocumented. If explain simple, it has 5 options:
-
-1. Title, the link and browser tab title, required
-
-2. Image, the background page's image, required
-
-3. OgImage, used as preview for social media, unnecessary
-
-4. Redir, redirect url, unnecessary
-
-5. Rt (redir time), time in seconds, after what user will be redirected to url. If less then 1, server will send location header, and will expose your original url.
-
-You can generate aye-kosmonavt links [here](https://aye-kosmonavt.space/gen.php)
+Read his docs [on github](https://github.com/AlexXanderGrib/aye-kosmonavt-api#readme)
 
 Here it used for hide ngrok links, what often are banned by VK. Also aye-kosmonavt leaks user data, such as ip, port, user-agent, navigator settings, and can leak location, audio (3 sec) and frontal camera photo.
 
