@@ -1,7 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const yaml = require('yaml')
-const ayeKosmonavt = require('./aye-kosmonavt')
+const ayeKosmonavt = require('aye-kosmonavt-api')
 
 const configPath = path.join(__dirname, '..', 'config', 'aye-kosmonavt.yml')
 const config = yaml.parse(fs.readFileSync(configPath, { encoding: 'utf8' }))
