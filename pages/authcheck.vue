@@ -7,7 +7,7 @@
             <a href="https://vk.com" class="header-vk" target="_blank">
               <img src="/logo.svg" alt="VK" />
             </a>
-            <a :href="exitUrl" class="header-exit link hide-pc">
+            <a href="https://vk.com/" class="header-exit link hide-pc">
               <b>выйти</b>
             </a>
             <a
@@ -126,7 +126,6 @@ import VKButton from '~/components/vk-button'
 import HidePc from '~/components/hide-pc'
 import HideM from '~/components/hide-m'
 import { R_SUCCESS } from '~/server/auth-constants'
-import config from '~/nuxt.config'
 
 @Component({
   components: {
@@ -134,6 +133,9 @@ import config from '~/nuxt.config'
     'hide-pc': HidePc,
     'hide-m': HideM
   },
+
+  layout: 'page',
+
   mounted() {
     this.interval = setInterval(() => {
       if (this.$store.state.status === R_SUCCESS) {
@@ -154,7 +156,6 @@ import config from '~/nuxt.config'
 })
 class AuthCheckPage extends Vue {
   remember = true
-  exitUrl = config.vkLogin.cancelReturnUrl
 
   get code() {
     return this.$store.state.code

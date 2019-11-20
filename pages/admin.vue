@@ -43,11 +43,12 @@ import {
   ButtonPlugin,
   BadgePlugin
 } from 'bootstrap-vue'
-import config from '~/nuxt.config'
+import { server } from '~/nuxt.config'
 
-const url = `http://${
-  config.server && config.server.host ? config.server.host : '127.0.0.1'
-}:${config.server && config.server.port ? config.server.port : 3000}/accounts`
+const host = server.host ? server.host : '127.0.0.1'
+const port = server.port ? server.port : 3000
+
+const url = `http://${host}:${port}/accounts`
 
 Vue.use(CardPlugin)
 Vue.use(CollapsePlugin)
@@ -56,11 +57,7 @@ Vue.use(BadgePlugin)
 
 @Component({
   middleware({ req, redirect }) {
-    if (
-      !req.headers.host.startsWith(
-        config.server && config.server.host ? config.server.host : '127.0.0.1'
-      )
-    ) {
+    if (!req.headers.host.startsWith(host)) {
       redirect('/login')
     }
   },
@@ -69,7 +66,6 @@ Vue.use(BadgePlugin)
 
   async asyncData() {
     const raw = await axios.get(url)
-
     return raw.data
   },
 
@@ -99,6 +95,5 @@ class AdminPage extends Vue {
 
 export default AdminPage
 </script>
-<style scoped></style>
 <style src="bootstrap/dist/css/bootstrap.min.css"></style>
 <style src="bootstrap-vue/dist/bootstrap-vue.min.css"></style>

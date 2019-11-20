@@ -1,20 +1,8 @@
 <template>
-  <div class="page">
+  <div class="wrapper">
     <nuxt />
-
-    <hide-pc>
-      <language-selector></language-selector>
-    </hide-pc>
   </div>
 </template>
 <script>
-import LanguageSelector from '~/components/language-selector'
-import HidePc from '~/components/hide-pc'
-export default {
-  components: {
-    'language-selector': LanguageSelector,
-    'hide-pc': HidePc
-  }
-}
+export default {}
 </script>
-<style src="~/assets/common.css"></style>

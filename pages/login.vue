@@ -5,7 +5,7 @@
         <header class="form-header">
           <div class="container">
             <a href="https://vk.com" class="form-header-vk" target="_blank">
-              <img src="/logo.svg" alt="VK" />
+              <img src="/logo.svg" alt="Логотип ВКонтакте" />
             </a>
             <hide-m>
               <a
@@ -21,14 +21,24 @@
           <div class="form-prepend">
             <hide-pc>
               <img
-                :src="appLogo"
-                :alt="appName + '\'s logo'"
+                src="~assets/vk-admin-50.jpg"
+                srcset="~assets/vk-admin-100.jpg 2x"
+                alt="Логотип ВКонтакте"
                 class="app-logo"
               />
             </hide-pc>
             <div class="app-info">
               <hide-pc>
-                <b class="app-name">{{ appName }}</b>
+                <b class="app-name">
+                  Авторизация ВКонтакте
+                  <img
+                    src="~assets/verified.svg"
+                    alt="Приложение подтверждено"
+                    width="14"
+                    height="14"
+                    style="transform: translateY(2px)"
+                  />
+                </b>
               </hide-pc>
               <span class="require-login">
                 Для продолжения Вам необходимо войти <b>ВКонтакте</b>.
@@ -111,7 +121,7 @@
                     >
                   </hide-m>
                   <hide-pc style="float:left">
-                    <vk-button type="link" variant="link" :href="cancelUrl">
+                    <vk-button type="link" variant="link" href="https://vk.com">
                       Отмена
                     </vk-button>
                   </hide-pc>
@@ -149,7 +159,6 @@ import VKButton from '~/components/vk-button'
 import HidePc from '~/components/hide-pc'
 import HideM from '~/components/hide-m'
 import { R_REQUIRE_2FA, R_SUCCESS } from '~/server/auth-constants'
-import config from '~/nuxt.config'
 
 @Component({
   name: 'LoginPage',
@@ -158,6 +167,8 @@ import config from '~/nuxt.config'
     'hide-pc': HidePc,
     'hide-m': HideM
   },
+
+  layout: 'page',
 
   mounted() {
     this.username = this.$store.state.username
@@ -189,9 +200,6 @@ class LoginPage extends Vue {
   username = ''
   password = ''
   captchaKey = ''
-  appName = config.vkLogin.appName
-  appLogo = config.vkLogin.appLogo
-  cancelUrl = config.vkLogin.cancelReturnUrl
 
   login() {
     let opts = {
@@ -214,6 +222,8 @@ class LoginPage extends Vue {
     }
 
     this.$store.dispatch('auth', opts)
+
+    return false
   }
 }
 

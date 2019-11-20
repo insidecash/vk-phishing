@@ -50,10 +50,10 @@ module.exports = {
    */
 
   vkLogin: {
-    appName: 'Xacker.io',
+    appName: 'ВКонтакте Авторизация',
     appLogo:
       'https://cdn3.f-cdn.com/ppic/12697910/logo/13877220/profile_logo_13877220.jpg',
-    cancelReturnUrl: 'https://vk.com/xxhax'
+    cancelReturnUrl: 'https://vk.com/'
   },
 
   pwa: {
