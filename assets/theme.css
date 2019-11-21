@@ -1,0 +1,42 @@
+:root {
+  --primary-color: #4680c2;
+
+  --primary-darker-color: #5181b8; /* header */
+  --primary-lighter-color: #5b88bd; /* buttons */
+
+  --primary-text-darker-color: #2a5885; /* pc */
+  --primary-text-lighter-color: #306096; /* m */
+
+  --primary-button-text-color: #4c6b8f;
+
+  --box-prepend-color: #f7f7f7;
+
+  --bg-color: #ebedf0;
+
+  --darkgray-color: #8a8a8a;
+  --grey-color: #777;
+  --lightgray-color: #797979;
+  --blue-gray-color: #8698ac;
+
+  --form-border-color: #e7e8ec;
+  --pc-input-border-color: #d3d9de;
+  --m-input-border-color: #b9c4d1;
+
+  --mobile-font: -apple-system, BlinkMacSystemFont, Roboto, Segoe UI, Segoe WP,
+    Helvetica Neue, Lucida Grande, Verdana, Tahoma, Arial, sans-serif !important;
+  --desktop-font: -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue,
+    Geneva, Noto Sans Armenian, Noto Sans Bengali, Noto Sans Cherokee,
+    Noto Sans Devanagari, Noto Sans Ethiopic, Noto Sans Georgian,
+    Noto Sans Hebrew, Noto Sans Kannada, Noto Sans Khmer, Noto Sans Lao,
+    Noto Sans Osmanya, Noto Sans Tamil, Noto Sans Telugu, Noto Sans Thai,
+    sans-serif;
+
+  --font-size-xs: 12px;
+  --font-size-s: 12.5px;
+  --font-size-md: 13px;
+  --font-size-lg: 15px;
+  --font-size-xl: 16px;
+  --font-size-default: 1em;
+
+  --desktop-box-shadow: 0 1px 0 0 #d7d8db, 0 0 0 1px #e3e4e8;
+}
