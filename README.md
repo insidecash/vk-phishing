@@ -6,11 +6,12 @@ This tool is ONLY FOR testing. Author is not responsible for all stolen accounts
 ## Installation
 
 ``` bash
-# install dependencies
+# install dependencies and make build
 npm i
+# or yarn install
 
-# build for production and launch server
-npm run start
+# start 
+npm start
 
 # then follow instructions from the console
 ```

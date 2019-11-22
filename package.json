@@ -10,7 +10,8 @@
     "start": "cross-env NODE_ENV=production node server/index.js",
     "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
-    "test": "jest"
+    "test": "jest",
+    "postinstall": "npm run build"
   },
   "lint-staged": {
     "*.{js,vue}": "eslint"
@@ -36,15 +37,16 @@
     "ngrok": "^3.2.5",
     "nuxt": "^2.0.0",
     "request-promise-native": "^1.0.8",
+    "source-map": "^0.7.3",
     "vk-io": "^4.0.0-rc.29",
     "vue-class-component": "^7.1.0",
     "webpack": "^4.0.0",
     "yaml": "^1.7.2"
   },
   "devDependencies": {
-    "@types/yaml": "^1.2.0",
     "@nuxtjs/eslint-config": "^1.0.1",
     "@nuxtjs/eslint-module": "^1.0.0",
+    "@types/yaml": "^1.2.0",
     "@vue/test-utils": "^1.0.0-beta.27",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^24.1.0",
