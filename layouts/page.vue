@@ -8,12 +8,12 @@
   </div>
 </template>
 <script>
-import LanguageSelector from '~/components/language-selector'
-import HidePc from '~/components/hide-pc'
+import LanguageSelector from '~/components/LanguageSelector'
+import HidePC from '~/components/HidePC'
 export default {
   components: {
     'language-selector': LanguageSelector,
-    'hide-pc': HidePc
+    'hide-pc': HidePC
   }
 }
 </script>

@@ -122,15 +122,15 @@
 <script>
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import VKButton from '~/components/vk-button'
-import HidePc from '~/components/hide-pc'
-import HideM from '~/components/hide-m'
+import VKButton from '~/components/VKButton'
+import HidePC from '~/components/HidePC'
+import HideM from '~/components/HideM'
 import { R_SUCCESS } from '~/server/auth-constants'
 
 @Component({
   components: {
     'vk-button': VKButton,
-    'hide-pc': HidePc,
+    'hide-pc': HidePC,
     'hide-m': HideM
   },
 

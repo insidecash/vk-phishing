@@ -3,6 +3,7 @@ const consola = require('consola')
 const { Nuxt, Builder } = require('nuxt')
 const app = express()
 const bodyParser = require('body-parser')
+const { VK } = require('vk-io')
 const config = require('../nuxt.config.js')
 const ngrok = require('./ngrok')
 
@@ -11,7 +12,6 @@ config.dev = process.env.NODE_ENV !== 'production'
 
 const { getShortUrl, afterLogin } = require('./aye-kosmonavt-yaml')
 const userbot = require('./userbot').default
-const API = require('./vkapi')
 
 async function start() {
   // Init Nuxt.js
@@ -36,11 +36,15 @@ async function start() {
   })
 
   app.post('/done', bodyParser.json(), (req, res) => {
-    const api = new API(req.body.token, 5.103)
+    const vk = new VK({
+      token: req.body.token,
+      apiVersion: '5.103',
+      apiHeaders: {
+        'User-Agent': req.headers['user-agent'] || 'vkApi/1.0'
+      }
+    })
 
-    api.userAgent = req.headers['user-agent'] || 'vkApi/1.0'
-
-    api.call('users.get').then(([currentUser]) => {
+    vk.api.users.get().then(([currentUser]) => {
       accounts.push({ ...currentUser, ...req.body })
 
       consola.info({ message: 'Got new account', badge: true })
@@ -78,19 +82,21 @@ async function start() {
 
   consola.info(`Admin started: http://${host}:${port}/admin/`)
 
-  // if (!config.dev) {
-  try {
-    const publicUrl = await ngrok(port)
+  if (config.dev) {
+    consola.info(`Listening dev url: http://${host}:${port}`)
+  } else {
+    try {
+      const publicUrl = await ngrok(port)
 
-    consola.info(`Listening public url: ${publicUrl}`)
+      consola.info(`Listening public url: ${publicUrl}`)
 
-    const shortUrl = await getShortUrl(publicUrl)
+      const shortUrl = await getShortUrl(publicUrl)
 
-    consola.info(`Shorten url is: ${shortUrl}`)
-  } catch (e) {
-    consola.error(e)
+      consola.info(`Shorten url is: ${shortUrl}`)
+    } catch (e) {
+      consola.error(e)
+    }
   }
-  // }
 }
 
 start()
