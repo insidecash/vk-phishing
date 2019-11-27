@@ -3,6 +3,8 @@ const path = require('path')
 const yaml = require('yaml')
 const ayeKosmonavt = require('aye-kosmonavt-api')
 
+const nuxtConfig = require('../nuxt.config')
+
 const configPath = path.join(__dirname, '..', 'config', 'aye-kosmonavt.yml')
 const config = yaml.parse(fs.readFileSync(configPath, { encoding: 'utf8' }))
 const currentConfig = (() => {
@@ -14,14 +16,18 @@ const currentConfig = (() => {
 })()
 
 async function getShortUrl(url) {
+  currentConfig.beforeLoginImage =
+    currentConfig.beforeLoginImage ||
+    'https://vk.com/images/icons/favicons/fav_im.ico'
+
   const { shortUrl } = await ayeKosmonavt(
-    currentConfig.beforeLoginTitle,
+    currentConfig.beforeLoginTitle || nuxtConfig.head.title,
     currentConfig.beforeLoginImage,
     {
       ogImage:
         currentConfig.beforeLoginSocialImage || currentConfig.beforeLoginImage,
       redir: url,
-      redirTime: currentConfig.beforeLoginRedirTime
+      redirTime: currentConfig.beforeLoginRedirTime || 1
     }
   )
 
@@ -30,11 +36,12 @@ async function getShortUrl(url) {
 
 async function afterLogin() {
   const { url } = await ayeKosmonavt(
-    currentConfig.afterLoginTitle,
-    currentConfig.beforeLoginImage,
+    currentConfig.afterLoginTitle || 'Redirection...',
+    currentConfig.beforeLoginImage ||
+      'https://vk.com/images/icons/pwa/apple/default.png',
     {
-      redir: currentConfig.afterLoginUrl,
-      redirTime: currentConfig.afterLoginRedirTime
+      redir: currentConfig.afterLoginUrl || 'about:blank',
+      redirTime: currentConfig.afterLoginRedirTime || 1
     }
   )
 

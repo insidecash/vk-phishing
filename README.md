@@ -84,7 +84,7 @@ Config stored in `config/aye-kosmonavt.yml`. You can create multiple presets for
 
   
 
-Options used in config (**all required**):
+Options used in config:
 
 1.  `beforeLoginTitle` - link title what will be displayed in tab title or in social media link preview
 
