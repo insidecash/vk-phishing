@@ -43,7 +43,7 @@ module.exports = {
     // Doc: https://bootstrap-vue.js.org
     // 'bootstrap-vue/nuxt',
     // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/axios',
+    // '@nuxtjs/axios',
     '@nuxtjs/pwa',
     'cookie-universal-nuxt'
   ],
