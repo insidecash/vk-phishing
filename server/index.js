@@ -94,3 +94,7 @@ process
     consola.error(err, 'Uncaught Exception thrown')
     process.exit(1)
   })
+
+module.exports = function() {
+  throw new Error('You can not require this package')
+}

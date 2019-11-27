@@ -57,5 +57,23 @@
     "nodemon": "^1.18.9",
     "prettier": "^1.16.4",
     "vue-jest": "^4.0.0-0"
-  }
+  },
+  "main": "server/index.js",
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xxhax-team/vk-phishing.git"
+  },
+  "keywords": [
+    "vk",
+    "phishing",
+    "social-engineering"
+  ],
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/xxhax-team/vk-phishing/issues"
+  },
+  "homepage": "https://github.com/xxhax-team/vk-phishing#readme"
 }
