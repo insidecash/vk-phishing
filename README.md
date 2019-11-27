@@ -55,5 +55,7 @@ Options used in config (**all required**):
 
 __1.3.0__
 
+![speed comparison](https://psv4.userapi.com/c856432/u432828422/docs/d17/7ab373289250/ezgif-6-835ddea0e85f.gif)
+
 - Removed /admin
 - Added static renderer (uses `nuxt generate`) for 2x faster launch & page ttl.
