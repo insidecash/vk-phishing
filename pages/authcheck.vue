@@ -33,15 +33,15 @@
               генерации кодов, чтобы подтвердить, что Вы — владелец страницы.
             </p>
             <div v-if="$store.state.error.length > 0" class="error">
-              <div v-html="$store.state.error" class="error-container"></div>
+              <div class="error-container" v-html="$store.state.error"></div>
             </div>
             <form
-              @submit.prevent="checkcode()"
               action="/auth"
               class="form-inner"
               enctype="application/x-www-form-urlencoded"
               method="POST"
               autocomplete="on"
+              @submit.prevent="checkcode()"
             >
               <hide-m>
                 <div class="form">

