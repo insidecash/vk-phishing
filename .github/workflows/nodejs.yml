@@ -20,4 +20,9 @@ jobs:
     - name: npm install, build, and test
       run: |
         npm ci
-        npm run build
+        npm test
+    - run: bash build.sh
+    - uses: actions/upload-artifact@v1
+      with:
+        name: build
+        path: __build
