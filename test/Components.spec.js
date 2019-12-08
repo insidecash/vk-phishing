@@ -10,42 +10,49 @@ describe('VK Button component', () => {
     expect(wrapper.isVueInstance()).toBeTruthy()
   })
 
-  test('can be Button', () => {
+  test('is wrapped', () => {
     const wrapper = mount(VKButton)
+    expect(wrapper.contains('.vk-button-wrapper')).toBeTruthy()
+  })
 
-    wrapper.setProps({ type: 'button' })
+  test('can be Button', () => {
+    const wrapper = mount(VKButton, { propsData: { type: 'button' } })
+
     expect(wrapper.contains('.vk-button-wrapper button.vk-button')).toBeTruthy()
   })
 
   test('can be Submit', () => {
-    const wrapper = mount(VKButton)
+    const wrapper = mount(VKButton, { propsData: { type: 'submit' } })
 
-    wrapper.setProps({ type: 'submit' })
     expect(
       wrapper.contains('.vk-button-wrapper label.vk-button input')
     ).toBeTruthy()
   })
 
   test('can be Link', () => {
-    const wrapper = mount(VKButton)
+    const wrapper = mount(VKButton, { propsData: { type: 'link' } })
 
-    wrapper.setProps({ type: 'link' })
     expect(wrapper.contains('.vk-button-wrapper a.vk-button')).toBeTruthy()
   })
 
-  test('can be disabled', () => {
-    const wrapper = mount(VKButton)
+  test('link has an href', () => {
+    const l = 'https://google.com'
 
-    wrapper.setProps({ disabled: true })
+    const wrapper = mount(VKButton, { propsData: { type: 'link', href: l } })
+
+    expect(wrapper.html()).toContain(`href="${l}"`)
+  })
+
+  test('can be disabled', () => {
+    const wrapper = mount(VKButton, { propsData: { disabled: true } })
+
     expect(
       wrapper.contains('.vk-button-wrapper .vk-button.vk-button-disabled')
     ).toBeTruthy()
   })
 
   test('can be variable', () => {
-    const wrapper = mount(VKButton)
-
-    wrapper.setProps({ variant: 'test' })
+    const wrapper = mount(VKButton, { propsData: { variant: 'test' } })
 
     expect(
       wrapper.contains('.vk-button-wrapper .vk-button.vk-button-test')
