@@ -1,11 +1,11 @@
 :root {
   --primary-color: #4680c2;
 
-  --primary-darker-color: #5181b8; /* header */
+  --primary-darker-color: #4680c2; /* #5181b8; /* header */
   --primary-lighter-color: #5b88bd; /* buttons */
 
-  --primary-text-darker-color: #2a5885; /* pc */
-  --primary-text-lighter-color: #306096; /* m */
+  --primary-text-darker-color: /* #4680c2; */ #2a5885; /* pc */
+  --primary-text-lighter-color: /* #4680c2; */ #306096; /* m */
 
   --primary-button-text-color: #4c6b8f;
 

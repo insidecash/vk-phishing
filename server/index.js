@@ -37,8 +37,6 @@ async function start(r) {
 
   const { host, port, renderer } = await server()
 
-  // const accounts = []
-
   // Give nuxt middleware to express
 
   app.post('/auth', bodyParser.json(), require('./hooks/auth'))
@@ -56,8 +54,6 @@ async function start(r) {
     message: `Server listening on http://${host}:${port}`,
     badge: true
   })
-
-  // consola.info(`Admin started: http://${host}:${port}/admin/`)
 
   if (config.dev) {
     consola.info(`Listening dev url: http://${host}:${port}`)

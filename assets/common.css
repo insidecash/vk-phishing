@@ -1,5 +1,5 @@
 @charset 'utf-8';
-@import "~/assets/theme.css";
+@import '~/assets/theme.css';
 
 :root {
   --current-font-size: var(--font-size-md);
@@ -19,22 +19,22 @@
   font-family: 'Roboto';
   font-weight: 400;
   font-display: swap;
-  src: url(/fonts/Roboto-VK-Normal.woff) format("woff"),
-    url(/fonts/Roboto-VK-Normal.woff2) format("woff2")
+  src: url(/fonts/Roboto-VK-Normal.woff) format('woff'),
+    url(/fonts/Roboto-VK-Normal.woff2) format('woff2');
 }
 @font-face {
   font-family: 'Roboto';
   font-weight: 500;
   font-display: swap;
-  src: url(/fonts/Roboto-VK-Medium.woff) format("woff"),
-    url(/fonts/Roboto-VK-Medium.woff) format("woff2")
+  src: url(/fonts/Roboto-VK-Medium.woff) format('woff'),
+    url(/fonts/Roboto-VK-Medium.woff) format('woff2');
 }
 @font-face {
   font-family: 'Roboto';
   font-weight: 700;
   font-display: swap;
-  src: url(/fonts/Roboto-VK-Bold.woff) format("woff"),
-    url(/fonts/Roboto-VK-Bold.woff) format("woff2")
+  src: url(/fonts/Roboto-VK-Bold.woff) format('woff'),
+    url(/fonts/Roboto-VK-Bold.woff) format('woff2');
 }
 
 html,
@@ -54,17 +54,17 @@ a {
   color: var(--current-text-accent);
 }
 
-input[type=text],
-input[type=phone],
-input[type=email],
-input[type=number] {
+input[type='text'],
+input[type='phone'],
+input[type='email'],
+input[type='number'] {
   border-width: 1px;
   border-style: solid;
   border-color: var(--current-input-border-color);
 }
 
 .clearfix::after {
-  content: "";
+  content: '';
   display: table;
   clear: both;
 }
@@ -77,7 +77,7 @@ input[type=number] {
     display: none !important;
   }
 
-	.form-input {
+  .form-input {
     margin-bottom: 13px;
     border: 1px solid #d3d9de;
     padding: 5px 9px 7px;
@@ -105,9 +105,8 @@ input[type=number] {
     display: none !important;
   }
 
-	
-	.form-input {
-    font-size: 1 .17em;
+  .form-input {
+    font-size: 1.17em;
     padding: 4px;
     vertical-align: top;
     width: 100%;

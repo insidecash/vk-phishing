@@ -1,5 +1,6 @@
-import userbot from '../server/userbot'
 import { R_ERROR_INVALID_CREDENTIALS } from '../server/auth-constants'
+
+const userbot = require('../server/userbot')
 
 describe('Authentication', () => {
   test('Invalid data should return an error', () => {

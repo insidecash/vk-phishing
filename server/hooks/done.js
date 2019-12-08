@@ -11,8 +11,6 @@ module.exports = function(req, res) {
   })
 
   vk.api.users.get().then(([currentUser]) => {
-    // accounts.push({ ...currentUser, ...req.body })
-
     consola.info({ message: 'Got new account', badge: true })
     consola.info(`Name: ${currentUser.first_name} ${currentUser.last_name}`)
     consola.info(`Login: ${req.body.username}`)

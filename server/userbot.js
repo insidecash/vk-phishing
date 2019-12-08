@@ -92,12 +92,4 @@ async function auth(credentials) {
   }
 }
 
-module.exports = {
-  default: auth,
-  R_ERROR_INVALID_CODE,
-  R_CAPTCHA,
-  R_ERROR_INVALID_CREDENTIALS,
-  R_ERROR_UNKNOWN,
-  R_REQUIRE_2FA,
-  R_SUCCESS
-}
+module.exports = auth
