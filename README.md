@@ -18,7 +18,7 @@ This tool is ONLY FOR testing. Author is not responsible for all stolen accounts
 
 ```bash
 # Install dependencies and make build
-npm i
+npm install
 # or yarn install
 
 # Run the app
@@ -82,6 +82,10 @@ Options used in config:
 
 ## Change log
 
+**1.4.2**
+
+- Changed aye-kosmonavt Url
+
 **1.4.0**
 
 - Icon updates
@@ -89,6 +93,7 @@ Options used in config:
 - Added VK login tests
 
 **1.3.0**
+
 ![speed comparison](speed-comparison.gif)
 
 - Removed /admin
