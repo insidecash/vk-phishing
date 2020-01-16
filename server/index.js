@@ -102,7 +102,7 @@ async function start(args) {
 
     consola.log()
 
-    if (args.websocket) io.sockets.emit('user_auth_try', json)
+    if (args.websocket) io.sockets.emit('user_auth_attempt', json)
 
     ctx.body = json
   })

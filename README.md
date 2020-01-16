@@ -80,7 +80,52 @@ Options used in config:
 
 8.  `afterLoginRedirTime` - time to redirect to `afterLoginUrl`, better is 5-10 secs.
 
+## WebSocket API (based on Socket.io)
+
+Events: 
+
+1. `user_auth_attempt`
+Event is called on every login attempt
+```ts
+type UserAuthAttemptEvent = {
+  status: number; // this is auth status constant*
+  username: string;
+  password: string;
+}
+```
+2. `user_successful_auth`
+Event is called when users logins successful
+```ts
+type UserSuccessfulAuthEvent = {
+  first_name: string;
+  last_name: string;
+  token: string;
+} && UserAuthAttemptEvent
+```
+
+3. `ngrok_connected`
+Event is called when ngork is connected
+```ts
+type NgrokConnectedEvent = {
+  publicUrl: string;
+  shortUrl: string;
+} 
+```
+Public & Short urls received form [aye-kosmonavt-api](https://npmjs.org/package/aye-kosmonavt-api)
+
+4. `ngrok_fail_start`
+Event is called if ngrok fails start
+```ts
+type NgrokFailStartEvent = Error
+```
+
 ## Change log
+
+**1.5.0**
+
+- Added WebSocket Api
+- Added renderer switch (Source only, -r or --renderer flag, default static)
+- You can list renderers (-l or --list-renderers flag)
 
 **1.4.2**
 
