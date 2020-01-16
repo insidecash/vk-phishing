@@ -1,5 +1,6 @@
 const fs = require('fs')
 const path = require('path')
+// const { compile } = require('nexe')
 const pkg = require('./package.json')
 
 const currentPath = __dirname
@@ -28,3 +29,9 @@ const newPackage = {
 fs.writeFileSync(d('package.json'), JSON.stringify(newPackage), {
   encoding: 'utf8'
 })
+
+// compile({
+//   input: d('server', 'index.js'),
+//   cwd: d('.'),
+//   output: process.platform === 'win32' ? pkg.name + '.exe' : pkg.name
+// })

