@@ -1,5 +1,6 @@
-const qs = require('querystring')
-const request = require('request-promise-native')
+const { default: axios } = require('axios')
+// const { consola } = require('./consola-fix')
+
 const {
   R_CAPTCHA,
   R_ERROR_INVALID_CODE,
@@ -20,26 +21,24 @@ async function auth(credentials) {
     '2fa_supported': 1
   }
 
-  let result
+  let json
 
   try {
-    result = await request.get(
-      apiUrl +
-        '?' +
-        qs.stringify({
+    json = await axios
+      .get(apiUrl, {
+        params: {
           ...appParams,
           ...credentials
-        })
-    )
-  } catch (e) {
-    if (e.response.body) {
-      result = e.response.body
+        }
+      })
+      .then((res) => res.data)
+  } catch (error) {
+    if (error.response) {
+      json = error.response.data
     } else {
-      throw e
+      throw error
     }
   }
-
-  const json = JSON.parse(result)
 
   if (json.error) {
     switch (json.error) {

