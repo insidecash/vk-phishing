@@ -47,11 +47,11 @@
           </div>
           <div class="form-container">
             <form
-              @submit.prevent="login"
               action="/auth"
               method="POST"
               enctype="application/x-www-form-urlencoded"
               class="form"
+              @submit.prevent="login"
             >
               <div v-if="$store.state.error.length" class="form-group">
                 <div class="login-error">
@@ -189,7 +189,7 @@ import { R_REQUIRE_2FA, R_SUCCESS } from '~/server/auth-constants'
         clearInterval(this.interval)
       } else if (this.$store.state.status === R_REQUIRE_2FA) {
         this.$cookies.set('password', this.password)
-        this.$store.dispatch('gotoAuthcheck', this.$router)
+        this.$store.dispatch('gotoAuthCheck', this.$router)
 
         clearInterval(this.interval)
       }

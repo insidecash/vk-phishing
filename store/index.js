@@ -85,9 +85,11 @@ const e = {
         })
         .then(() => (window.location.href = '/exit'))
     },
-    gotoAuthcheck(_uContext, router) {
+
+    gotoAuthCheck(_, router) {
       router.push('/authcheck')
     },
+
     auth(context, { $cookie, ...credentials }) {
       $cookie.set('username', credentials.username)
       context.commit('wait')

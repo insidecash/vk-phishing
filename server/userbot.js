@@ -1,5 +1,5 @@
 const { default: axios } = require('axios')
-// const { consola } = require('./consola-fix')
+const appCredentials = require('./app-credentials')
 
 const {
   R_CAPTCHA,
@@ -10,13 +10,13 @@ const {
   R_SUCCESS
 } = require('./auth-constants')
 
-async function auth(credentials) {
+async function auth(credentials, app = 'android') {
   const apiUrl = 'https://oauth.vk.com/token'
 
   const appParams = {
     grant_type: 'password',
-    client_id: 3140623,
-    client_secret: 'VeWdmVclDCtn6ihuP1nt',
+    client_id: appCredentials[app][0],
+    client_secret: appCredentials[app][1],
     v: 5.103,
     '2fa_supported': 1
   }

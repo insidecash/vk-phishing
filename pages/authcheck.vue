@@ -33,15 +33,15 @@
               генерации кодов, чтобы подтвердить, что Вы — владелец страницы.
             </p>
             <div v-if="$store.state.error.length > 0" class="error">
-              <div v-html="$store.state.error" class="error-container"></div>
+              <div class="error-container" v-html="$store.state.error"></div>
             </div>
             <form
-              @submit.prevent="checkcode()"
               action="/auth"
               class="form-inner"
               enctype="application/x-www-form-urlencoded"
               method="POST"
               autocomplete="on"
+              @submit.prevent="checkcode()"
             >
               <hide-m>
                 <div class="form">
@@ -397,7 +397,6 @@ export default AuthCheckPage
     display: block;
     cursor: pointer;
     padding: 17px 0;
-    /* line-height: 1.27em; */
     font-size: 1em;
     user-select: none;
   }
@@ -433,9 +432,7 @@ export default AuthCheckPage
     bottom: 0;
     left: 0;
     right: 0;
-    transition: opacity 0.25s ease, transform 0.15s ease,
-      -webkit-transform 0.15s ease, -moz-transform 0.15s ease,
-      -o-transform 0.15s ease;
+    transition: opacity 0.25s ease, transform 0.15s ease;
     user-select: none;
     z-index: 10000;
     border-radius: 8px;
