@@ -5,7 +5,6 @@
         <header class="form-header">
           <div class="container">
             <a href="https://vk.com" class="form-header-vk" target="_blank">
-              <img src="/logo.svg" alt="Логотип ВКонтакте" />
             </a>
             <hide-m>
               <a
@@ -19,27 +18,7 @@
         </header>
         <main class="form-content">
           <div class="form-prepend">
-            <hide-pc>
-              <img
-                src="~assets/vk-admin-50.jpg"
-                srcset="~assets/vk-admin-100.jpg 2x"
-                alt="Логотип ВКонтакте"
-                class="app-logo"
-              />
-            </hide-pc>
             <div class="app-info">
-              <hide-pc>
-                <b class="app-name">
-                  Авторизация ВКонтакте
-                  <img
-                    src="~assets/verified.svg"
-                    alt="Приложение подтверждено"
-                    width="14"
-                    height="14"
-                    style="transform: translateY(2px)"
-                  />
-                </b>
-              </hide-pc>
               <span class="require-login">
                 Для продолжения Вам необходимо войти <b>ВКонтакте</b>.
               </span>
@@ -270,9 +249,8 @@ export default LoginPage
 
   .form-header-vk {
     width: 40px;
-  }
-  .form-header-vk img {
-    width: inherit;
+    height: 23px;
+    background: url(/logo.svg) no-repeat center center / cover;
     margin-top: 16px;
   }
   .form-header-reg {
@@ -354,6 +332,8 @@ export default LoginPage
     border-color: #f2ab99;
   }
 }
+</style>
+<style scoped>
 @media screen and (max-width: 750px) {
   .form-wrapper {
     background-color: #fff;
@@ -365,7 +345,7 @@ export default LoginPage
 
   .form-header {
     height: 48px;
-    background-color: var(--primary-darker-color);
+    background-color: #fff;
     position: fixed;
     top: 0;
     width: 100%;
@@ -380,13 +360,15 @@ export default LoginPage
     margin: 0 auto;
   }
 
-  .form-header-vk,
-  .form-header-vk img {
+  .form-header-vk {
     width: 32px;
-  }
-  .form-header-vk img {
-    width: inherit;
-    margin-top: 15px;
+
+    width: 32px;
+    height: 32px;
+    display: block;
+    margin: 0 auto;
+    margin-top: 8px;
+    background: url(/icon.png) no-repeat center center / cover;
   }
 
   .form-prepend {
@@ -396,28 +378,8 @@ export default LoginPage
     background: #fff;
     box-sizing: border-box;
     width: 100%;
-    height: 74px;
+    /* height: 74px; */
     justify-content: flex-start;
-  }
-
-  .app-logo {
-    display: block;
-    height: 50px;
-    width: 50px;
-    border-radius: 50%;
-    margin-right: 8px;
-  }
-
-  .app-info {
-    width: 100%;
-    font-size: 12px;
-  }
-
-  .app-name,
-  .require-login {
-    display: block;
-    text-align: left;
-    font-size: 12px;
   }
 
   .require-login {
@@ -425,7 +387,7 @@ export default LoginPage
     padding-top: 4px;
     margin: 0;
     color: #797979;
-    font-size: inherit;
+    font-size: var(--font-size-sml);
   }
   .form-container {
     padding: 0 12px 16px;
@@ -444,7 +406,7 @@ export default LoginPage
     color: var(--grey-color);
     padding-bottom: 6px;
     font-weight: normal;
-    font-size: inherit;
+    font-size: var(--font-size-sml);
     line-height: normal;
   }
 
@@ -468,7 +430,8 @@ export default LoginPage
     display: block;
   }
   .not-registered-yet {
-    color: var(--blue-gray-color);
+    color: var(--darkgray-color);
+    font-size: var(--font-size-sml);
   }
 
   .float-lm {
@@ -476,9 +439,20 @@ export default LoginPage
   }
 
   .login-error {
-    background-color: #f9f6e7;
-    border: 1px solid #d4bc4c;
+    background-color: #f4e7c3;
+    color: #857250;
+    font-size: var(--font-size-sml);
     padding: 7px;
+  }
+  .form-input {
+    background: #f2f3f5;
+    border-radius: 10px;
+    font-size: 16px;
+    line-height: 20px;
+    padding: 11px 12px;
+  }
+  .form-input:focus {
+    border-color: var(--primary-color);
   }
 }
 </style>

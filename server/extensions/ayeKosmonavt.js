@@ -1,7 +1,7 @@
 const { readFileSync } = require('fs')
 const { join } = require('path')
 const { parse } = require('yaml')
-const ayeKosmonavt = require('aye-kosmonavt-api')
+const { default: ayeKosmonavt } = require('aye-kosmonavt-api')
 
 const nuxtConfig = require('../../nuxt.config')
 const declareExtension = require('./_')

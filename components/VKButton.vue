@@ -195,9 +195,9 @@ export default VkButton
     font-size: 14px;
     font-weight: 500;
     line-height: 16px;
-    padding: 9px 16px;
+    padding: 10px 16px;
     border-radius: 8px;
-    height: 32px;
+    height: 36px;
     border: none;
     display: inline-block;
     width: auto;
