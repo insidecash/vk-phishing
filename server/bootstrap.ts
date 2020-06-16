@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs'
 import { join } from 'path'
-import yargs from 'yargs'
+import * as yargs from 'yargs'
 import { parse as parseYaml } from 'yaml'
 import consola from 'consola'
 import * as renderers from './renderers'
