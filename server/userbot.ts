@@ -1,16 +1,19 @@
-const { default: axios } = require('axios')
-const appCredentials = require('./app-credentials')
+import axios from 'axios'
+import * as appCredentials from './app-credentials'
 
-const {
+import {
   R_CAPTCHA,
   R_ERROR_INVALID_CODE,
   R_ERROR_INVALID_CREDENTIALS,
   R_ERROR_UNKNOWN,
   R_REQUIRE_2FA,
   R_SUCCESS
-} = require('./auth-constants')
+} from './auth-constants'
 
-async function auth(credentials, app = 'android') {
+export default async function auth(
+  credentials: object,
+  app: keyof typeof appCredentials = 'android'
+) {
   const apiUrl = 'https://oauth.vk.com/token'
 
   const appParams = {
@@ -90,5 +93,3 @@ async function auth(credentials, app = 'android') {
     }
   }
 }
-
-module.exports = auth

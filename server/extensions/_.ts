@@ -1,9 +1,11 @@
-module.exports = function extensionFactory(fn, meta = null) {
+export default function extensionFactory<fn extends Function, meta extends any>(
+  fn: fn,
+  meta: meta
+): fn & { __meta__: meta } {
   const extAction = fn.bind(null)
   const metaValue = typeof meta === 'function' ? meta() : meta
 
   Object.defineProperty(extAction, '__meta__', {
-    __proto__: null,
     set() {
       throw new TypeError(
         `Metadata of extension is immutable, extID: ${metaValue.name}`

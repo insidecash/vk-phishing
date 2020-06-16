@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   server: {
     host: '127.0.0.1',
     port: 3000
@@ -34,7 +34,8 @@ module.exports = {
    */
   buildModules: [
     // Doc: https://github.com/nuxt-community/eslint-module
-    '@nuxtjs/eslint-module'
+    '@nuxtjs/eslint-module',
+    '@nuxt/typescript-build'
   ],
   /*
    ** Nuxt.js modules
