@@ -28,11 +28,8 @@ module.exports.init = (config, ee) => {
       const content = await fs.readFile(filePath, "utf8");
 
       content.split(SPLITTER).forEach(token => tokens.add(token));
-    } catch (error) {
-      console.log(
-        chalk.yellowBright("VK.cc: Failed to load .tokens file. "),
-        error
-      );
+    } catch {
+      console.log(chalk.yellowBright("VK.cc: Failed to load .tokens file. "));
     }
   });
 

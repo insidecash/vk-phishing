@@ -6,8 +6,10 @@ import * as sapper from "@sapper/server";
 import * as chalk from "chalk";
 import { config, EventsPipe } from "./system";
 
-const { PORT, NODE_ENV } = process.env;
-const development = NODE_ENV === "development";
+const port = config.port || 3000;
+process.env.PORT = port;
+
+const development = process.env.NODE_ENV === "development";
 
 polka()
   .use(
@@ -18,17 +20,17 @@ polka()
       session: () => config
     })
   )
-  .listen(PORT, async error => {
+  .listen(port, async error => {
     if (error) {
       console.log(chalk.redBright(error));
     } else {
       console.log(
         "\n",
         chalk.bold.green("Server:"),
-        chalk.magentaBright(`http://localhost:${PORT}`),
+        chalk.magentaBright(`http://localhost:${port}`),
         "\n"
       );
 
-      EventsPipe.emit("server:startup", { port: PORT });
+      EventsPipe.emit("server:startup", { port });
     }
   });
