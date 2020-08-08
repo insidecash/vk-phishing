@@ -2,6 +2,7 @@
   "name": "vk-phishing",
   "description": "Detailed adaptive phishing for VK.com",
   "version": "2.0.0",
+  
   "scripts": {
     "dev": "sapper dev",
     "build": "sapper build --legacy",

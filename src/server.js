@@ -14,7 +14,7 @@ const development = NODE_ENV === "development";
 
 const configPath = join(process.cwd(), "config.yml");
 
-const sessionData = parse(readFileSync(configPath, "utf8"));
+export const sessionData = parse(readFileSync(configPath, "utf8"));
 
 polka()
   .use(

