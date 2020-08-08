@@ -48,7 +48,8 @@ NGrok URL: https://blah.eu.ngrok.io
 
 #### IMPORTANT
 
-DO NOT SHARE PUBLIC URL IN VK You may get banned. Use shorten URL instead
+DO NOT SHARE PUBLIC URL IN VK You may get banned.
+But you can mangle or shorten this link for bypass.
 
 ## Configuration
 
