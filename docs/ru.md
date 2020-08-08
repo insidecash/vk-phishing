@@ -4,11 +4,21 @@
 
 ## Установка
 
-Для начала скачайте и установите [node js и npm](https://nodejs.org/en/download/) если не сделали этого ранее.
+1. Скачайте и установите [node js и npm](https://nodejs.org/en/download/) если не сделали этого ранее.
 
-1. Затем откройте страничку [релизов](https://github.com/xxhax-team/vk-phishing/releases)
 
-2. Скачайте последний релиз
+2. Клонируйте этот репозиторий
+
+Откройте терминал и напишите команду
+
+```BASH
+git clone https://github.com/xxhax-team/vk-phishing.git
+```
+
+Или просто скачайте этот репозиторий
+
+![Гай по скачиванию](how-to-clone.png)
+
 
 3. Распакуйте его в папку
 
