@@ -9,5 +9,6 @@
   "trailingComma": "none",
   "semi": true,
   "useTabs": false,
-  "singleQuote": false
+  "singleQuote": false,
+  "endOfLine": "lf"
 }
