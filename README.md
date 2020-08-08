@@ -1,4 +1,4 @@
-## [Читать на русском](docs/ru.md)
+## [👉 Читать на русском 🇷🇺](docs/ru.md)
 
 # Disclaimer
 
@@ -34,6 +34,7 @@ npm install
 
 # Run the app
 npm start
+# or yarn start
 ```
 
 6. After successful launch you will see something like:
@@ -51,8 +52,8 @@ If it will end successful, you will see
 
 #### IMPORTANT
 
-DO NOT SHARE PUBLIC URL IN VK You may get banned.
-But you can mangle or shorten this link for bypass.
+DO NOT SHARE NGROK URL IN VK You may get banned.
+Please mangle or shorten this link for bypass.
 
 ## Configuration
 
