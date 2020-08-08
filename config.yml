@@ -1,0 +1,5 @@
+title: Вход | ВКонтакте
+image: /icon.png
+exit: https://vk.com/im
+ngrok: 
+  region: eu

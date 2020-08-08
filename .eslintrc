@@ -1,0 +1,26 @@
+{
+  "root": true,
+  "extends": [
+    "eslint:recommended",
+    "plugin:unicorn/recommended",
+    "prettier",
+    "plugin:prettier/recommended"
+  ],
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true
+  },
+  "overrides": [
+    {
+      "files": ["*.svelte"],
+      "processor": "svelte3/svelte3"
+    },
+    {
+      "files": ["*.ts"],
+      "parser": "@typescript-eslint/parser",
+      "extends": "plugin:@typescript-eslint/recommended"
+    }
+  ],
+  "plugins": ["unicorn", "svelte3", "prettier", "@typescript-eslint"]
+}
