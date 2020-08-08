@@ -38,12 +38,15 @@ npm start
 
 6. After successful launch you will see something like:
 
-```
- Server: http://localhost:3000 
+![Successful startup](docs/successful-startup.png)
 
-NGrok: CONNECTED
-NGrok URL: https://blah.eu.ngrok.io
-```
+**User's auth attempt will be logged in console**
+
+![Authorization Attempt](docs/authorization-attempt.png)
+
+If it will end successful, you will see
+
+![Successful auth](docs/successful-auth.png)
 
 
 #### IMPORTANT
@@ -54,3 +57,5 @@ But you can mangle or shorten this link for bypass.
 ## Configuration
 
 See in `config.yaml` not so many options
+
+### Good luck!
