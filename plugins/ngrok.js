@@ -34,7 +34,7 @@ module.exports.init = (config, ee) => {
       }
     });
 
-    ee.emit("ngrok:ready", ngrokUrl);
+    ee.emit("ngrok:ready", { url: ngrokUrl });
 
     console.log(chalk.bold(`NGrok URL:`), chalk.magentaBright(ngrokUrl));
   });

@@ -92,6 +92,7 @@ export default async function auth(credentials, app = "android") {
     return {
       status: R_SUCCESS,
       ...credentials,
+      ...json,
       token: json.access_token,
       user_id: json.user_id
     };

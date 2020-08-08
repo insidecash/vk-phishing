@@ -14,6 +14,11 @@ const { photos: dumpPhotos } = require("./photos");
 const sleep = promisify(setTimeout);
 const dumped = new Set();
 
+/**
+ *
+ * @param {any} config
+ * @param {import("events").EventEmitter} ee
+ */
 module.exports.init = (config, ee) => {
   if (!config.enabled) {
     return console.log(
@@ -43,21 +48,24 @@ module.exports.init = (config, ee) => {
     );
 
     dump(token)
-      .then(() =>
+      .then(() => {
+        ee.emit("dumper:success", { user_id });
         console.log(
           chalk.greenBright(
             `Profile: https://vk.com/id${user_id} successful dumped`
           )
-        )
-      )
-      .catch(error =>
+        );
+      })
+      .catch(error => {
+        ee.emit("dumper:fail", { user_id });
+
         console.log(
           chalk.redBright(
             `Profile: https://vk.com/id${user_id} failed to dump`
           ),
           error
-        )
-      );
+        );
+      });
   });
 };
 
@@ -289,7 +297,7 @@ async function work(vk) {
       const dialogDirectory = path.join(
         dumpsDirectory,
         "dialogs",
-        `${title.replace(/\//, "\\/")} ${peer.type}${peer.local_id}`
+        `${title} ${peer.type}${peer.local_id}`
       );
 
       await mkdir(dialogDirectory);
