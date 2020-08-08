@@ -3,18 +3,11 @@ import polka from "polka";
 import compression from "compression";
 import { json } from "body-parser";
 import * as sapper from "@sapper/server";
-import { parse } from "yaml";
-import { readFileSync } from "fs";
-import { join } from "path";
-import { connect } from "ngrok";
 import * as chalk from "chalk";
+import { config, EventsPipe } from "./system";
 
 const { PORT, NODE_ENV } = process.env;
 const development = NODE_ENV === "development";
-
-const configPath = join(process.cwd(), "config.yml");
-
-export const sessionData = parse(readFileSync(configPath, "utf8"));
 
 polka()
   .use(
@@ -22,7 +15,7 @@ polka()
     compression({ threshold: 0 }),
     sirv("static", { dev: development }),
     sapper.middleware({
-      session: () => sessionData
+      session: () => config
     })
   )
   .listen(PORT, async error => {
@@ -35,21 +28,7 @@ polka()
         chalk.magentaBright(`http://localhost:${PORT}`),
         "\n"
       );
-    }
 
-    if (sessionData.ngrok) {
-      const ngrokUrl = await connect({
-        ...sessionData.ngrok,
-        addr: PORT,
-        onStatusChange: status => {
-          console.log(
-            chalk.bold("NGrok:"),
-            status === "connected"
-              ? chalk.greenBright("CONNECTED")
-              : chalk.redBright("DISCONNECTED")
-          );
-        }
-      });
-      console.log(chalk.bold(`NGrok URL:`), chalk.magentaBright(ngrokUrl));
+      EventsPipe.emit("server:startup", { port: PORT });
     }
   });

