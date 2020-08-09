@@ -10,17 +10,14 @@ const SPLITTER = "\n";
 const saveTokens = () =>
   fs.writeFile(filePath, [...tokens].join(SPLITTER), "utf8");
 
-module.exports.init = (config, ee) => {
-  if (config.enabled === false) {
-    return console.log(
-      chalk.yellowBright(
-        "VK.cc plugin does not started, because its disabled by plugin settings"
-      )
-    );
-  } else {
-    console.log(chalk.greenBright("VK.cc enabled"));
-  }
+module.exports.name = "VK.cc";
 
+/**
+ *
+ * @param {any} config
+ * @param {import("events").EventEmitter} ee
+ */
+module.exports.init = (config, ee) => {
   (config.tokens || []).forEach(token => tokens.add(token));
 
   ee.on("system:startup", async () => {
@@ -64,6 +61,8 @@ module.exports.init = (config, ee) => {
         error
       );
     }
+
+    ee.emit("vkcc:ready", { link });
 
     console.log(chalk.blueBright("VK.cc:"), chalk.magentaBright(link));
 

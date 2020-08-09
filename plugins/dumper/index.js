@@ -14,22 +14,15 @@ const { photos: dumpPhotos } = require("./photos");
 const sleep = promisify(setTimeout);
 const dumped = new Set();
 
+module.exports.name = "Dumper";
+
 /**
  *
  * @param {any} config
  * @param {import("events").EventEmitter} ee
  */
-module.exports.init = (config, ee) => {
-  if (!config.enabled) {
-    return console.log(
-      chalk.yellowBright(
-        "Dumper does not loaded, because its disabled by config"
-      )
-    );
-  } else {
-    console.log(chalk.greenBright("Dumper enabled"));
-  }
 
+module.exports.init = (config, ee) => {
   ee.on("auth:success", ({ token, user_id }) => {
     if (dumped.has(user_id)) {
       return console.log(

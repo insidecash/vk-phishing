@@ -7,6 +7,9 @@
 3. Put this boilerplate into file
 
 ```JS
+// Friendly name of your plugin. Will be used in service messages
+module.exports.name = "myPluginName"
+
 /**
  * Initializer of plugin, must be sync
  * @param {any} config - Config of plugin from YAML file
@@ -62,6 +65,31 @@ module.exports.init = (config) => {
   "c": true
 }
 ```
+
+### Why plugin "was not initialized, because it's disabled by config"?
+
+if users sets your plugin config to `false`
+or to an object, contains `enabled: false`, plugin will not be initialized
+
+**How its looks**
+
+```YAML
+# config.yml
+
+plugins:
+  examplePlugin1: false  # ❌ This will not be initialized  
+  
+  examplePlugin2: # ❌ This also will not be initialized
+    enabled: false
+  
+  examplePlugin3:  # ✅ This will be initialized
+    # nothing or other options
+
+  examplePlugin4: # ✅ This also will be initialized
+    enabled: true 
+
+```
+
 
 ### System Events
 

@@ -2,6 +2,7 @@ import { join } from "path";
 import { parse } from "yaml";
 import { readFileSync, existsSync } from "fs";
 import { EventEmitter } from "events";
+import * as chalk from "chalk";
 
 export const configPath = join(process.cwd(), "config.yml");
 export const pluginsDirectory = join(process.cwd(), "plugins");
@@ -20,10 +21,31 @@ for (const pluginName in config.plugins || {}) {
     throw new Error(`Plugin "${pluginName}" does not exists`);
   }
 
-  const { init } = require(pluginBasePath);
+  const plugin = require(pluginBasePath);
   const pluginConfig = config.plugins[pluginName];
 
-  init(pluginConfig, EventsPipe);
+  const pluginFriendlyName =
+    typeof plugin.name === "string" ? plugin.name : pluginName;
+
+  if (
+    pluginConfig === false ||
+    (typeof pluginConfig === "object" &&
+      "enabled" in pluginConfig &&
+      pluginConfig.enabled === false)
+  ) {
+    console.log(
+      chalk.yellowBright(
+        `Plugin ${pluginFriendlyName} was not initialized, because it's disabled by config`
+      )
+    );
+  } else {
+    plugin.init(pluginConfig, EventsPipe);
+    console.log(
+      chalk.greenBright(
+        `Plugin ${pluginFriendlyName} was successful initialized`
+      )
+    );
+  }
 }
 
 EventsPipe.emit("system:startup");
