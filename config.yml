@@ -7,9 +7,16 @@ plugins: # List of plugins & their settings
   dumper: true # Dumper of user profiles, set `true` for enable, `false` for disable
   ngrok: # Ngrok config, see https://ngrok.com/docs#config
     region: eu
-    # if you have any 
-    # you can also uncomment authtoken field, for make link's life longer
-    #authtoken: 
+    enabled: true
+    ## if you have any 
+    ## you can also uncomment authtoken field, for make link's life longer
+    # authtoken: 
   vkcc: 
     tokens: [] # Default tokens for links shortening (can also be apps & groups)
     enabled: true
+
+  # telegram: # Module for telegram, uncommment for enable
+  #   token: # Telegram bot token, got from BotFather
+  #   chatId: # Contact name, user id or chat id
+  #   lang: en # Or ru, if you drink vodka
+  #   successOnly: true # Set false, if you want receive unsuccessful messages

