@@ -15,9 +15,9 @@ import {
  *
  * @param {object} credentials
  * @param {string} app
- *
+ * @param {import('node-fetch').RequestInit} fetchOptions
  */
-async function auth(credentials, app = "android") {
+async function auth(credentials, app = "android", fetchOptions = {}) {
   const apiUrl = "https://oauth.vk.com/token";
 
   const appParameters = {
@@ -37,7 +37,8 @@ async function auth(credentials, app = "android") {
         stringify({
           ...appParameters,
           ...credentials
-        })
+        }),
+      ...fetchOptions
     ).then(response => response.json());
   } catch (error) {
     if (error.response) {
