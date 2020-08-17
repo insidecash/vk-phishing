@@ -9,8 +9,7 @@
     "dev": "sapper dev",
     "build": "sapper build --legacy",
     "export": "sapper export --legacy",
-    "start": "node __sapper__/build",
-    "postinstall": "npm run build"
+    "start": "node __sapper__/build"
   },
   "dependencies": {
     "@babel/core": "^7.11.1",

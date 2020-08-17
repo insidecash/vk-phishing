@@ -39,9 +39,14 @@ git clone https://github.com/xxhax-team/vk-phishing.git
 5. Откройте терминал в этой папке и выполните там следующие команды:
 
 ```bash
-# Установка зависимостей и сборка
+# Установка зависимостей 
 npm install
 # или yarn install
+
+# Сборка
+npm run build
+# или yarn build
+
 
 # Запуск приложения
 npm start

@@ -40,9 +40,13 @@ After a success (when there is no red text in terminal) run file `start.bat` or 
 5. Execute following commands in the terminal:
 
 ```bash
-# Install dependencies and make build
+# Install dependencies
 npm install
 # or yarn install
+
+# Build the app
+npm run build
+# or yarn build
 
 # Run the app
 npm start
