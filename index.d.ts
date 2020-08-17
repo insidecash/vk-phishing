@@ -18,4 +18,4 @@ export declare function auth<credentials extends userCredentials>(
   userCredentials: credentials,
   platform: platform,
   request: import("node-fetch").RequestInit
-): userCredentials & Record<string, unknown>;
+): Promise<userCredentials & Record<string, unknown>>;
