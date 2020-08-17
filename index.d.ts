@@ -2,9 +2,9 @@ type appCredential = [number, string];
 type userCredentials = { username: string; password: string };
 type platform = "android" | "iphone" | "ipad" | "windows" | "windowsPhone";
 
-declare const appCredentials: Record<platform, appCredential>;
+export declare const appCredentials: Record<platform, appCredential>;
 
-declare const authConstants: {
+export declare const authConstants: {
   R_SUCCESS: 0;
   R_REQUIRE_2FA: 1;
   R_ERROR_INVALID_CREDENTIALS: 2;
@@ -14,7 +14,7 @@ declare const authConstants: {
   R_DEFAULT: -1;
 };
 
-declare function auth<credentials extends userCredentials>(
+export declare function auth<credentials extends userCredentials>(
   userCredentials: credentials,
   platform: platform,
   request: import("node-fetch").RequestInit
