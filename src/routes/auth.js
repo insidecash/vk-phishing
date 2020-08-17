@@ -1,10 +1,8 @@
 import { VK } from "vk-io";
-import auth from "./_auth";
-import { R_SUCCESS, R_REQUIRE_2FA } from "./_auth-constants";
-import { Instance } from "chalk";
+import auth from "../misc/auth";
+import { R_SUCCESS, R_REQUIRE_2FA } from "../misc/auth-constants";
+import chalk from "chalk";
 import { EventsPipe } from "../system";
-
-const chalk = new Instance({ level: 2 });
 
 const _ = console.log.bind(console);
 const kwLog = (key, value) =>

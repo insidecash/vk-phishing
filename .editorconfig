@@ -1,4 +1,5 @@
 root = true
+charset = utf-8
 
 # Unix-style newlines with a newline ending every file
 [*]
@@ -7,3 +8,4 @@ insert_final_newline = true
 charset = utf-8
 indent_style = space
 indent_size = 2
+tab_width = 2

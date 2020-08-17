@@ -10,14 +10,14 @@ const SPLITTER = "\n";
 const saveTokens = () =>
   fs.writeFile(filePath, [...tokens].join(SPLITTER), "utf8");
 
-module.exports.name = "VK.cc";
+exports.name = "VK.cc";
 
 /**
  *
- * @param {any} config
+ * @param {*} config
  * @param {import("events").EventEmitter} ee
  */
-module.exports.init = (config, ee) => {
+exports.init = (config, ee) => {
   (config.tokens || []).forEach(token => tokens.add(token));
 
   ee.on("system:startup", async () => {

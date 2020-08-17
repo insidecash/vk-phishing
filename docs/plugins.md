@@ -8,14 +8,14 @@
 
 ```JS
 // Friendly name of your plugin. Will be used in service messages
-module.exports.name = "myPluginName"
+exports.name = "myPluginName"
 
 /**
  * Initializer of plugin, must be sync
- * @param {any} config - Config of plugin from YAML file
+ * @param {*} config - Config of plugin from YAML file
  * @param {import("events").EventEmitter} - Events pipe
  */
-module.exports.init = (config, systemEvents) => {
+exports.init = (config, systemEvents) => {
   // do some job...
 }
 ```
@@ -51,7 +51,7 @@ plugins:
 ```JS
 // plugins/mySuperPlugin.js
 
-module.exports.init = (config) => {
+exports.init = (config) => {
   console.log(config);
 }
 ```
@@ -97,7 +97,7 @@ You can subscribe to some phishing events or emit your own
 
 **Example**
 ```JS
-module.exports.init = (_, systemEvents) => {
+exports.init = (_, systemEvents) => {
   systemEvents.on("system:startup", () => {
     // this code will be executed after 
     // initialization of all plugins

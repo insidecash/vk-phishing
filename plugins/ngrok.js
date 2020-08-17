@@ -1,14 +1,14 @@
 const { connect } = require("ngrok");
 const chalk = require("chalk");
 
-module.exports.name = "NGrok";
+exports.name = "NGrok";
 
 /**
  *
- * @param {any} config
+ * @param {*} config
  * @param {import("events").EventEmitter} ee
  */
-module.exports.init = (config, ee) => {
+exports.init = (config, ee) => {
   ee.on("server:startup", async ({ port }) => {
     const ngrokUrl = await connect({
       ...config,

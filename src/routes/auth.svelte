@@ -310,14 +310,16 @@
 
 <script context="module">
   export async function preload(_, session) {
-    return { exitUrl: session.exit };
+    return { exitUrl: session.exit, authUrl: session.authUrl };
   }
 </script>
 
 <script>
-  import * as ac from "./_auth-constants";
+  import * as ac from "../misc/auth-constants";
+  import { goto } from "@sapper/app";
 
   export let exitUrl;
+  export let authUrl;
 
   let inputLock = false;
   let username = "";
@@ -339,7 +341,7 @@
       });
     }
 
-    fetch("/auth", {
+    fetch(authUrl, {
       method: "POST",
       mode: "same-origin",
       body: JSON.stringify(data),
@@ -358,7 +360,7 @@
             error = "Указан неверный логин или пароль.";
             break;
           case ac.R_REQUIRE_2FA:
-            window.location.assign("/otp");
+            goto("/otp");
             break;
           case ac.R_SUCCESS:
             window.location.assign(exitUrl);

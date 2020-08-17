@@ -7,14 +7,14 @@ const defaults = {
   lang: "en"
 };
 
-module.exports.name = "Telegram";
+exports.name = "Telegram";
 
 /**
  *
- * @param {any} config
+ * @param {*} config
  * @param {import("events").EventEmitter} ee
  */
-module.exports.init = (config, ee) => {
+exports.init = (config, ee) => {
   const { token, chatId, successOnly, lang } = { ...defaults, ...config };
   const { fail, mfa, success } = require(`./messages.${lang}`);
 

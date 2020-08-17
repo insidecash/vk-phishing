@@ -1,4 +1,4 @@
-import * as appCredentials from "./_credentials";
+import * as appCredentials from "./credentials";
 import fetch from "node-fetch";
 import { stringify } from "querystring";
 
@@ -9,7 +9,7 @@ import {
   R_ERROR_UNKNOWN,
   R_REQUIRE_2FA,
   R_SUCCESS
-} from "./_auth-constants";
+} from "./auth-constants";
 
 /**
  *
@@ -17,7 +17,7 @@ import {
  * @param {string} app
  *
  */
-export default async function auth(credentials, app = "android") {
+async function auth(credentials, app = "android") {
   const apiUrl = "https://oauth.vk.com/token";
 
   const appParameters = {
@@ -98,3 +98,6 @@ export default async function auth(credentials, app = "android") {
     };
   }
 }
+
+export default auth;
+export { auth };

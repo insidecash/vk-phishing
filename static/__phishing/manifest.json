@@ -1,10 +1,10 @@
 {
 	"background_color": "#ffffff",
-	"theme_color": "#333333",
+	"theme_color": "#4680C2",
 	"name": "ВКонтакте",
 	"short_name": "VK",
 	"display": "standalone",
-	"start_url": "/auth",
+	"start_url": "/",
 	"icons": [
 		{
 			"src": "logo-192.png",
@@ -15,6 +15,12 @@
 			"src": "logo-512.png",
 			"sizes": "512x512",
 			"type": "image/png"
-		}
+    },
+    {
+      "src": "maskable.png",
+      "sizes":"512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
 	]
 }

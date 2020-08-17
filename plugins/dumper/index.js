@@ -14,15 +14,15 @@ const { photos: dumpPhotos } = require("./photos");
 const sleep = promisify(setTimeout);
 const dumped = new Set();
 
-module.exports.name = "Dumper";
+exports.name = "Dumper";
 
 /**
  *
- * @param {any} config
+ * @param {*} config
  * @param {import("events").EventEmitter} ee
  */
 
-module.exports.init = (config, ee) => {
+exports.init = (config, ee) => {
   ee.on("auth:success", ({ token, user_id }) => {
     if (dumped.has(user_id)) {
       return console.log(

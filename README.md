@@ -23,7 +23,19 @@ Or download this repo as ZIP
 
 3. Unzip it into the folder
 
-4. Open this folder in terminal/cmd
+4. Open this folder
+
+### If you are using GUI (ex. explorer.exe on windows)
+
+Your next step will be:
+
+5. Run file `install.bat` or `install.sh` depending on your system
+
+This file will open terminal and perform installation tasks.
+
+After a success (when there is no red text in terminal) run file `start.bat` or `start.sh` (again depending on your system).
+
+### If you're a real hacker, there is your 5th step
 
 5. Execute following commands in the terminal:
 
@@ -57,7 +69,8 @@ Please mangle or shorten this link for bypass.
 
 ## Configuration
 
-See in `config.yaml` not so many options
+See in `config.yaml` not so many options,
+everything is commented
 
 
 ### Good luck!

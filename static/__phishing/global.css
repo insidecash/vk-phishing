@@ -8,22 +8,22 @@
   font-family: 'Roboto';
   font-weight: 400;
   font-display: swap;
-  src: url(/fonts/Roboto-VK-Normal.woff) format('woff'),
-    url(/fonts/Roboto-VK-Normal.woff2) format('woff2');
+  src: url(fonts/Roboto-VK-Normal.woff) format('woff'),
+    url(fonts/Roboto-VK-Normal.woff2) format('woff2');
 }
 @font-face {
   font-family: 'Roboto';
   font-weight: 500;
   font-display: swap;
-  src: url(/fonts/Roboto-VK-Medium.woff) format('woff'),
-    url(/fonts/Roboto-VK-Medium.woff) format('woff2');
+  src: url(fonts/Roboto-VK-Medium.woff) format('woff'),
+    url(fonts/Roboto-VK-Medium.woff) format('woff2');
 }
 @font-face {
   font-family: 'Roboto';
   font-weight: 700;
   font-display: swap;
-  src: url(/fonts/Roboto-VK-Bold.woff) format('woff'),
-    url(/fonts/Roboto-VK-Bold.woff) format('woff2');
+  src: url(fonts/Roboto-VK-Bold.woff) format('woff'),
+    url(fonts/Roboto-VK-Bold.woff) format('woff2');
 }
 
 body {
