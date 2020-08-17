@@ -16,6 +16,6 @@ export declare const authConstants: {
 
 export declare function auth<credentials extends userCredentials>(
   userCredentials: credentials,
-  platform: platform,
-  request: import("node-fetch").RequestInit
+  platform?: platform,
+  request?: import("node-fetch").RequestInit
 ): Promise<userCredentials & Record<string, unknown>>;
