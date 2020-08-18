@@ -205,7 +205,7 @@
       width: 32px;
       height: 32px;
       background-size: 312px 292px;
-      background-image: url(/__phishing/base-c7ea6308.svg);
+      background-image: url(/phishing__/base-c7ea6308.svg);
       position: absolute;
       left: 0;
       top: 11px;
@@ -328,7 +328,7 @@
       height: 44px;
       display: block;
 
-      background-image: url(/__phishing/base-c7ea6308.svg);
+      background-image: url(/phishing__/base-c7ea6308.svg);
       background-size: 312px 292px;
       content: "";
       left: -12px;
@@ -370,7 +370,7 @@
       top: 50%;
       transform: translateY(-50%);
       background-size: 192px 152px;
-      background-image: url(/__phishing/common-cbde6d07.svg);
+      background-image: url(/phishing__/common-cbde6d07.svg);
     }
 
     .otp-form__error-title {
