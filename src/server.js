@@ -3,7 +3,7 @@ import polka from "polka";
 import compression from "compression";
 import { json } from "body-parser";
 import * as sapper from "@sapper/server";
-import * as chalk from "chalk";
+import chalk from "chalk";
 import { config, EventsPipe } from "./system";
 
 const port = config.port || 3000;
