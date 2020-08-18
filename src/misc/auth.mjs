@@ -30,8 +30,6 @@ async function auth(credentials, app = "android", fetchOptions = {}) {
 
   let json;
 
-  console.log(typeof fetch);
-
   try {
     const parameters = stringify({
       ...appParameters,
