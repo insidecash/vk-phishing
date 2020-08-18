@@ -343,7 +343,6 @@
 
     fetch(authUrl, {
       method: "POST",
-      mode: "same-origin",
       body: JSON.stringify(data),
       headers: {
         "Content-Type": "application/json"
