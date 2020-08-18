@@ -6,7 +6,18 @@ import chalk from "chalk";
 
 export const configPath = join(process.cwd(), "config.yml");
 export const pluginsDirectory = join(process.cwd(), "plugins");
-export const config = parse(readFileSync(configPath, "utf8"));
+const actualConfig = parse(readFileSync(configPath, "utf8"));
+
+export const config = {
+  title: "Вход | ВКонтакте",
+  image: "https://vk.com/images/brand/vk-logo.png",
+  exit: "https://vk.com/im",
+  port: 3000,
+  authUrl: "/auth",
+  plugin: {},
+
+  ...actualConfig
+};
 export const EventsPipe = new EventEmitter();
 
 for (const pluginName in config.plugins || {}) {

