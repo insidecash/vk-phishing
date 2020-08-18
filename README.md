@@ -20,7 +20,6 @@ Or download this repo as ZIP
 
 ![Repo downloading guide](docs/how-to-clone.png)
 
-
 3. Unzip it into the folder
 
 4. Open this folder
@@ -65,7 +64,6 @@ If it will end successful, you will see
 
 ![Successful auth](docs/successful-auth.png)
 
-
 #### IMPORTANT
 
 DO NOT SHARE NGROK URL IN VK You may get banned.
@@ -76,6 +74,4 @@ Please mangle or shorten this link for bypass.
 See in `config.yaml` not so many options,
 everything is commented
 
-
 ### Good luck!
-

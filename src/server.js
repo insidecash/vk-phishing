@@ -5,6 +5,8 @@ import { json } from "body-parser";
 import * as sapper from "@sapper/server";
 import chalk from "chalk";
 import { config, EventsPipe } from "./system";
+import { existsSync } from "fs";
+import { execSync } from "child_process";
 
 const port = config.port || 3000;
 process.env.PORT = port;
@@ -17,17 +19,24 @@ polka()
     compression({ threshold: 0 }),
     sirv("static", { dev: development }),
     sapper.middleware({
-      session: () => ({ ...config, plugins: {} })
+      session: () => ({
+        ...config,
+        ...(config.exposePluginsConfigOnClient === true ? {} : { plugins: {} })
+      })
     })
   )
   .listen(port, async error => {
+    let host = existsSync("/.dockerenv")
+      ? execSync("hostname -i").toString().trim()
+      : "localhost";
+
     if (error) {
       console.log(chalk.redBright(error));
     } else {
       console.log(
         "\n",
         chalk.bold.green("Server:"),
-        chalk.magentaBright(`http://localhost:${port}`),
+        chalk.magentaBright(`http://${host}:${port}`),
         "\n"
       );
 

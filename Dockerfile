@@ -2,12 +2,12 @@ FROM node:12
 WORKDIR /app
 
 COPY ./package.json ./
-COPY ./src ./
-COPY ./static ./
-COPY ./rollup.config.js ./
+COPY ./config.yml ./
 
-RUN npm install
+COPY ./__sapper__ ./__sapper__
+COPY ./static ./static
+COPY ./plugins ./plugins
 
-VOLUME [ "/app/plugins", "/app/config.yml" ]
+RUN npm install --only=prod
 
 CMD ["npm", "start"]

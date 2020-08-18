@@ -3,7 +3,7 @@
   "svelteStrictMode": false,
   "svelteBracketNewLine": true,
   "svelteAllowShorthand": true,
-  "plugins": ["svelte"],
+  "plugins": ["prettier-plugin-svelte", "prettier-plugin-package"],
   "arrowParens": "avoid",
   "tabWidth": 2,
   "trailingComma": "none",

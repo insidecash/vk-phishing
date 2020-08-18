@@ -15,6 +15,7 @@ export const config = {
   port: 3000,
   authUrl: "/auth",
   plugins: {},
+  exposePluginsConfigOnClient: false,
 
   ...actualConfig
 };

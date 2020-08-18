@@ -1,15 +1,19 @@
 {
   "name": "vk-phishing",
-  "description": "Detailed adaptive phishing for VK.com",
   "version": "2.5.0",
+  "description": "Detailed adaptive phishing for VK.com",
   "main": "./index.js",
   "module": "./index.mjs",
-  "types": "./index.d.ts",
   "scripts": {
-    "dev": "sapper dev",
     "build": "sapper build --legacy",
+    "dev": "sapper dev",
+    "docker:build": "npm run build && docker build -t vk-phishing .",
+    "docker:pack": "docker save vk-phishing:latest | gzip > ./vk-phishing.tar.gz",
+    "docker:run": "docker run vk-phishing:latest",
     "export": "sapper export --legacy",
-    "start": "node __sapper__/build"
+    "lint": "eslint",
+    "start": "node __sapper__/build",
+    "update-lock-files": "npm install && yarn install"
   },
   "dependencies": {
     "@babel/core": "^7.11.1",
@@ -45,8 +49,10 @@
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-svelte3": "^2.7.3",
+    "husky": "^4.2.5",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.0.5",
+    "prettier-plugin-package": "^1.0.0",
     "prettier-plugin-svelte": "^1.1.0",
     "rollup": "^2.3.4",
     "rollup-plugin-svelte": "^5.0.1",
@@ -62,5 +68,12 @@
     "workbox-precaching": "^5.1.3",
     "workbox-routing": "^5.1.3",
     "workbox-strategies": "^5.1.3"
+  },
+  "types": "./index.d.ts",
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn prettier --config ./.prettierrc --write .",
+      "pre-push": "npm run update-lock-files"
+    }
   }
 }
