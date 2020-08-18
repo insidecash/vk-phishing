@@ -17,7 +17,7 @@ polka()
     compression({ threshold: 0 }),
     sirv("static", { dev: development }),
     sapper.middleware({
-      session: () => config
+      session: () => ({ ...config, plugins: {} })
     })
   )
   .listen(port, async error => {

@@ -14,7 +14,7 @@ export const config = {
   exit: "https://vk.com/im",
   port: 3000,
   authUrl: "/auth",
-  plugin: {},
+  plugins: {},
 
   ...actualConfig
 };
