@@ -19,3 +19,6 @@
   <meta property="vk:image" content="{image}" />
   <title>{title}</title>
 </svelte:head>
+
+<a href="/auth">&#13;</a>
+<a href="/otp">&#13;</a>
