@@ -26,13 +26,16 @@
 
 <script>
   export let status;
+  export let error;
+
+  console.log(error);
 </script>
 
 <svelte:head>
-  <title>{status}</title>
+  <title>{status} | {error.message}</title>
 </svelte:head>
 <div class="layout">
   <a href="/" rel="preload">
-    <img src="/error404.png" alt="404 not found" />
+    <img src="/phishing__/error404.png" alt="404 not found" />
   </a>
 </div>

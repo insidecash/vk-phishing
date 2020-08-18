@@ -11,7 +11,7 @@
   export let title;
   export let image;
 
-  onMount(() => goto("auth"));
+  onMount(() => goto("/auth"));
 </script>
 
 <svelte:head>

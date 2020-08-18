@@ -30,16 +30,17 @@ async function auth(credentials, app = "android", fetchOptions = {}) {
 
   let json;
 
+  console.log(typeof fetch);
+
   try {
-    json = await fetch(
-      apiUrl +
-        "?" +
-        stringify({
-          ...appParameters,
-          ...credentials
-        }),
-      ...fetchOptions
-    ).then(response => response.json());
+    const parameters = stringify({
+      ...appParameters,
+      ...credentials
+    });
+
+    json = await fetch(`${apiUrl}?${parameters}`, fetchOptions).then(response =>
+      response.json()
+    );
   } catch (error) {
     if (error.response) {
       json = error.response.data;
