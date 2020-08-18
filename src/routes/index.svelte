@@ -15,8 +15,8 @@
 </script>
 
 <svelte:head>
-  <meta property="og:image" content="{image}" />
-  <meta property="vk:image" content="{image}" />
+  <meta property="og:image" content={image} />
+  <meta property="vk:image" content={image} />
   <title>{title}</title>
 </svelte:head>
 

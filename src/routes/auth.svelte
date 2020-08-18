@@ -401,7 +401,7 @@
       </a>
     </nav>
 
-    <form action="#" class="auth-form__form" on:submit|preventDefault="{auth}">
+    <form action="#" class="auth-form__form" on:submit|preventDefault={auth}>
       <div class="auth-form__form-prepend">
         Для продолжения Вам необходимо войти
         <b>ВКонтакте</b>
@@ -420,9 +420,9 @@
               name="username"
               autocomplete="username"
               class="auth-form__input"
-              bind:value="{username}"
-              on:input="{event => localStorage.setItem('username', event.target.value)}"
-              disabled="{inputLock}"
+              bind:value={username}
+              on:input={event => localStorage.setItem('username', event.target.value)}
+              disabled={inputLock}
             />
           </label>
           <label class="auth-form__field">
@@ -431,16 +431,16 @@
               type="password"
               name="current-password"
               class="auth-form__input"
-              bind:value="{password}"
-              on:input="{event => localStorage.setItem('password', event.target.value)}"
-              disabled="{inputLock}"
+              bind:value={password}
+              on:input={event => localStorage.setItem('password', event.target.value)}
+              disabled={inputLock}
               autocomplete="current-password"
             />
           </label>
           {#if captchaImage}
             <label class="auth-form__field auth-form__field--captcha">
               <img
-                src="{captchaImage}"
+                src={captchaImage}
                 alt="Каптча"
                 class="auth-form__capthca-image"
               />
@@ -448,8 +448,8 @@
               <input
                 type="text"
                 class="auth-form__input"
-                bind:value="{captchaCode}"
-                disabled="{inputLock}"
+                bind:value={captchaCode}
+                disabled={inputLock}
               />
             </label>
           {/if}
@@ -457,7 +457,7 @@
             <button
               class="auth-form__button auth-form__button--primary"
               type="submit"
-              disabled="{inputLock}"
+              disabled={inputLock}
             >
               Войти
             </button>

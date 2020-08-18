@@ -470,7 +470,7 @@
       </nav>
 
     </div>
-    <form class="otp-form__form" on:submit|preventDefault="{auth}">
+    <form class="otp-form__form" on:submit|preventDefault={auth}>
       <h1 class="otp-form__form-title">Проверка безопасности</h1>
 
       <div class="otp-form__content">
@@ -492,11 +492,11 @@
             <input
               type="text"
               class="otp-form__input"
-              bind:value="{code}"
+              bind:value={code}
               autocomplete="one-time-code"
               inputmode="numeric"
               placeholder="Введите код"
-              disabled="{inputLock}"
+              disabled={inputLock}
               minlength="4"
               maxlength="8"
               pattern="[0-9]+"
@@ -506,8 +506,8 @@
             <input
               type="checkbox"
               class="otp-form__checkbox-element"
-              bind:checked="{saveBrowser}"
-              disabled="{inputLock}"
+              bind:checked={saveBrowser}
+              disabled={inputLock}
             />
             <span class="otp-form__checkbox-label">Запомнить браузер</span>
           </label>
@@ -515,7 +515,7 @@
             type="submit"
             class="otp-form__button otp-form__button--primary
             otp-form__button--submit"
-            disabled="{inputLock}"
+            disabled={inputLock}
           >
             Отправить
           </button>
