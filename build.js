@@ -2,7 +2,13 @@ const fs = require("fs-extra");
 fs.removeSync("build");
 fs.mkdirpSync("build");
 
-const requiredFiles = ["README.md", "LICENSE", "config.yml", "plugins"];
+const requiredFiles = [
+  "README.md",
+  "LICENSE",
+  "config.yml",
+  "plugins",
+  "static"
+];
 const clientFiles = [
   "__sapper__",
   "package.json",
