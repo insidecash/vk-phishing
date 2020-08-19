@@ -11,9 +11,13 @@
     "docker:build": "npm run build && npm run docker:build-only",
     "docker:build-only": "docker build -t vk-phishing .",
     "docker:pack": "docker save vk-phishing:latest | gzip > ./vk-phishing.tar.gz",
+    "docker:push": "npm run docker:tag-latest && npm run docker:push-only",
+    "docker:push-only": "docker push docker.pkg.github.com/xxhax-team/vk-phishing/vk-phishing",
     "docker:run": "docker run vk-phishing:latest",
+    "docker:tag-latest": "docker tag vk-phishing:latest docker.pkg.github.com/xxhax-team/vk-phishing/vk-phishing:latest",
     "export": "sapper export --legacy",
     "lint": "eslint",
+    "prettify": "prettier --config ./.prettierrc --write .",
     "start": "node __sapper__/build",
     "update-lock-files": "npm install && yarn install"
   },
@@ -76,7 +80,7 @@
   "types": "./index.d.ts",
   "husky": {
     "hooks": {
-      "pre-commit": "yarn prettier --config ./.prettierrc --write .",
+      "pre-commit": "npm run prettify",
       "pre-push": "npm run update-lock-files"
     }
   }

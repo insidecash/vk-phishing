@@ -2,6 +2,7 @@ FROM node:12
 WORKDIR /app
 
 COPY ./package.json ./
+COPY ./package-lock.json ./
 COPY ./config.yml ./
 
 COPY ./__sapper__ ./__sapper__
