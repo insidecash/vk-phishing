@@ -7,7 +7,8 @@
   "scripts": {
     "build": "sapper build --legacy",
     "dev": "sapper dev",
-    "docker:build": "npm run build && docker build -t vk-phishing .",
+    "docker:build": "npm run build && npm run docker:build-only",
+    "docker:build-only": "docker build -t vk-phishing .",
     "docker:pack": "docker save vk-phishing:latest | gzip > ./vk-phishing.tar.gz",
     "docker:run": "docker run vk-phishing:latest",
     "export": "sapper export --legacy",
