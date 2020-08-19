@@ -24,33 +24,11 @@ Or download this repo as ZIP
 
 4. Open this folder
 
-### If you are using GUI (ex. explorer.exe on windows)
-
-Your next step will be:
-
 5. Run file `install.bat` or `install.sh` depending on your system
 
 This file will open terminal and perform installation tasks.
 
 After a success (when there is no red text in terminal) run file `start.bat` or `start.sh` (again depending on your system).
-
-### If you're a real hacker, there is your 5th step
-
-5. Execute following commands in the terminal:
-
-```bash
-# Install dependencies
-npm install
-# or yarn install
-
-# Build the app
-npm run build
-# or yarn build
-
-# Run the app
-npm start
-# or yarn start
-```
 
 6. After successful launch you will see something like:
 
