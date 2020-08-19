@@ -1,3 +1,5 @@
 dumps
 __sapper__
 node_modules
+build
+lib
