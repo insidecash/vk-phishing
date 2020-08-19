@@ -4,6 +4,14 @@ const { execSync } = require("child_process");
 fs.removeSync("build");
 fs.mkdirpSync("build");
 
+// Very important crutch. It is here
+// because rollup-plugin-typescript2
+// is dumb, and cannot enable declarations
+// for specific build. That because its enabled
+// by default and make declaration files
+// in __sapper__ dir.
+execSync("rm ./__sapper__/**/*.d.ts");
+
 execSync("npm run build:exports");
 
 const requiredFiles = [
