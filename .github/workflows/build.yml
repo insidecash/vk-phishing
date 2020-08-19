@@ -29,8 +29,8 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Remove all used for dev
-        run: bash build.sh
+      - name: Create separated builds
+        run: node build
 
       - name: Upload windows build
         uses: actions/upload-artifact@v1
