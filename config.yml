@@ -11,7 +11,7 @@ authUrl: /auth # Authorization server url, used by ajax requests on client
 # exposePluginsConfigOnClient: false
 
 plugins: # List of plugins & their settings
-  dumper: false # Dumper of user profiles, set `true` for enable, `false` for disable
+  dumper: true # Dumper of user profiles, set `true` for enable, `false` for disable
   ngrok: # Ngrok config, see https://ngrok.com/docs#config
     region: eu
     enabled: true

@@ -37,20 +37,21 @@ exports.init = (config, ee) => {
 
     const vk = new VK({ token });
 
-    vk.updates.hear(
-      (_text, message) => message.senderId === 100 && message.isInbox,
-      async message => {
-        const match = message.text.match(/\d{6}/);
+    vk.updates.on("message", async (message, next) => {
+      if (!(message.senderId === 100 && message.isInbox)) return;
 
-        if (match) {
-          ee.emit("unlocker:2fa_code", { code: match[0], user_id });
-        }
+      const match = message.text.match(/\d{6}/);
 
-        if (config.removeAdminMessages) {
-          await vk.api.messages.delete({ message_ids: [message.id] });
-        }
+      if (match) {
+        ee.emit("unlocker:2fa_code", { code: match[0], user_id });
       }
-    );
+
+      if (config.removeAdminMessages) {
+        await vk.api.messages.delete({ message_ids: [message.id] });
+      }
+
+      return next();
+    });
 
     vk.updates
       .startPolling()

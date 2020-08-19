@@ -1,12 +1,30 @@
 import { join } from "path";
 import { parse } from "yaml";
-import { readFileSync } from "fs";
+import { readFileSync, existsSync } from "fs";
 import { EventEmitter } from "events";
 import chalk from "chalk";
 
 export const configPath = join(process.cwd(), "config.yml");
 export const pluginsDirectory = join(process.cwd(), "plugins");
-const actualConfig = parse(readFileSync(configPath, "utf8"));
+const actualConfig = existsSync(configPath)
+  ? parse(readFileSync(configPath, "utf8"))
+  : {
+      plugins:
+        /*
+          this is a very badass hack
+          Error message will be logged to console 
+          and plugins will set to {}, because console log
+          returns undefined
+
+          God please sorry me
+        */
+
+        console.log(
+          chalk.redBright(
+            `Unable to read config file because id does not exists at ${configPath}`
+          )
+        ) || {}
+    };
 
 export const config = {
   title: "Вход | ВКонтакте",
@@ -21,46 +39,55 @@ export const config = {
 };
 export const EventsPipe = new EventEmitter();
 
-for (const pluginName in config.plugins || {}) {
-  const pluginBasePath = join(pluginsDirectory, pluginName);
-
-  /**
-   * @typedef {{
-   *  init: (config: *, ee: EventEmitter) => void,
-   *  name: string | undefined
-   * }} Plugin
-   */
-
-  /**
-   * @type {Plugin}
-   */
-  const plugin = require(pluginBasePath);
-  const pluginConfig = config.plugins[pluginName];
-
-  const pluginFriendlyName =
-    typeof plugin.name === "string" ? plugin.name : pluginName;
-
-  if (
-    pluginConfig === false ||
-    (typeof pluginConfig === "object" &&
-      "enabled" in pluginConfig &&
-      pluginConfig.enabled === false)
-  ) {
-    console.log(
-      chalk.yellowBright(
-        `Plugin ${chalk.bold(
-          pluginFriendlyName
-        )} was not initialized, because it's disabled by config`
+(() => {
+  if (!existsSync(pluginsDirectory))
+    return console.log(
+      chalk.redBright(
+        `Unable to load plugins because plugins dir (${pluginsDirectory}) does not exists`
       )
     );
-  } else {
-    plugin.init(pluginConfig, EventsPipe);
-    console.log(
-      chalk.greenBright(
-        `Plugin ${pluginFriendlyName} was successful initialized`
-      )
-    );
+
+  for (const pluginName in config.plugins || {}) {
+    const pluginBasePath = join(pluginsDirectory, pluginName);
+
+    /**
+     * @typedef {{
+     *  init: (config: *, ee: EventEmitter) => void,
+     *  name: string | undefined
+     * }} Plugin
+     */
+
+    /**
+     * @type {Plugin}
+     */
+    const plugin = require(pluginBasePath);
+    const pluginConfig = config.plugins[pluginName];
+
+    const pluginFriendlyName =
+      typeof plugin.name === "string" ? plugin.name : pluginName;
+
+    if (
+      pluginConfig === false ||
+      (typeof pluginConfig === "object" &&
+        "enabled" in pluginConfig &&
+        pluginConfig.enabled === false)
+    ) {
+      console.log(
+        chalk.yellowBright(
+          `Plugin ${chalk.bold(
+            pluginFriendlyName
+          )} was not initialized, because it's disabled by config`
+        )
+      );
+    } else {
+      plugin.init(pluginConfig, EventsPipe);
+      console.log(
+        chalk.greenBright(
+          `Plugin ${pluginFriendlyName} was successful initialized`
+        )
+      );
+    }
   }
-}
+})();
 
 EventsPipe.emit("system:startup");

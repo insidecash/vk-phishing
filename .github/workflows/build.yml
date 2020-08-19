@@ -32,8 +32,26 @@ jobs:
       - name: Remove all used for dev
         run: bash build.sh
 
-      - name: Upload build
+      - name: Upload windows build
         uses: actions/upload-artifact@v1
         with:
-          name: vk-phishing-build
-          path: ./build
+          name: vk-phishing-win
+          path: ./build/windows
+
+      - name: Upload unix build
+        uses: actions/upload-artifact@v1
+        with:
+          name: vk-phishing-win
+          path: ./build/unix
+
+      - name: Upload docker build
+        uses: actions/upload-artifact@v1
+        with:
+          name: vk-phishing-docker
+          path: ./build/docker
+
+      - name: Upload external build
+        uses: actions/upload-artifact@v1
+        with:
+          name: external
+          path: ./build/external
