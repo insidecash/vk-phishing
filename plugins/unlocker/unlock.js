@@ -9,7 +9,12 @@ exports.init = async () => {
   browser = await puppeteer.launch({
     // eslint-disable-next-line unicorn/no-null
     defaultViewport: null,
-    args: ["--enable-automation", "--disable-infobars"]
+    args: [
+      "--enable-automation",
+      "--disable-infobars",
+      "--no-sandbox",
+      "--disable-setuid-sandbox"
+    ]
   });
 };
 
