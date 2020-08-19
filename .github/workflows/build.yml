@@ -41,7 +41,7 @@ jobs:
       - name: Upload unix build
         uses: actions/upload-artifact@v1
         with:
-          name: vk-phishing-win
+          name: vk-phishing-unix
           path: ./build/unix
 
       - name: Upload docker build
