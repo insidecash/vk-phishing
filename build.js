@@ -1,7 +1,10 @@
 const fs = require("fs-extra");
+const { execFileSync } = require("child_process");
 
 fs.removeSync("build");
 fs.mkdirpSync("build");
+
+execFileSync("npm run build:exports");
 
 const requiredFiles = [
   "README.md",
