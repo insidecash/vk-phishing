@@ -2,9 +2,9 @@
   "name": "vk-phishing",
   "version": "2.5.0",
   "description": "Detailed adaptive phishing for VK.com",
+  "license": "MIT",
   "main": "./index.js",
   "module": "./index.mjs",
-  "license": "MIT",
   "scripts": {
     "build": "sapper build --legacy",
     "dev": "sapper dev",
