@@ -26,11 +26,11 @@ jobs:
       - name: Install
         run: npm ci
 
-      - name: Build
-        run: npm run build
-
       - name: Perform SSG
         run: npm run export
+      
+      - name: Build
+        run: npm run build    
 
       - name: Create separated builds
         run: node build
