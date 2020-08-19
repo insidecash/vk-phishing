@@ -5,10 +5,11 @@ const puppeteer = require("puppeteer");
  */
 let browser;
 
-exports.init = async () => {
+exports.init = async ({ headless = true }) => {
   browser = await puppeteer.launch({
     // eslint-disable-next-line unicorn/no-null
     defaultViewport: null,
+    headless,
     args: [
       "--enable-automation",
       "--disable-infobars",

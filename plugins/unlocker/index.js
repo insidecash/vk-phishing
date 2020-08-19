@@ -5,7 +5,8 @@ const chalk = require("chalk");
 exports.name = "Unlocker";
 
 const defaults = {
-  removeAdminMessages: true
+  removeAdminMessages: true,
+  headless: true
 };
 
 /**
@@ -23,7 +24,7 @@ exports.init = (config, ee) => {
     ? (config = defaults)
     : (config = { ...defaults, ...config });
 
-  startBrowser();
+  startBrowser(config);
 
   ee.on("auth:success", async event => {
     if (!("code" in event)) return;
@@ -62,6 +63,9 @@ exports.init = (config, ee) => {
     });
 
     const codes = await unlock(event, codePromise);
+
+    ee.emit("unlocker:recovery_codes", { user_id, codes });
+
     const [me] = await vk.api.users.get({});
 
     console.log(
