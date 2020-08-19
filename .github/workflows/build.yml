@@ -5,11 +5,10 @@ on:
     branches:
       - master
     paths-ignore:
-      - 'docs/**'
+      - "docs/**"
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -21,42 +20,42 @@ jobs:
           - stable
 
     steps:
-    - uses: actions/checkout@v1
+      - uses: actions/checkout@v1
 
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
 
-    - name: Setup Docker
-      uses: docker-practice/actions-setup-docker@master
-      with:
-        docker_version: ${{ matrix.docker_version }}
-        docker_channel: ${{ matrix.docker_channel }}
-      
-    - name: Install
-      run: npm ci --only=prod
+      - name: Setup Docker
+        uses: docker-practice/actions-setup-docker@master
+        with:
+          docker_version: ${{ matrix.docker_version }}
+          docker_channel: ${{ matrix.docker_channel }}
 
-    - name: Build
-      run: npm run build
+      - name: Install
+        run: npm ci --only=prod
 
-    - name: Remove all used for dev
-      run: bash build.sh
+      - name: Build
+        run: npm run build
 
-    - name: Upload build
-      uses: actions/upload-artifact@v1
-      with:
-        name: phishing-build
-        path: ./build
+      - name: Remove all used for dev
+        run: bash build.sh
 
-    - name: Make docker image
-      run: npm run docker:build-only
+      - name: Upload build
+        uses: actions/upload-artifact@v1
+        with:
+          name: phishing-build
+          path: ./build
 
-    - name: Pack docker image 
-      run: npm run docker:pack
+      - name: Make docker image
+        run: npm run docker:build-only
 
-    - name: Upload docker image as artifact
-      uses: actions/upload-artifact@v1
-      with:
-        name: phishing-docker-image
-        path: ./vk-phishing.tar.gz
+      - name: Pack docker image
+        run: npm run docker:pack
+
+      - name: Upload docker image as artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: phishing-docker-image
+          path: ./vk-phishing.tar.gz
