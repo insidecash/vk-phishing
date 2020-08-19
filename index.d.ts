@@ -15,6 +15,7 @@ type authConstants = {
   R_ERROR_UNKNOWN: 4;
   R_ERROR_INVALID_CODE: 5;
   R_DEFAULT: -1;
+  R_ERROR_TO_MUCH_TRIES: 6;
 };
 
 export declare const appCredentials: Record<platform, appCredential>;

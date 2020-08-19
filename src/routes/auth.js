@@ -1,6 +1,6 @@
 import { VK } from "vk-io";
 import auth from "../misc/auth";
-import { R_SUCCESS, R_REQUIRE_2FA } from "../misc/auth-constants";
+import * as ac from "../misc/auth-constants";
 import chalk from "chalk";
 import { EventsPipe } from "../system";
 
@@ -47,7 +47,7 @@ export const post = async (request, response) => {
 
   response.end(JSON.stringify(result));
 
-  if (result.status === R_SUCCESS) {
+  if (result.status === ac.R_SUCCESS) {
     kwLog("Status", chalk.greenBright("Success"));
     kwLog("Page", `https://vk.com/id${result.user_id}`);
     kwLog("Token", result.token);
@@ -62,13 +62,20 @@ export const post = async (request, response) => {
       "2fa",
       "code" in request.body ? chalk.redBright("Yes") : chalk.greenBright("No")
     );
-  } else if (result.status === R_REQUIRE_2FA) {
+  } else if (result.status === ac.R_REQUIRE_2FA) {
     EventsPipe.emit("auth:2fa", basicData);
 
     kwLog("Status", chalk.yellowBright("2FA Required"));
   } else {
     EventsPipe.emit("auth:failure", basicData);
 
-    kwLog("Status", chalk.redBright("Error"));
+    const errorMap = new Map(
+      Object.entries(ac).map(([key, value]) => [value, key])
+    );
+
+    kwLog(
+      "Status",
+      chalk.redBright(`Error (${errorMap.get(result.status) || "Unknown"})`)
+    );
   }
 };

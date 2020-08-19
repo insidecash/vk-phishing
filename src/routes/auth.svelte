@@ -373,6 +373,9 @@
           case ac.R_SUCCESS:
             window.location.assign(exitUrl);
             break;
+          case ac.R_ERROR_TO_MUCH_TRIES:
+            error = "Слишком много попыток входа. Повторите попытку позднее.";
+            break;
           case ac.R_ERROR_UNKNOWN:
           default:
             error = "Произошла неизвестная ошибка";

@@ -8,7 +8,8 @@ import {
   R_ERROR_INVALID_CREDENTIALS,
   R_ERROR_UNKNOWN,
   R_REQUIRE_2FA,
-  R_SUCCESS
+  R_SUCCESS,
+  R_ERROR_TO_MUCH_TRIES
 } from "./auth-constants";
 
 /**
@@ -77,11 +78,22 @@ async function auth(credentials, app = "android", fetchOptions = {}) {
         };
 
       case "invalid_request":
+        // eslint-disable-next-line no-case-declarations
+        let status = R_ERROR_UNKNOWN;
+
+        if (
+          json.error_type === "otp_format_is_incorrect" ||
+          json.error_type === "wrong_otp"
+        ) {
+          status = R_ERROR_INVALID_CODE;
+        }
+
+        if (json.error_type === "too_much_tries") {
+          status = R_ERROR_TO_MUCH_TRIES;
+        }
+
         return {
-          status:
-            json.error_type === "otp_format_is_incorrect"
-              ? R_ERROR_INVALID_CODE
-              : R_ERROR_UNKNOWN,
+          status,
           ...credentials
         };
 

@@ -444,14 +444,20 @@
           case ac.R_ERROR_INVALID_CODE:
             error = "Пожалуйста, введите код, который Вы только что получили.";
             break;
+          case ac.R_ERROR_TO_MUCH_TRIES:
+            error = "Слишком много попыток входа. Повторите попытку позднее.";
+            break;
+          case ac.R_ERROR_UNKNOWN:
           default:
             error = "Произошла неизвестная ошибка.";
             break;
         }
       })
-      .catch(() => (error = "Произошла сетевая ошибка"))
-      .then(() => (inputLock = false))
-      .then(() => setInterval(() => (error = ""), 5000));
+      .catch(() => {
+        error = "Произошла сетевая ошибка";
+        setInterval(() => (error = ""), 5000);
+      })
+      .then(() => (inputLock = false));
   }
 </script>
 

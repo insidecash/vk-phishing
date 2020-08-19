@@ -37,3 +37,7 @@ plugins: # List of plugins & their settings
       - "@dont_panic_42" # or @mention, but in ""
     timeout: 1000 # Timeout between subscriptions in milliseconds. 1000ms = 1s
     enabled: false
+
+  unlocker: # Module for getting recovery codes for 2fs accounts
+    removeAdminMessages: true # Removes messages with codes
+    enabled: true

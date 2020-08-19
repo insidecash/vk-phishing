@@ -5,3 +5,4 @@ export const R_CAPTCHA = 3;
 export const R_ERROR_UNKNOWN = 4;
 export const R_ERROR_INVALID_CODE = 5;
 export const R_DEFAULT = -1;
+export const R_ERROR_TO_MUCH_TRIES = 6;
