@@ -384,7 +384,7 @@
 </style>
 
 <script>
-  import * as ac from "../misc/auth-constants";
+  import * as ac from "../misc/auth-constants.ts";
   import { onMount, onDestroy } from "svelte";
   import { goto, stores } from "@sapper/app";
 

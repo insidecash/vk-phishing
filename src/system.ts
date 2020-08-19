@@ -19,9 +19,11 @@ const actualConfig = existsSync(configPath)
           God please sorry me
         */
 
-        console.log(
-          chalk.redBright(
-            `Unable to read config file because id does not exists at ${configPath}`
+        <undefined>(
+          console.log(
+            chalk.redBright(
+              `Unable to read config file because id does not exists at ${configPath}`
+            )
           )
         ) || {}
     };
@@ -40,7 +42,7 @@ export const config = {
 export const EventsPipe = new EventEmitter();
 
 (() => {
-  if (!existsSync(pluginsDirectory))
+  if (!existsSync(pluginsDirectory) || process.env.SAPPER_EXPORT)
     return console.log(
       chalk.redBright(
         `Unable to load plugins because plugins dir (${pluginsDirectory}) does not exists`
@@ -50,17 +52,13 @@ export const EventsPipe = new EventEmitter();
   for (const pluginName in config.plugins || {}) {
     const pluginBasePath = join(pluginsDirectory, pluginName);
 
-    /**
-     * @typedef {{
-     *  init: (config: *, ee: EventEmitter) => void,
-     *  name: string | undefined
-     * }} Plugin
-     */
+    type Plugin = {
+      init: (config: unknown, ee: EventEmitter) => void;
+      name?: string;
+    };
 
-    /**
-     * @type {Plugin}
-     */
-    const plugin = require(pluginBasePath);
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const plugin: Plugin = require(pluginBasePath);
     const pluginConfig = config.plugins[pluginName];
 
     const pluginFriendlyName =

@@ -25,8 +25,8 @@ polka()
       })
     })
   )
-  .listen(port, async error => {
-    let host = existsSync("/.dockerenv")
+  .listen(port, async (error: Error | string | null) => {
+    const host = existsSync("/.dockerenv")
       ? execSync("hostname -i").toString().trim()
       : "localhost";
 

@@ -1,16 +1,34 @@
 import * as appCredentials from "./credentials";
 import fetch from "node-fetch";
+import type { RequestInit } from "node-fetch";
 import { stringify } from "querystring";
 
-import {
-  R_CAPTCHA,
-  R_ERROR_INVALID_CODE,
-  R_ERROR_INVALID_CREDENTIALS,
-  R_ERROR_UNKNOWN,
-  R_REQUIRE_2FA,
-  R_SUCCESS,
-  R_ERROR_TO_MUCH_TRIES
-} from "./auth-constants";
+import * as authConstants from "./auth-constants";
+
+type userCredentials = {
+  username: string;
+  password: string;
+  code?: string;
+};
+
+type typedAuthResponse<
+  T extends keyof typeof authConstants,
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  additionalData extends {} = {}
+> = { status: typeof authConstants[T] } & userCredentials & additionalData;
+
+type possibleAuthResponse =
+  | typedAuthResponse<"R_CAPTCHA", { sid: string; img: string }>
+  | typedAuthResponse<"R_DEFAULT">
+  | typedAuthResponse<"R_ERROR_INVALID_CODE", { code: string }>
+  | typedAuthResponse<"R_ERROR_INVALID_CREDENTIALS">
+  | typedAuthResponse<"R_ERROR_UNKNOWN">
+  | typedAuthResponse<"R_REQUIRE_2FA", { phone: string; type: string }>
+  | typedAuthResponse<
+      "R_SUCCESS",
+      { token: string; access_token: string; user_id: number }
+    >
+  | typedAuthResponse<"R_ERROR_TO_MUCH_TRIES">;
 
 /**
  *
@@ -18,7 +36,11 @@ import {
  * @param {string} app
  * @param {import('node-fetch').RequestInit} fetchOptions
  */
-async function auth(credentials, app = "android", fetchOptions = {}) {
+async function auth(
+  credentials: userCredentials & Record<string, unknown>,
+  app: keyof typeof appCredentials = "android",
+  fetchOptions: RequestInit = {}
+): Promise<possibleAuthResponse> {
   const apiUrl = "https://oauth.vk.com/token";
 
   const appParameters = {
@@ -52,7 +74,7 @@ async function auth(credentials, app = "android", fetchOptions = {}) {
     switch (json.error) {
       case "need_captcha":
         return {
-          status: R_CAPTCHA,
+          status: authConstants.R_CAPTCHA,
           ...credentials,
           sid: json.captcha_sid,
           img: json.captcha_img
@@ -60,49 +82,53 @@ async function auth(credentials, app = "android", fetchOptions = {}) {
       case "need_validation":
         if (json.validation_type && json.validation_type.startsWith("2fa")) {
           return {
-            status: R_REQUIRE_2FA,
+            status: authConstants.R_REQUIRE_2FA,
             type: json.validation_type,
             phone: json.phone_mask,
             ...credentials
           };
         } else {
-          return { status: R_ERROR_UNKNOWN, ...credentials };
+          return { status: authConstants.R_ERROR_UNKNOWN, ...credentials };
         }
       case "invalid_client":
         return {
           status:
             json.error_type === "username_or_password_is_incorrect"
-              ? R_ERROR_INVALID_CREDENTIALS
-              : R_ERROR_UNKNOWN,
+              ? authConstants.R_ERROR_INVALID_CREDENTIALS
+              : authConstants.R_ERROR_UNKNOWN,
           ...credentials
         };
 
       case "invalid_request":
-        // eslint-disable-next-line no-case-declarations
-        let status = R_ERROR_UNKNOWN;
-
         if (
           json.error_type === "otp_format_is_incorrect" ||
           json.error_type === "wrong_otp"
         ) {
-          status = R_ERROR_INVALID_CODE;
+          return {
+            status: authConstants.R_ERROR_INVALID_CODE,
+            ...credentials,
+            code: String(credentials.code)
+          };
         }
 
         if (json.error_type === "too_much_tries") {
-          status = R_ERROR_TO_MUCH_TRIES;
+          return {
+            status: authConstants.R_ERROR_TO_MUCH_TRIES,
+            ...credentials
+          };
         }
 
         return {
-          status,
+          status: authConstants.R_ERROR_UNKNOWN,
           ...credentials
         };
 
       default:
-        return { status: R_ERROR_UNKNOWN, ...credentials };
+        return { status: authConstants.R_ERROR_UNKNOWN, ...credentials };
     }
   } else {
     return {
-      status: R_SUCCESS,
+      status: authConstants.R_SUCCESS,
       ...credentials,
       ...json,
       token: json.access_token,

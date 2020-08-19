@@ -1,8 +1,8 @@
 import { VK } from "vk-io";
-import auth from "../misc/auth";
-import * as ac from "../misc/auth-constants";
+import auth from "../misc/auth.ts";
+import * as ac from "../misc/auth-constants.ts";
 import chalk from "chalk";
-import { EventsPipe } from "../system";
+import { EventsPipe } from "../system.ts";
 
 const _ = console.log.bind(console);
 const kwLog = (key, value) =>

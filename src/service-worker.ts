@@ -16,8 +16,8 @@ clientsClaim();
 if (!isDevelopment) {
   precacheAndRoute([
     // eslint-disable-next-line unicorn/no-null
-    ...shell.map(url => ({ url, revision: null })),
-    ...files.map(url => ({ url, revision: timestamp }))
+    ...shell.map(url => ({ url, revision: undefined })),
+    ...files.map(url => ({ url, revision: timestamp.toString() }))
   ]);
 }
 

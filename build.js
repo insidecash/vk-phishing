@@ -1,4 +1,5 @@
 const fs = require("fs-extra");
+
 fs.removeSync("build");
 fs.mkdirpSync("build");
 
@@ -20,15 +21,7 @@ const buildsMap = {
   windows: ["install.bat", "start.bat", ...clientFiles, ...requiredFiles],
   unix: ["install.sh", "start.sh", ...clientFiles, ...requiredFiles],
   docker: ["docker-compose.example.yml", ...requiredFiles],
-  external: [
-    "index.js",
-    "index.mjs",
-    "index.d.ts",
-    "src",
-    "static",
-    ...clientFiles,
-    ...requiredFiles
-  ]
+  external: ["lib", ...clientFiles, ...requiredFiles]
 };
 
 for (const build in buildsMap) {
