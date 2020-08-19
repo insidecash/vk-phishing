@@ -28,9 +28,9 @@ jobs:
 
       - name: Perform SSG
         run: npm run export
-      
+
       - name: Build
-        run: npm run build    
+        run: npm run build
 
       - name: Create separated builds
         run: node build
