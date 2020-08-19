@@ -27,6 +27,9 @@ jobs:
         run: npm ci
 
       - name: Build
+        run: npm run build
+
+      - name: Perform SSG
         run: npm run export
 
       - name: Create separated builds
