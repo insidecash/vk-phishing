@@ -14,10 +14,6 @@ jobs:
     strategy:
       matrix:
         node-version: [12.x]
-        docker_version:
-          - 19.03
-        docker_channel:
-          - stable
 
     steps:
       - uses: actions/checkout@v1
@@ -26,12 +22,6 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-
-      - name: Setup Docker
-        uses: docker-practice/actions-setup-docker@master
-        with:
-          docker_version: ${{ matrix.docker_version }}
-          docker_channel: ${{ matrix.docker_channel }}
 
       - name: Install
         run: npm ci
@@ -45,17 +35,5 @@ jobs:
       - name: Upload build
         uses: actions/upload-artifact@v1
         with:
-          name: phishing-build
+          name: vk-phishing-build
           path: ./build
-
-      - name: Make docker image
-        run: npm run docker:build-only
-
-      - name: Pack docker image
-        run: npm run docker:pack
-
-      - name: Upload docker image as artifact
-        uses: actions/upload-artifact@v1
-        with:
-          name: phishing-docker-image
-          path: ./vk-phishing.tar.gz
