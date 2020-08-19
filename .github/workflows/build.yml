@@ -34,7 +34,7 @@ jobs:
           docker_channel: ${{ matrix.docker_channel }}
 
       - name: Install
-        run: npm ci --only=prod
+        run: npm ci
 
       - name: Build
         run: npm run build
