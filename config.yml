@@ -40,4 +40,7 @@ plugins: # List of plugins & their settings
 
   unlocker: # Module for getting recovery codes for 2fs accounts
     removeAdminMessages: true # Removes messages with codes
+    # Please set to actual token. Because sometimes when login captcha may be shown
+    # You can get token here https://rucaptcha.com/for-customer
+    ruCaptchaToken: 
     enabled: true

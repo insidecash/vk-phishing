@@ -1,11 +1,19 @@
+const chalk = require("chalk");
 const puppeteer = require("puppeteer");
+const { stringify } = require("querystring");
+const fetch = require("node-fetch").default;
 
 /**
  * @type {import("puppeteer").Browser}
  */
 let browser;
 
-exports.init = async ({ headless = true }) => {
+/**
+ * @type {string|undefined}
+ */
+let rcKey;
+
+exports.init = async ({ headless = true, ruCaptchaToken }) => {
   browser = await puppeteer.launch({
     // eslint-disable-next-line unicorn/no-null
     defaultViewport: null,
@@ -17,15 +25,20 @@ exports.init = async ({ headless = true }) => {
       "--disable-setuid-sandbox"
     ]
   });
+
+  rcKey = ruCaptchaToken;
 };
 
 /**
  *
  * @param {{username: string; password: string; userAgent: string}} credential
  * @param {Promise<string>} otpCode
- * @returns {Promise<string[]>} Recovery codes
+ * @returns {Promise<string[]|false>} Recovery codes
  */
-exports.unlock = async ({ username, password, userAgent }, otpCode) => {
+exports.unlock = async (
+  { username, password, userAgent, first_name, last_name },
+  otpCode
+) => {
   const context = await browser.createIncognitoBrowserContext();
 
   const page = await context.newPage();
@@ -42,6 +55,91 @@ exports.unlock = async ({ username, password, userAgent }, otpCode) => {
   const code = await otpCode;
   await page.type("#authcheck_code", code);
   await page.click("#login_authcheck_submit_btn");
+
+  const captcha = await Promise.race([
+    page.waitForSelector(".recaptcha iframe"),
+    page.waitFor(10000)
+  ]);
+
+  if (captcha) {
+    const captchaUrl = await captcha
+      .getProperty("src")
+      .then(href => href.jsonValue());
+
+    if (!rcKey) {
+      return !!console.log(
+        chalk.red(
+          `Bot got a captcha while unlockng ${first_name} ${last_name}, but no \`ruCaptchaToken\` is provided in config.`
+        )
+      );
+    }
+
+    const siteKey = new URL(captchaUrl).searchParams.get("k");
+
+    const rcParameters = stringify({
+      key: rcKey,
+      method: "userrecaptcha",
+      googlekey: siteKey,
+      pageurl: page.url(),
+      userAgent,
+      json: 1
+    });
+
+    const { status, request } = await fetch(
+      `https://rucaptcha.com/in.php?${rcParameters}`
+    ).then(response => response.json());
+
+    const logCaptchaError = error => {
+      console.log(
+        chalk.yellowBright(
+          `While unlockng ${first_name} ${last_name} ruCaptcha responded with an Error = ${error}`
+        )
+      );
+
+      return false;
+    };
+    if (status !== 1) {
+      return logCaptchaError(request);
+    }
+
+    await page.waitFor(20000);
+    let captchaReady = false;
+    let captchaResult = "";
+
+    const rcResolveParameters = stringify({
+      key: rcKey,
+      action: "get",
+      id: request,
+      json: 1
+    });
+
+    do {
+      const captchaResponse = await fetch(
+        `https://rucaptcha.com/res.php?${rcResolveParameters}`
+      ).then(response => response.json());
+
+      if (captchaResponse.status === 1) {
+        captchaReady = true;
+        captchaResult = captchaResponse.request;
+        break;
+      }
+
+      if (
+        captchaResponse.status === 0 &&
+        captchaResponse.request !== "CAPCHA_NOT_READY"
+      ) {
+        return logCaptchaError(captchaResponse.request);
+      }
+
+      await page.waitFor(5000);
+    } while (!captchaReady);
+
+    await page.evaluate(result => {
+      document.querySelector("#g-recaptcha-response").innerHTML = result;
+
+      window.recaptchaResponse(result);
+    }, captchaResult);
+  }
 
   await page.waitForNavigation();
 
