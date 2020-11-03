@@ -38,7 +38,7 @@
     "compression": "^1.7.1",
     "eslint-plugin-unicorn": "^21.0.0",
     "ngrok": "^3.2.7",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "polka": "next",
     "puppeteer": "^5.2.1",
     "sirv": "^1.0.0",
