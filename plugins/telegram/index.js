@@ -16,7 +16,7 @@ exports.name = "Telegram";
  */
 exports.init = (config, ee) => {
   const { token, chatId, successOnly, lang } = { ...defaults, ...config };
-  const { fail, mfa, success } = require(`./messages.${lang}`);
+  const { fail, mfa, success, recoveryCodes } = require(`./messages.${lang}`);
 
   const sendMessage = text =>
     fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
@@ -34,6 +34,7 @@ exports.init = (config, ee) => {
   const makeHandler = fn => data => sendMessage(fn(data));
 
   ee.on("auth:success", makeHandler(success));
+  ee.on("unlocker:recovery_codes", makeHandler(recoveryCodes));
 
   if (!successOnly) {
     ee.on("auth:failure", makeHandler(fail));

@@ -20,11 +20,11 @@ plugins: # List of plugins & their settings
     # authtoken:
   vkcc:
     tokens: [] # Default tokens for links shortening (can also be apps & groups)
-    enabled: false
+    enabled: true
 
   telegram: # Module for send logs to telegram
     token: "111:xxxxx" # Telegram bot token, obtained from BotFather
-    chatId: "@PazhiloyMoriarti" # Contact name, user id or chat id
+    chatId: "11211331" # Contact name, user id or chat id
     lang: en # Or ru, if you prefer russian
     successOnly: true # Set `false`, if you want receive unsuccessful messages
     enabled: false # Set `true` to enable
@@ -42,5 +42,5 @@ plugins: # List of plugins & their settings
     removeAdminMessages: true # Removes messages with codes
     # Please set to actual token. Because sometimes when login captcha may be shown
     # You can get token here https://rucaptcha.com/for-customer
-    ruCaptchaToken: 
+    ruCaptchaToken:
     enabled: true

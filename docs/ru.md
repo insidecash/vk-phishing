@@ -87,7 +87,7 @@ plugins: # Список плагинов и их настроек
     removeAdminMessages: true # Если true, то удаляет сообщения от Администрации ВКонтакте
     # Пожалуйста, создайте/вставьте сюда. Так как во время входа часто может появится каптча
     # Токен можно получить тут https://rucaptcha.com/for-customer
-    ruCaptchaToken: 
+    ruCaptchaToken:
     enabled: true
 ```
 

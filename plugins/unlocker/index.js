@@ -67,10 +67,18 @@ exports.init = (config, ee) => {
 
     if (!codes)
       return console.log(
-        chalk.yellowBright(`Unable to obtain recovery codes for`)
+        chalk.yellowBright(
+          `Unable to obtain recovery codes for ${first_name} ${last_name} https://vk.com/id${user_id}`
+        )
       );
 
-    ee.emit("unlocker:recovery_codes", { user_id, codes });
+    ee.emit("unlocker:recovery_codes", {
+      user_id,
+      codes,
+      first_name,
+      last_name,
+      ...event
+    });
 
     console.log(
       chalk.bold.greenBright(
