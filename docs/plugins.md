@@ -6,7 +6,7 @@
 
 3. Put this boilerplate into file
 
-```JS
+```javascript
 // Friendly name of your plugin. Will be used in service messages
 exports.name = "myPluginName"
 
@@ -47,7 +47,7 @@ plugins:
     c: true
 ```
 
-```JS
+```javascript
 // plugins/mySuperPlugin.js
 
 exports.init = (config) => {
@@ -95,7 +95,7 @@ You can subscribe to some phishing events or emit your own
 
 **Example**
 
-```JS
+```javascript
 exports.init = (_, systemEvents) => {
   systemEvents.on("system:startup", () => {
     // this code will be executed after
@@ -113,7 +113,7 @@ exports.init = (_, systemEvents) => {
 
 2. `server:startup` - Will run after server started to listening.
 
-```TS
+```typescript
 type ServerStartupPayload = {
   port: number
 }
@@ -121,7 +121,7 @@ type ServerStartupPayload = {
 
 3. `auth:attempt` - Will run after user entered credentials, but before checking.
 
-```TS
+```typescript
 type AuthAttemptPayload = {
   username: string;
   password: string;
@@ -133,7 +133,7 @@ type AuthAttemptPayload = {
 
 4. `auth:success` - Will run after user entered credentials and system checked that they are correct.
 
-```TS
+```typescript
 type AuthSuccessPayload = AuthAttemptPayload & {
   token: string;
   user_id: number;
@@ -142,12 +142,12 @@ type AuthSuccessPayload = AuthAttemptPayload & {
 
 5. `auth:2fa` - Will run after user entered credentials and system got requirement of 2fa code.
 
-```TS
+```typescript
 type Auth2faPayload = AuthAttemptPayload;
 ```
 
 6. `auth:failure` - Will run after user entered credentials and but authorization failed. Probably credentials are wrong.
 
-```TS
+```typescript
 type Auth2faPayload = AuthAttemptPayload;
 ```
