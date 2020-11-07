@@ -24,7 +24,7 @@ plugins: # List of plugins & their settings
 
   telegram: # Module for send logs to telegram
     token: "111:xxxxx" # Telegram bot token, obtained from BotFather
-    chatId: "11211331" # Contact name, user id or chat id
+    chatId: ["11211331"] # Contact name, user id or chat id
     lang: en # Or ru, if you prefer russian
     successOnly: true # Set `false`, if you want receive unsuccessful messages
     enabled: false # Set `true` to enable

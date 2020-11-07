@@ -25,7 +25,7 @@ exports.init = (config, ee) => {
       },
       method: "POST",
       body: JSON.stringify({
-        chat_id: chatId,
+        chat_id: Array.isArray(chatId) ? chatId.join(",") : chatId,
         text,
         parse_mode: "HTML"
       })

@@ -8,7 +8,7 @@
 
 ```javascript
 // Friendly name of your plugin. Will be used in service messages
-exports.name = "myPluginName"
+exports.name = "myPluginName";
 
 /**
  * Initializer of plugin, must be sync
@@ -17,7 +17,7 @@ exports.name = "myPluginName"
  */
 exports.init = (config, systemEvents) => {
   // do some job...
-}
+};
 ```
 
 4. Add a plugin name prop to plugin section in `config.yml`
@@ -50,9 +50,9 @@ plugins:
 ```javascript
 // plugins/mySuperPlugin.js
 
-exports.init = (config) => {
+exports.init = config => {
   console.log(config);
-}
+};
 ```
 
 ```JSON
@@ -100,11 +100,10 @@ exports.init = (_, systemEvents) => {
   systemEvents.on("system:startup", () => {
     // this code will be executed after
     // initialization of all plugins
-  })
-
+  });
 
   systemEvents.emit("mySuperPlugin:initialized");
-}
+};
 ```
 
 #### There is list of core events
@@ -115,8 +114,8 @@ exports.init = (_, systemEvents) => {
 
 ```typescript
 type ServerStartupPayload = {
-  port: number
-}
+  port: number;
+};
 ```
 
 3. `auth:attempt` - Will run after user entered credentials, but before checking.
@@ -128,7 +127,7 @@ type AuthAttemptPayload = {
   code?: string; // 2fa code
   captcha_sid?: string;
   captcha_key?: string;
-}
+};
 ```
 
 4. `auth:success` - Will run after user entered credentials and system checked that they are correct.
@@ -137,7 +136,7 @@ type AuthAttemptPayload = {
 type AuthSuccessPayload = AuthAttemptPayload & {
   token: string;
   user_id: number;
-}
+};
 ```
 
 5. `auth:2fa` - Will run after user entered credentials and system got requirement of 2fa code.
