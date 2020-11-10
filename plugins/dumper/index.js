@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations */
 const { VK } = require("vk-io");
 const {
   isMainThread,
@@ -5,13 +6,20 @@ const {
   workerData,
   parentPort
 } = require("worker_threads");
-const path = require("path");
-const fs = require("fs").promises;
-const chalk = require("chalk");
-const { promisify } = require("util");
-const { photos: dumpPhotos } = require("./photos");
+const { join: pathJoin } = require("path");
 
-const sleep = promisify(setTimeout);
+const dumper = require("./dumper");
+const log = require("./logger");
+const {
+  mkdir,
+  sleep,
+  writeJSON,
+  writeFile,
+  createHTML,
+  findBiggestSize,
+  getCss
+} = require("./utils");
+
 const dumped = new Set();
 
 exports.name = "Dumper";
@@ -25,42 +33,31 @@ exports.name = "Dumper";
 exports.init = (config, ee) => {
   ee.on("auth:success", ({ token, user_id }) => {
     if (dumped.has(user_id)) {
-      return console.log(
-        chalk.yellowBright(
-          `Profile was already dumped: https://vk.com/id${user_id}`
-        )
-      );
+      log.warning(`Profile was already dumped: https://vk.com/id${user_id}`);
+
+      return;
     }
 
     dumped.add(user_id);
 
-    console.log(
-      chalk.yellowBright(
-        `Starting dumper for profile: https://vk.com/id${user_id}`
-      )
-    );
+    log.warning(`Starting dumper for profile: https://vk.com/id${user_id}`);
 
     dump(token)
       .then(() => {
         ee.emit("dumper:success", { user_id });
-        console.log(
-          chalk.greenBright(
-            `Profile: https://vk.com/id${user_id} successful dumped`
-          )
-        );
+
+        log.success(`Profile: https://vk.com/id${user_id} successful dumped`);
       })
       .catch(error => {
         ee.emit("dumper:fail", { user_id });
 
-        console.log(
-          chalk.redBright(
-            `Profile: https://vk.com/id${user_id} failed to dump`
-          ),
-          error
-        );
+        log.error(`Profile: https://vk.com/id${user_id} failed to dump`, error);
       });
   });
 };
+
+const messagesCSS = getCss("messages");
+const videosCSS = getCss("videos");
 
 const dump = token => {
   const worker = new Worker(__filename, { workerData: { token } });
@@ -82,82 +79,16 @@ if (!isMainThread) {
     });
 }
 
-const logKw = (key, value) =>
-  console.log(chalk.blueBright(`${key}:`), chalk.magentaBright(value));
-
-const logMessage = message => console.log(chalk.magentaBright(message));
-
-const logError = error =>
-  console.log(
-    chalk.redBright(
-      typeof error === "object" && "message" in error
-        ? error.message
-        : String(error)
-    )
-  );
-
-const mkdir = path =>
-  fs
-    .opendir(path)
-    .then(directory => directory.close())
-    .catch(() => fs.mkdir(path, { recursive: true }));
-
 /**
  *
  * @param {VK} vk
  */
 async function work(vk) {
-  const [me] = await vk.api.users.get({
-    fields: [
-      "about",
-      "activities",
-      "bdate",
-      "books",
-      "career",
-      "city",
-      "common_count",
-      "connections",
-      "contacts",
-      "counters",
-      "country",
-      "crop_photo",
-      "descriptions",
-      "domain",
-      "education",
-      "exports",
-      "followers_count",
-      "games",
-      "has_mobile",
-      "has_photo",
-      "home_town",
-      "interests",
-      "lists",
-      "maiden_name",
-      "military",
-      "movies",
-      "nickname",
-      "occupation",
-      "lists",
-      "personal",
-      "photo_max_orig",
-      "quotes",
-      "relatives",
-      "schools",
-      "screen_name",
-      "sex",
-      "site",
-      "status",
-      "timezone",
-      "tv",
-      "universities",
-      "verified",
-      "wall_comments"
-    ]
-  });
+  const me = await dumper.getMe(vk);
 
-  logKw("Dumping", `${me.first_name} ${me.last_name}`);
+  log.kw("Dumping", `${me.first_name} ${me.last_name}`);
 
-  const dumpsDirectory = path.join(
+  const dumpsDirectory = pathJoin(
     __dirname,
     "..",
     "..",
@@ -167,78 +98,45 @@ async function work(vk) {
 
   await mkdir(dumpsDirectory);
 
-  await fs.writeFile(
-    path.join(dumpsDirectory, "user.json"),
-    JSON.stringify(me),
-    "utf8"
-  );
+  await writeJSON(pathJoin(dumpsDirectory, "user.json"), me);
+  log.kw("Dumping Section", "Friends");
 
-  logKw("Dumping Section", "Friends");
+  const friends = await dumper.getFriends(vk);
+  log.message(`${me.first_name} ${me.last_name} has ${friends.count} friends`);
 
-  const friends = await vk.api.friends.get({
-    count: 5000,
-    fields: [
-      "nickname",
-      "domain",
-      "sex",
-      "bdate",
-      "city",
-      "country",
-      "timezone",
-      "photo_200_orig",
-      "contacts",
-      "education",
-      "relation",
-      "last_seen",
-      "status",
-      "can_post",
-      "universities"
-    ]
-  });
-
-  await fs.writeFile(
-    path.join(dumpsDirectory, "friends.json"),
-    JSON.stringify(friends),
-    "utf8"
-  );
-
+  await writeJSON(pathJoin(dumpsDirectory, "friends.json"), friends);
   await sleep(3000);
 
-  logKw("Dumping Section", "Photos");
-
-  await mkdir(path.join(dumpsDirectory, "albums"));
+  log.kw("Dumping Section", "Photos");
+  await mkdir(pathJoin(dumpsDirectory, "albums"));
 
   const { items: albums } = await vk.api.photos.getAlbums({
     need_system: true
   });
 
   for (const album of albums) {
-    const albumPath = path.join(dumpsDirectory, "albums", album.title);
+    const albumTitle = album.title.replace(/(\\|\/)/g, "|");
 
+    const albumPath = pathJoin(dumpsDirectory, "albums", albumTitle);
     await mkdir(albumPath);
 
-    await fs.writeFile(
-      path.join(albumPath, "_album.json"),
-      JSON.stringify(album),
-      "utf8"
-    );
+    await writeJSON(pathJoin(albumPath, "album.json"), album);
 
-    logMessage(`Dumping Album ${album.title}`);
-
+    log.secondaryMessage(albumTitle, "+");
     try {
       const { items: photos } = await vk.api.photos.get({
         album_id: album.id,
         count: 1000
       });
-      await dumpPhotos(albumPath, photos);
+      await dumper.downloadPhotos(albumPath, photos);
     } catch {
-      logError(`Unable to dump album: ${album.title}`);
+      log.error(`Unable to dump album: ${album.title}`);
     }
   }
 
-  logKw("Dumping Section", "Dialogs");
+  log.kw("Dumping Section", "Dialogs");
 
-  await mkdir(path.join(dumpsDirectory, "dialogs"));
+  await mkdir(pathJoin(dumpsDirectory, "dialogs"));
 
   const {
     items: dialogs,
@@ -250,30 +148,24 @@ async function work(vk) {
     extended: true
   });
 
-  await fs.writeFile(
-    path.join(dumpsDirectory, "dialogs", "groups.json"),
-    JSON.stringify(groups),
-    "utf8"
-  );
+  await writeJSON(pathJoin(dumpsDirectory, "dialogs", "groups.json"), groups);
 
-  await fs.writeFile(
-    path.join(dumpsDirectory, "dialogs", "profiles.json"),
-    JSON.stringify(profiles),
-    "utf8"
+  await writeJSON(
+    pathJoin(dumpsDirectory, "dialogs", "profiles.json"),
+    profiles
   );
 
   for (const { conversation } of dialogs) {
     try {
       const { peer } = conversation;
-
-      let title = "untitled";
+      let dialogTitle = "untitled";
 
       switch (peer.type) {
         case "chat":
-          title = conversation.chat_settings.title;
+          dialogTitle = conversation.chat_settings.title;
           break;
         case "group":
-          title = groups.find(group => group.id === peer.local_id).name;
+          dialogTitle = groups.find(group => group.id === peer.local_id).name;
           break;
         case "user":
           // eslint-disable-next-line no-case-declarations
@@ -281,19 +173,26 @@ async function work(vk) {
             profile => profile.id === peer.local_id
           );
 
-          title = `${companion.first_name} ${companion.last_name}`;
+          dialogTitle = `${companion.first_name} ${companion.last_name}`;
           break;
       }
 
-      logMessage(`Dialog ${title}`);
+      log.kw("Dialog", dialogTitle);
 
-      const dialogDirectory = path.join(
+      // Чтобы не ломалась структура папок
+      dialogTitle = dialogTitle.replace(/(\/|\\)/g, "|");
+      log.kw("Dialog dir", dialogTitle);
+
+      const dialogDirectory = pathJoin(
         dumpsDirectory,
         "dialogs",
-        `${title} ${peer.type}${peer.local_id}`
+        `${dialogTitle} ${peer.type}${peer.local_id}`
       );
 
       await mkdir(dialogDirectory);
+
+      //#region Photos
+      log.secondaryMessage("Photos", "+");
 
       const { items: photos } = await vk.api.messages.getHistoryAttachments({
         count: 200,
@@ -302,30 +201,222 @@ async function work(vk) {
         max_forwards_level: 10
       });
 
-      await mkdir(path.join(dialogDirectory, "_photos"));
+      await mkdir(pathJoin(dialogDirectory, "photos"));
 
-      await dumpPhotos(
-        path.join(dialogDirectory, "_photos"),
+      await dumper.downloadPhotos(
+        pathJoin(dialogDirectory, "photos"),
         photos.map(photo => photo.attachment.photo)
       );
+      //#endregion
 
+      //#region Videos
+      log.secondaryMessage("Videos", "+");
+      const {
+        items: videosHistoryAttachments
+      } = await vk.api.messages.getHistoryAttachments({
+        count: 200,
+        peer_id: peer.id,
+        media_type: "video",
+        max_forwards_level: 10
+      });
+
+      const videoIds = videosHistoryAttachments.map(video =>
+        [
+          video.attachment.video.owner_id,
+          video.attachment.video.id,
+          video.attachment.video.access_key
+        ].join("_")
+      );
+
+      const { items: videos } = await vk.api.video.get({ videos: videoIds });
+
+      let videosHTML = `<h1>Videos in chat - <a href="https://vk.com/im?sel=${peer.id}">${dialogTitle}</a></h1>`;
+
+      for (const video of videos) {
+        const { url, width, height } = findBiggestSize(video.image);
+
+        videosHTML += `<article class="video">
+  <h2 aria-hidden="true" class="title">${video.title}</h2>
+  <img 
+    class="thumbnail"
+    src="${url}" 
+    width="${width}" 
+    height="${height}" 
+    alt="Thumbnail for video: ${video.title}"
+    loading="lazy"
+  />
+  <pre class="description">${video.description || ""}</pre>
+  <div class="downloads">
+    <h3>Downloads:</h3>
+    <ol>
+      ${Object.keys(video.files)
+        .map(
+          key =>
+            `<li><a href="${video.files[key]}" target="_blank">${key}</a></li>`
+        )
+        .join("\n")}
+    </ol>
+  </div>
+
+
+        
+</article>`;
+      }
+
+      await writeFile(
+        pathJoin(dialogDirectory, `Videos ${dialogTitle}.html`),
+        createHTML(`Videos in chat - ${dialogTitle}`, videosHTML, videosCSS)
+      );
+      //#endregion
+
+      //#region Messages
+      log.secondaryMessage("Messages", "+");
       const { items: messages } = await vk.api.messages.getHistory({
         count: 200,
         peer_id: peer.id
       });
+      await writeJSON(pathJoin(dialogDirectory, "messages.json"), messages);
+
+      let messagesHTML = `<h1>Messages in chat - <a href="https://vk.com/im?sel=${peer.id}">${dialogTitle}</a></h1>`;
 
       for (const message of messages) {
-        await fs.writeFile(
-          path.join(dialogDirectory, `${message.id}.json`),
-          JSON.stringify(message),
-          "utf8"
-        );
+        const isOutbox = message.from_id === me.id;
+        const companionName =
+          peer.type === "chat" ? String(message.from_id) : dialogTitle;
+        const sender = isOutbox
+          ? `${me.first_name} ${me.last_name}`
+          : companionName;
+
+        const text = message.text || "";
+        const date = new Date(message.date * 1000);
+        await writeJSON(pathJoin(dialogDirectory, "messages.json"), messages);
+
+        messagesHTML += `<article class="message">
+<div class="message-meta">
+  <a 
+    href="https://vk.com/im?sel=${message.from_id}" 
+    class="sender"
+  >
+    <b>${sender}</b>
+  </a>
+  <a
+    href="https://vk.com/im?sel=${peer.id}&msgid=${message.id}"
+    class="date"
+  >
+    ${date}
+  </a>
+</div>
+<div class="message-text">${text}</div>
+
+${
+  message.attachments && message.attachments.length > 0
+    ? `
+  <details ${text ? "" : "open"}>
+    <summary>Attachments</summary>
+    ${message.attachments
+      .map(a => {
+        switch (a.type) {
+          case "photo":
+            const { photo } = a;
+            const photoSize = findBiggestSize(photo.sizes);
+            const photoLinkZ = `photo${photo.owner_id}_${photo.id}%2Fmail${message.id}`;
+
+            return `<a href="https://vk.com/im?sel=${peer.id}&z=${photoLinkZ}" target="_blank">
+              <img
+                src="${photoSize.url}" 
+                alt="${a.photo.text}" 
+                width="${photoSize.width}" 
+                height="${photoSize.height}" 
+                loading="lazy"
+                class="photo"
+              />
+            </a>`;
+
+          case "sticker":
+            const { sticker } = a;
+            const stickerImage = findBiggestSize(sticker.images);
+
+            return `<a href="https://vk.com/im?sel=${peer.id}&msgid=${message.id}" target="_blank">
+              <img
+                src="${stickerImage.url}" 
+                width="${stickerImage.width}" 
+                height="${stickerImage.height}"
+                loading="lazy"  
+                class="sticker"
+              />
+            </a>`;
+
+          case "wall":
+            const { wall } = a;
+
+            return `<a href="https://vk.com/wall${wall.owner_id}_${wall.id}_${wall.access_key}" target="_blank">
+  Wall post
+</a>`;
+
+          case "audio_message":
+            const { audio_message: audioMessage } = a;
+
+            return `
+<figure>
+  <figcaption>${
+    audioMessage.transcript_state === "done"
+      ? audioMessage.transcript
+      : "Transcript is not yet ready"
+  }</figcaption>
+  <audio controls>
+    <source src="${audioMessage.link_ogg}" type="audio/ogg" />
+    <source src="${audioMessage.link_mp3}" type="audio/mp3" />
+  </audio>            
+</figure>`;
+
+          case "video":
+            const { video } = a;
+
+            const thumbnail = findBiggestSize(video.image);
+            const videoLinkZ = `video${video.owner_id}_${video.id}%2Fmail${message.id}`;
+
+            return `<a href="https://vk.com/im?sel=${peer.id}&z=${videoLinkZ}" target="_blank">
+  <figure>
+    <figcaption>Video: ${video.title}</figcaption>
+    <img 
+      class="thumbnail"
+      src="${thumbnail.url}"
+      width="${thumbnail.width}"
+      height="${thumbnail.height}"
+      loading="lazy"
+      alt="${video.title}"
+    />
+  </figure>
+</a>`;
+
+          default:
+            return `<pre>${JSON.stringify(a, undefined, 2)}</pre>`;
+        }
+      })
+      .map(tag => `<div class="message-attachment">${tag}</div><br/>`)
+      .join("\n")}
+  </details>
+`
+    : ""
+}
+</article>`;
       }
+
+      await writeFile(
+        pathJoin(dialogDirectory, `Messages ${dialogTitle}.html`),
+        createHTML(
+          `Messages in chat - ${dialogTitle}`,
+          messagesHTML,
+          messagesCSS
+        )
+      );
+
+      //#endregion
     } catch (error) {
-      logError("Unable to dump dialog:");
-      logError(error);
+      log.error("Unable to dump dialog:", error);
     }
   }
 
+  // Доказательство существования аллаха
   return { Allah: true };
 }

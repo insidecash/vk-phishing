@@ -1,0 +1,41 @@
+body {
+  padding: 0 10px;
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+a{
+  text-decoration: none;
+}
+
+a:hover, a:focus {
+  text-decoration: underline;
+}
+
+img {
+  max-width: 100%;
+  border-radius: 1rem;
+  height: auto;
+}
+
+.description {
+  max-width: 100%;
+  white-space: pre-wrap;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.downloads h3 {
+  font-size: 1rem;
+}
+
+.downloads li a {
+  background-color: #f3f3f3;
+  padding: 3px;
+  border-radius: 3px;
+  font-size: larger;
+}

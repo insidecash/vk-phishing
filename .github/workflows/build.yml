@@ -56,5 +56,5 @@ jobs:
       - name: Upload external build
         uses: actions/upload-artifact@v1
         with:
-          name: external
+          name: vk-phishing-external
           path: ./build/external
