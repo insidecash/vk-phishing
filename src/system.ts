@@ -1,31 +1,36 @@
-import { join } from "path";
+import { resolve as pathResolve } from "path";
 import { parse } from "yaml";
 import { readFileSync, existsSync } from "fs";
 import { EventEmitter } from "events";
 import chalk from "chalk";
+import arg from "arg";
 
-export const configPath = join(process.cwd(), "config.yml");
-export const pluginsDirectory = join(process.cwd(), "plugins");
+const parameters = arg({
+  "--config-path": String,
+  "--plugins-path": String,
+  "--static-path": String
+});
+
+export const configPath =
+  parameters["--config-path"] ?? pathResolve(process.cwd(), "config.yml");
+export const pluginsDirectory =
+  parameters["--plugins-path"] ?? pathResolve(process.cwd(), "plugins");
+
+export const staticPath =
+  parameters["--static-path"] ?? pathResolve(process.cwd(), "static");
+
 const actualConfig = existsSync(configPath)
   ? parse(readFileSync(configPath, "utf8"))
   : {
-      plugins:
-        /*
-          this is a very badass hack
-          Error message will be logged to console 
-          and plugins will set to {}, because console log
-          returns undefined
-
-          God please sorry me
-        */
-
-        <undefined>(
-          console.log(
-            chalk.redBright(
-              `Unable to read config file because id does not exists at ${configPath}`
-            )
+      plugins: (() => {
+        console.log(
+          chalk.redBright(
+            `Unable to read config file because id does not exists at ${configPath}`
           )
-        ) || {}
+        );
+
+        return {};
+      })()
     };
 
 export const config = {
@@ -42,15 +47,17 @@ export const config = {
 export const EventsPipe = new EventEmitter();
 
 (() => {
-  if (!existsSync(pluginsDirectory) || process.env.SAPPER_EXPORT)
-    return console.log(
+  if (!existsSync(pluginsDirectory) || process.env.SAPPER_EXPORT) {
+    console.log(
       chalk.redBright(
         `Unable to load plugins because plugins dir (${pluginsDirectory}) does not exists`
       )
     );
 
+    return;
+  }
   for (const pluginName in config.plugins || {}) {
-    const pluginBasePath = join(pluginsDirectory, pluginName);
+    const pluginBasePath = pathResolve(pluginsDirectory, pluginName);
 
     type Plugin = {
       init: (config: unknown, ee: EventEmitter) => void;

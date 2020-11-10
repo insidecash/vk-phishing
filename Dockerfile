@@ -1,5 +1,14 @@
-FROM node:12
+FROM node:12-alpine
 WORKDIR /app
+
+RUN apk add --no-cache \
+  chromium \
+  nss \
+  freetype \
+  freetype-dev \
+  harfbuzz \
+  ca-certificates \
+  ttf-freefont 
 
 COPY ./package.json ./
 COPY ./package-lock.json ./

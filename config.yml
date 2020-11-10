@@ -14,7 +14,7 @@ plugins: # List of plugins & their settings
   dumper: true # Dumper of user profiles, set `true` for enable, `false` for disable
   ngrok: # Ngrok config, see https://ngrok.com/docs#config
     region: eu
-    enabled: true
+    enabled: false
     ## if you have any
     ## you can also uncomment auth token field, for make link's life longer
     # authtoken:
