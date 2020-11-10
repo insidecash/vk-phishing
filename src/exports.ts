@@ -32,3 +32,5 @@ export function bootstrap(
     }
   );
 }
+
+export * as ipc from "./ipc";

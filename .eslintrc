@@ -13,14 +13,23 @@
   },
   "overrides": [
     {
-      "files": ["*.svelte"],
+      "files": [
+        "*.svelte"
+      ],
       "processor": "svelte3/svelte3"
     },
     {
-      "files": ["*.ts"],
+      "files": [
+        "*.ts"
+      ],
       "parser": "@typescript-eslint/parser",
       "extends": "plugin:@typescript-eslint/recommended"
     }
   ],
-  "plugins": ["unicorn", "svelte3", "prettier", "@typescript-eslint"]
+  "plugins": [
+    "unicorn",
+    "svelte3",
+    "prettier",
+    "@typescript-eslint"
+  ]
 }

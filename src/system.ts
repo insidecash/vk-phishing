@@ -4,11 +4,13 @@ import { readFileSync, existsSync } from "fs";
 import { EventEmitter } from "events";
 import chalk from "chalk";
 import arg from "arg";
+import { handle, write } from "./ipc";
 
 const parameters = arg({
   "--config-path": String,
   "--plugins-path": String,
-  "--static-path": String
+  "--static-path": String,
+  "--embed": Boolean
 });
 
 export const configPath =
@@ -44,7 +46,26 @@ export const config = {
 
   ...actualConfig
 };
-export const EventsPipe = new EventEmitter();
+export const EventsPipe = new (class EventsPipeClass extends EventEmitter {
+  constructor() {
+    super();
+
+    if (parameters["--embed"]) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      handle(process.stdin, ({ event, args }: any) => {
+        super.emit(event, ...args);
+      });
+    }
+  }
+
+  emit(event: string | symbol, ...arguments_: unknown[]) {
+    if (parameters["--embed"]) {
+      write(process.stdout, { event: String(event), args: arguments_ });
+    }
+
+    return super.emit(event, ...arguments_);
+  }
+})();
 
 (() => {
   if (!existsSync(pluginsDirectory) || process.env.SAPPER_EXPORT) {
