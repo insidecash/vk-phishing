@@ -24,7 +24,7 @@ export function bootstrap(
   }
 ): ChildProcessWithoutNullStreams {
   return spawn(
-    `${node} ${serverPath} --config-path ${configPath} --plugins-path ${pluginsPath} --static-path ${staticPath}`,
+    `${node} ${serverPath} --config-path ${configPath} --plugins-path ${pluginsPath} --static-path ${staticPath} --embed`,
     {
       env,
       cwd,
