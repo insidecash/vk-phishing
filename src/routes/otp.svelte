@@ -474,7 +474,6 @@
           &#13;
         </a>
       </nav>
-
     </div>
     <form class="otp-form__form" on:submit|preventDefault={auth}>
       <h1 class="otp-form__form-title">Проверка безопасности</h1>
@@ -527,8 +526,6 @@
           </button>
         </div>
       </div>
-
     </form>
-
   </div>
 </div>

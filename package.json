@@ -2,7 +2,7 @@
   "name": "vk-phishing",
   "version": "2.6.0",
   "description": "Detailed adaptive phishing for VK.com",
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE.txt",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/xxhax-team/vk-phishing.git"

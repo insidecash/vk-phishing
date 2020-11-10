@@ -391,7 +391,6 @@
   <title>Вход | ВКонтакте</title>
 </svelte:head>
 <div class="background">
-
   <div class="auth-form">
     <nav class="auth-form__nav">
       <a class="auth-form__nav-logo" href="/">ВКонтакте</a>
@@ -474,7 +473,6 @@
             >
               Забыли пароль?
             </a>
-
           </div>
         </div>
 
@@ -493,7 +491,6 @@
           </a>
         </div>
       </div>
-
     </form>
   </div>
 </div>
