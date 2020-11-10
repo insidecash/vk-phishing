@@ -16,7 +16,7 @@ execSync("npm run build:exports");
 
 const requiredFiles = [
   "README.md",
-  "LICENSE",
+  "LICENSE.txt",
   "config.yml",
   "plugins",
   "static"
