@@ -10,7 +10,11 @@ fs.mkdirpSync("build");
 // for specific build. That because its enabled
 // by default and make declaration files
 // in __sapper__ dir.
-execSync("rm ./__sapper__/**/*.d.ts");
+try {
+  execSync("rm ./__sapper__/**/*.d.ts");
+} catch (error) {
+  console.log(error);
+}
 
 execSync("npm run build:exports");
 
