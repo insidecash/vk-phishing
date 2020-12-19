@@ -53,3 +53,5 @@ See in `config.yaml` not so many options,
 everything is commented
 
 ### Good luck!
+
+## [👉 Читать на русском 🇷🇺](docs/ru.md)
