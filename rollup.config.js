@@ -36,7 +36,8 @@ export default {
       }),
       resolve({
         browser: true,
-        dedupe: ["svelte"]
+        dedupe: ["svelte"],
+        extensions: [".svelte", ".ts", ".mjs", ".js", ".cjs", ".json"]
       }),
       json(),
       commonjs(),
@@ -91,7 +92,8 @@ export default {
         preprocess: autoPreprocess()
       }),
       resolve({
-        dedupe: ["svelte"]
+        dedupe: ["svelte"],
+        extensions: [".svelte", ".ts", ".mjs", ".js", ".cjs", ".json"]
       }),
       json(),
       typescript({ tsconfig: "./tsconfig.json" }),

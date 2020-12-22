@@ -308,27 +308,18 @@
   }
 </style>
 
+<script context="module">
+  export function preload(_page, { exit, authUrl }) {
+    return { exitUrl: exit, authUrl };
+  }
+</script>
+
 <script>
-  import * as ac from "../misc/auth-constants.ts";
-  import { onMount, onDestroy } from "svelte";
+  import * as ac from "../misc/auth-constants";
   import { goto, stores } from "@sapper/app";
 
-  let exitUrl;
-  let authUrl;
-  let unsub;
-
-  onMount(() => {
-    const { session } = stores();
-
-    console.log(session);
-
-    unsub = session.subscribe(value => {
-      exitUrl = value.exit;
-      authUrl = value.authUrl;
-    });
-  });
-
-  onDestroy(() => (typeof unsub === "function" ? unsub() : void 0));
+  export let exitUrl;
+  export let authUrl;
 
   let inputLock = false;
   let username = "";
