@@ -1,0 +1,10 @@
+<figure>
+  <figcaption>
+    {{#if transcript_done}} {{transcript}} {{else}} Transcript is not yet ready
+    {{/if}}
+  </figcaption>
+  <audio controls>
+    <source src="{{link_ogg}}" type="audio/ogg" />
+    <source src="{{link_mp3}}" type="audio/mp3" />
+  </audio>
+</figure>

@@ -1,0 +1,22 @@
+<article class="video">
+  <h2 aria-hidden="true" class="title">{{video.title}}</h2>
+  <img
+    class="thumbnail"
+    src="{{url}}"
+    width="{{width}}"
+    height="{{height}}"
+    alt="Thumbnail for video: {{video.title}}"
+    loading="lazy"
+  />
+  <pre class="description">{{video.description}}</pre>
+  <div class="downloads">
+    <h3>Downloads:</h3>
+    <ol>
+      {{#each video.files}}
+      <li>
+        <a href="{{this}}" target="_blank">{{@key}}</a>
+      </li>
+      {{/each}}
+    </ol>
+  </div>
+</article>

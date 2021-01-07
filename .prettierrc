@@ -10,5 +10,6 @@
   "semi": true,
   "useTabs": false,
   "singleQuote": false,
-  "endOfLine": "lf"
+  "endOfLine": "lf",
+  "overrides": [{ "files": ["*.hbs"], "options": { "parser": "html" } }]
 }
