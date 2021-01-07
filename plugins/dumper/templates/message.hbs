@@ -1,0 +1,37 @@
+<article class="message">
+  <div class="message__ava">
+    <a href="https://vk.com/im?sel={{message.from_id}}">
+      <img src="{{person.ava}}" alt="{{person.name}}" width="50" height="50" />
+    </a>
+  </div>
+  <div class="message__meta">
+    <a
+      href="https://vk.com/im?sel={{message.from_id}}"
+      class="message__sender"
+      aria-hidden="true"
+    >
+      <b>{{person.name}}</b>
+    </a>
+    <a
+      href="https://vk.com/im?sel=${peer.id}&msgid=${message.id}"
+      class="message__date"
+    >
+      {{ date }}
+    </a>
+  </div>
+  <div class="message__content">
+    {{#if message.text}}
+    <pre class="message__text">{{{ message.text }}}</pre>
+    {{/if}} {{#if attachments}} {{#if message.text}}
+    <details class="message__attachments">
+      <summary>Attachments</summary>
+      {{{attachments}}}
+    </details>
+    {{else}}
+    <details class="message__attachments" open>
+      <summary>Attachments</summary>
+      {{{attachments}}}
+    </details>
+    {{/if}} {{/if}}
+  </div>
+</article>

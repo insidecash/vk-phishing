@@ -1,0 +1,91 @@
+<h1>
+  Messages in
+  <a href="https://vk.com/im?sel={{peer.id}}" target="_blank"
+    >{{ dialogTitle }}</a
+  >
+</h1>
+
+{{{ html }}}
+
+<style>
+  body {
+    padding: 0 10px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+      Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    font-family: inherit;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  a:hover,
+  a:focus {
+    text-decoration: underline;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  img.photo,
+  img.thumbnail {
+    min-width: 64px;
+    width: 100%;
+    max-width: 620px;
+    border-radius: 0.5rem;
+  }
+
+  .message__date {
+    color: rgba(119, 126, 140, 0.6);
+    font-size: smaller;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .message__sender {
+    color: #2a5885;
+  }
+
+  .message {
+    display: grid;
+    grid-template-columns: 66px 1fr;
+    grid-template-rows: 1.2rem 1fr;
+    grid-template-areas:
+      "ava meta"
+      "ava content";
+    margin: 1rem 0;
+  }
+
+  .message__ava img {
+    border-radius: 50%;
+  }
+
+  .message__meta {
+    line-height: 16px;
+    grid-area: meta;
+  }
+
+  .message__content {
+    grid-area: content;
+  }
+
+  .message__text {
+    max-width: 100%;
+    white-space: pre-wrap;
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  pre {
+    white-space: pre-wrap;
+  }
+</style>
