@@ -20,7 +20,7 @@ plugins: # List of plugins & their settings
     # authtoken:
   vkcc:
     tokens: [] # Default tokens for links shortening (can also be apps & groups)
-    enabled: false
+    enabled: true
 
   telegram: # Module for send logs to telegram
     token: "111:xxxxx" # Telegram bot token, obtained from BotFather
@@ -43,4 +43,6 @@ plugins: # List of plugins & their settings
     # Please set to actual token. Because sometimes when login captcha may be shown
     # You can get token here https://rucaptcha.com/for-customer
     ruCaptchaToken:
-    enabled: false
+    enabled: true
+
+  banner: true
