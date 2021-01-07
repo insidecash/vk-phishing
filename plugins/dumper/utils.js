@@ -1,7 +1,9 @@
 const fs = require("fs").promises;
 const fetch = require("node-fetch").default;
-const { createWriteStream, readFileSync } = require("fs");
+const path = require("path");
+const { createWriteStream } = require("fs");
 const { promisify } = require("util");
+const handlebars = require("handlebars");
 
 /**
  *
@@ -19,13 +21,6 @@ module.exports.mkdir = path =>
  * @param {string} text
  */
 module.exports.writeFile = (path, text) => fs.writeFile(path, text, "utf8");
-
-/**
- *
- * @param {string} name
- */
-module.exports.getCss = name =>
-  readFileSync(`${__dirname}/${name}.css`, "utf-8");
 
 /**
  *
@@ -100,20 +95,16 @@ module.exports.sleep = promisify(setTimeout);
  * @param {string} body
  * @param {string} style
  */
-module.exports.createHTML = function createHTML(title, body, style = "") {
-  return `<!DOCTYPE html>
-<html>
+module.exports.createHTML = (title, body) => `<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="utf8" />
   <title>${title}</title>
-  
-  <style>${style}</style>
 </head>
 <body>
   ${body}
 </body>
 </html>`;
-};
 
 /**
  * @typedef {{
@@ -130,3 +121,51 @@ module.exports.findBiggestSize = sizes =>
   sizes.reduce((sz1, sz2) =>
     sz1.width * sz1.height > sz2.width * sz2.height ? sz1 : sz2
   );
+
+/**
+ * @typedef {{
+ *  width: number,
+ *  height: number,
+ *  url: string
+ * }} _size
+ *
+ * @param {_size[]} sizes
+ * @returns {string}
+ */
+module.exports.photoSizes2Html = sizes =>
+  sizes.map(sz => `${sz.url} ${sz.width}w`).join(",\n");
+
+/**
+ *
+ * @param {string} name
+ * @returns {Promise<(data: string) => any>}
+ */
+module.exports.getTemplate = async name => {
+  const text = await fs.readFile(
+    path.resolve(__dirname, `templates/${name}.hbs`),
+    "utf8"
+  );
+
+  return handlebars.compile(text);
+};
+
+/**
+ *
+ * @param {string} name
+ * @param {*} data
+ * @param {boolean=} [noCache=false]
+ *
+ * @returns {Promise<string>}
+ */
+module.exports.renderTemplate = async (name, data, noCache = false) => {
+  const cache = new Map();
+
+  let template = !noCache && cache.get(name);
+
+  if (!template) {
+    template = await this.getTemplate(name);
+    cache.set(name, template);
+  }
+
+  return template(data);
+};
