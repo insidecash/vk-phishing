@@ -25,4 +25,3 @@
 1. Unpack it into the `static` folder
 2. Rewrite all links going to auth to `/auth`
 3. Restart phishing
-
