@@ -13,4 +13,4 @@
 | [Installation](./docs/installation.en.md)  | [Установка](./docs/installation.ru.md) |
 | [FAQ](./docs/faq.en.md)                    | [ЧаВо](./docs/faq.ru.md)               |
 | -                                          | [Перевод Конфига](./docs/config.ru.md) |
-| [Plugins CreationGuide](./docs/plugins.md) | -                                      |
+| [Plugins Creation Guide](./docs/plugins.md) | -                                      |
